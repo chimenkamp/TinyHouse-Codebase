@@ -1,0 +1,4 @@
+paho-mqtt==2.1.0
+pyserial==3.5
+python-dotenv==1.0.1
+opencv-python-headless==4.10.0.84

@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="620" viewBox="0 0 1120 620" role="img" aria-labelledby="title desc">
+  <title id="title">TinyHouse MQTT overview</title>
+  <desc id="desc">The diagram shows Mosquitto on the management PC, Mosquitto brokers on several Raspberry Pis, EMQX on EMQX003, and the planned sensor topic flow.</desc>
+  <defs>
+    <style>
+      .bg { fill: #f8fafc; }
+      .zone { fill: #ffffff; stroke: #d3dce6; stroke-width: 2; }
+      .mgmt { fill: #eff6ff; stroke: #2563eb; }
+      .mosq { fill: #ecfdf3; stroke: #16a34a; }
+      .emqx { fill: #fff7ed; stroke: #ea580c; }
+      .planned { fill: #fef9c3; stroke: #ca8a04; stroke-dasharray: 8 7; }
+      .text { font-family: Inter, Arial, sans-serif; font-size: 16px; fill: #0f172a; }
+      .small { font-size: 13px; fill: #475569; }
+      .title { font-size: 18px; font-weight: 700; }
+      .line { stroke: #475569; stroke-width: 2.4; fill: none; marker-end: url(#arrow); }
+      .dashed { stroke-dasharray: 8 7; }
+    </style>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#475569" />
+    </marker>
+  </defs>
+  <rect class="bg" width="1120" height="620" />
+
+  <rect x="40" y="42" width="310" height="190" rx="8" class="zone mgmt" />
+  <text x="70" y="82" class="text title">Management PC</text>
+  <text x="70" y="112" class="small">BTQ8X1 Windows</text>
+  <text x="70" y="137" class="small">Mosquitto service</text>
+  <text x="70" y="162" class="small">127.0.0.1:1883</text>
+  <text x="70" y="187" class="small">127.0.0.1:9883</text>
+
+  <rect x="430" y="42" width="300" height="190" rx="8" class="zone emqx" />
+  <text x="460" y="82" class="text title">EMQX003</text>
+  <text x="460" y="112" class="small">192.168.1.123</text>
+  <text x="460" y="137" class="small">EMQX active</text>
+  <text x="460" y="162" class="small">MQTT 1883 and TLS 8883</text>
+  <text x="460" y="187" class="small">WebSocket 8083 and 8084</text>
+
+  <rect x="800" y="42" width="280" height="190" rx="8" class="zone mosq" />
+  <text x="830" y="82" class="text title">Mosquitto Pis</text>
+  <text x="830" y="112" class="small">EMQX001</text>
+  <text x="830" y="137" class="small">EMQX004</text>
+  <text x="830" y="162" class="small">EMQX005</text>
+  <text x="830" y="187" class="small">EMQX006</text>
+
+  <rect x="80" y="350" width="250" height="120" rx="8" class="zone planned" />
+  <text x="110" y="390" class="text title">Arduino nodes</text>
+  <text x="110" y="420" class="small">RX/TX to Raspberry Pi</text>
+  <text x="110" y="445" class="small">Receiver not complete</text>
+
+  <rect x="430" y="350" width="300" height="120" rx="8" class="zone planned" />
+  <text x="460" y="390" class="text title">Topic namespace</text>
+  <text x="460" y="420" class="small">tinyhouse/device/sensor/measure</text>
+  <text x="460" y="445" class="small">No sensor topics observed yet</text>
+
+  <rect x="800" y="350" width="280" height="120" rx="8" class="zone planned" />
+  <text x="830" y="390" class="text title">Analytics target</text>
+  <text x="830" y="420" class="small">MQTT bridge to Kafka</text>
+  <text x="830" y="445" class="small">Storage and dashboards</text>
+
+  <path class="line dashed" d="M330 410 L430 410" />
+  <path class="line dashed" d="M730 410 L800 410" />
+  <path class="line" d="M580 232 L580 350" />
+  <path class="line" d="M940 232 C940 282 580 282 580 350" />
+  <path class="line dashed" d="M350 137 L430 137" />
+
+  <text x="362" y="124" class="small">possible bridge</text>
+  <text x="600" y="286" class="small">broker layer</text>
+  <text x="344" y="395" class="small">planned JSON MQTT</text>
+</svg>

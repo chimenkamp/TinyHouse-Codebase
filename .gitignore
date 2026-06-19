@@ -1,0 +1,12 @@
+node_modules/
+docs/.vitepress/dist/
+docs/.vitepress/cache/
+docs/.vitepress/.temp/
+docs/tinyhouse_collection_*/
+docs/tinyhouse_collection_*.zip
+.DS_Store
+npm-debug.log*
+__pycache__/
+*.py[cod]
+modules/dashboard/.venv/
+modules/dashboard/dashboard.pid

@@ -1,0 +1,181 @@
+server:
+  host: 127.0.0.1
+  port: 8088
+  docs_url: http://127.0.0.1:5173/
+management_pc:
+  ssh_command: ssh tinyhouse
+  connection_backend: openssh
+  host: tinyhouse
+  port: 22
+  username: ''
+  password: TH101WS2025
+  remote_platform: windows
+  connect_timeout_seconds: 80
+  status_timeout_seconds: 180
+  status_chunk_size: 3
+local:
+  shell:
+    unix: /bin/bash
+    windows: powershell.exe
+shell:
+  default_user: admin
+  identity_file: ~/.ssh/id_ed25519
+  identities_only: true
+  password_authentication: false
+  keyboard_interactive_authentication: false
+  strict_host_key_checking: accept-new
+mqtt:
+  host: 127.0.0.1
+  port: 1883
+  keepalive_seconds: 30
+  topics:
+  - '#'
+  - $SYS/#
+  remote_subscribe_command: '"C:\Program Files\Mosquitto\mosquitto_sub.exe" -h 127.0.0.1
+    -p 1883 -t "#" -t "$SYS/#" -v'
+camera:
+  access_mode: direct
+  ip: 132.180.196.165
+  port: 80
+  scheme: http
+  verify_tls: false
+  path: /
+  username: admin
+  password: CAM101TH2025
+targets:
+- name: Router
+  ip: 192.168.1.1
+  role: router
+- name: Management PC private
+  ip: 192.168.1.100
+  role: management
+  public_host: 132.180.196.164
+  public_ports:
+  - 22
+  - 80
+  - 443
+  - 3389
+- name: Scale
+  ip: 192.168.1.106
+  role: sensor
+  mqtt_capable: true
+  mqtt_target: scale
+  mqtt_host: broker.emqx.io
+  mqtt_port: 1883
+  mqtt_topics:
+  - tinyhouse/scale/#
+  mqtt_description: Scale stream on broker.emqx.io
+- name: EMQX001
+  ip: 192.168.1.121
+  role: mqtt broker
+  ports:
+  - 22
+  - 1883
+  public_host: 132.180.196.167
+  public_ports:
+  - 4021
+- name: EMQX002
+  ip: 192.168.1.122
+  role: mqtt broker
+  shell_command: ssh -p 4022 admin@132.180.196.167
+  shell_identity_file: ~/.ssh/id_ed25519
+  ports:
+  - 22
+  - 1883
+  public_host: 132.180.196.167
+  public_ports:
+  - 4022
+- name: EMQX003
+  ip: 192.168.1.123
+  role: mqtt broker
+  ports:
+  - 22
+  - 1883
+  - 8883
+  - 18083
+  public_host: 132.180.196.167
+  public_ports:
+  - 4023
+- name: EMQX004
+  ip: 192.168.1.124
+  role: mqtt broker
+  shell_command: ssh -p 4024 admin@132.180.196.167
+  shell_identity_file: ~/.ssh/id_ed25519
+  ports:
+  - 22
+  - 1883
+  public_host: 132.180.196.167
+  public_ports:
+  - 4024
+- name: EMQX005
+  ip: 192.168.1.125
+  role: mqtt broker
+  shell_command: ssh -p 4025 admin@132.180.196.167
+  shell_identity_file: ~/.ssh/id_ed25519
+  ports:
+  - 22
+  - 1883
+  public_host: 132.180.196.167
+  public_ports:
+  - 4025
+- name: EMQX006
+  ip: 192.168.1.126
+  role: mqtt broker
+  shell_command: ssh -p 4026 admin@132.180.196.167
+  shell_identity_file: ~/.ssh/id_ed25519
+  ports:
+  - 22
+  - 1883
+  public_host: 132.180.196.167
+  public_ports:
+  - 4026
+- name: EMQX007
+  ip: 192.168.1.127
+  role: mqtt broker
+  ports:
+  - 22
+  - 1883
+  public_host: 132.180.196.167
+  public_ports:
+  - 4027
+- name: AI Pi 001
+  ip: 192.168.1.131
+  role: ai raspberry pi
+  ports:
+  - 22
+  public_host: 132.180.196.167
+  public_ports:
+  - 4031
+- name: AI Pi 002
+  ip: 192.168.1.132
+  role: ai raspberry pi
+  ports:
+  - 22
+  public_host: 132.180.196.167
+  public_ports:
+  - 4032
+- name: Jetson 001
+  ip: 192.168.1.141
+  role: jetson
+  ports:
+  - 22
+  public_host: 132.180.196.167
+  public_ports:
+  - 4041
+- name: Jetson 002
+  ip: 192.168.1.142
+  role: jetson
+  ports:
+  - 22
+  public_host: 132.180.196.167
+  public_ports:
+  - 4042
+- name: Planned jump host
+  ip: 192.168.1.199
+  role: jump host
+  ports:
+  - 22
+  public_host: 132.180.196.167
+  public_ports:
+  - 4050
+ansible: {}

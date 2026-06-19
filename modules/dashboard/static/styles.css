@@ -1,0 +1,485 @@
+:root {
+  color-scheme: light;
+  --bg: #eef2f5;
+  --surface: #ffffff;
+  --surface-soft: #f8fafc;
+  --text: #17202a;
+  --muted: #5b6878;
+  --line: #d8e0e7;
+  --green: #16845b;
+  --red: #c2413b;
+  --amber: #9a6b00;
+  --blue: #1f6feb;
+  --shadow: 0 10px 30px rgba(20, 35, 50, 0.08);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+button,
+input,
+select {
+  font: inherit;
+}
+
+button,
+a {
+  min-height: 38px;
+}
+
+button {
+  border: 1px solid #b8c5d1;
+  border-radius: 6px;
+  background: #ffffff;
+  color: var(--text);
+  cursor: pointer;
+  padding: 8px 12px;
+}
+
+button:hover,
+a:hover {
+  border-color: var(--blue);
+}
+
+a {
+  align-items: center;
+  border: 1px solid #b8c5d1;
+  border-radius: 6px;
+  color: var(--text);
+  display: inline-flex;
+  padding: 8px 12px;
+  text-decoration: none;
+}
+
+.topbar {
+  align-items: center;
+  background: #f8fafc;
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  gap: 24px;
+  justify-content: space-between;
+  padding: 18px 24px;
+}
+
+.topbar h1 {
+  font-size: 24px;
+  line-height: 1.2;
+  margin: 0;
+}
+
+.topbar p {
+  color: var(--muted);
+  margin: 4px 0 0;
+}
+
+.topbar nav,
+.button-row {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.connection-badge {
+  align-items: center;
+  border: 1px solid #cdd8e3;
+  border-radius: 999px;
+  display: inline-flex;
+  font-size: 14px;
+  min-height: 38px;
+  padding: 8px 12px;
+  white-space: nowrap;
+}
+
+.connection-badge.ok {
+  background: #e8f6ef;
+  border-color: #a8dbc2;
+  color: var(--green);
+}
+
+.connection-badge.bad {
+  background: #fff0ef;
+  border-color: #edb4b0;
+  color: var(--red);
+}
+
+.connection-badge.local,
+.connection-badge.unknown {
+  background: #edf4ff;
+  border-color: #b7cceb;
+  color: #1d4f8f;
+}
+
+.layout {
+  display: grid;
+  gap: 18px;
+  grid-template-columns: minmax(0, 1.2fr) minmax(360px, 0.8fr);
+  padding: 18px;
+}
+
+.panel {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+  min-width: 0;
+  padding: 16px;
+}
+
+.panel-wide {
+  grid-column: 1 / -1;
+}
+
+.panel-heading {
+  align-items: start;
+  display: flex;
+  gap: 16px;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.panel h2 {
+  font-size: 18px;
+  margin: 0;
+}
+
+.panel p {
+  color: var(--muted);
+  margin: 4px 0 0;
+}
+
+.badge {
+  background: #e8eef5;
+  border: 1px solid #cdd8e3;
+  border-radius: 999px;
+  color: #344256;
+  display: inline-flex;
+  font-size: 13px;
+  padding: 5px 10px;
+  white-space: nowrap;
+}
+
+.status-grid {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+}
+
+.status-card {
+  background: var(--surface-soft);
+  border: 1px solid var(--line);
+  border-left: 5px solid #97a6b5;
+  border-radius: 8px;
+  min-height: 138px;
+  padding: 12px;
+}
+
+.status-card.online {
+  border-left-color: var(--green);
+}
+
+.status-card.offline {
+  border-left-color: var(--red);
+}
+
+.status-card-title {
+  align-items: start;
+  display: flex;
+  gap: 8px;
+  justify-content: space-between;
+  min-height: 32px;
+}
+
+.status-card-actions {
+  display: flex;
+  flex: 0 0 auto;
+  gap: 6px;
+}
+
+.status-card h3 {
+  font-size: 16px;
+  margin: 0 0 4px;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.card-action-button {
+  align-items: center;
+  display: inline-flex;
+  flex: 0 0 auto;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  font-size: 13px;
+  font-weight: 700;
+  justify-content: center;
+  min-height: 30px;
+  min-width: 34px;
+  padding: 4px 7px;
+}
+
+.shell-card-button {
+  background: #e8f6ef;
+  border-color: #a8dbc2;
+  color: var(--green);
+}
+
+.shell-card-button:hover {
+  border-color: var(--green);
+}
+
+.native-shell-card-button {
+  background: #fff7e6;
+  border-color: #e4be6d;
+  color: var(--amber);
+}
+
+.native-shell-card-button:hover {
+  border-color: var(--amber);
+}
+
+.mqtt-card-button {
+  background: #edf4ff;
+  border-color: #b7cceb;
+  color: #1d4f8f;
+}
+
+.mqtt-card-button:hover {
+  border-color: #1d4f8f;
+}
+
+.status-card dl {
+  display: grid;
+  gap: 4px;
+  grid-template-columns: 72px 1fr;
+  margin: 8px 0 0;
+}
+
+.status-card dt {
+  color: var(--muted);
+}
+
+.status-card dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.ports {
+  color: var(--muted);
+  font-size: 13px;
+  margin-top: 8px;
+}
+
+.log,
+.terminal {
+  background: #111827;
+  border-radius: 8px;
+  color: #e5e7eb;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  font-size: 13px;
+  height: 370px;
+  line-height: 1.45;
+  margin: 0;
+  overflow: auto;
+  padding: 12px;
+  tab-size: 4;
+  user-select: text;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.terminal:focus {
+  outline: 2px solid var(--blue);
+  outline-offset: 2px;
+}
+
+.shell-windows {
+  align-items: flex-end;
+  bottom: 24px;
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 12px;
+  max-height: calc(100vh - 108px);
+  pointer-events: none;
+  position: fixed;
+  right: 24px;
+  z-index: 20;
+}
+
+.shell-dialog {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  box-shadow: 0 16px 44px rgba(15, 23, 42, 0.24);
+  display: grid;
+  grid-template-rows: auto minmax(220px, 1fr);
+  height: min(520px, calc(100vh - 120px));
+  max-width: calc(100vw - 32px);
+  min-width: min(640px, calc(100vw - 48px));
+  overflow: hidden;
+  pointer-events: auto;
+  resize: both;
+  width: min(760px, calc(100vw - 48px));
+}
+
+.shell-dialog-bar {
+  align-items: center;
+  background: #f8fafc;
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+  min-height: 54px;
+  padding: 10px 12px;
+}
+
+.shell-dialog-bar h2 {
+  font-size: 15px;
+  line-height: 1.2;
+  margin: 0;
+}
+
+.shell-dialog-bar p {
+  color: var(--muted);
+  font-size: 12px;
+  margin: 2px 0 0;
+  max-width: 420px;
+  overflow-wrap: anywhere;
+}
+
+.shell-dialog-close {
+  align-items: center;
+  display: inline-flex;
+  flex: 0 0 auto;
+  font-weight: 700;
+  justify-content: center;
+  min-height: 30px;
+  min-width: 30px;
+  padding: 4px;
+}
+
+.shell-dialog-terminal {
+  border-radius: 0;
+  height: 100%;
+  min-height: 0;
+}
+
+.mqtt-dialog-log {
+  border-radius: 0;
+  height: 100%;
+  min-height: 0;
+}
+
+.shell-dialog-closed .shell-dialog-bar {
+  background: #f3f4f6;
+}
+
+.log-line {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  padding: 7px 0;
+}
+
+.log-topic {
+  color: #93c5fd;
+}
+
+.log-payload {
+  color: #e5e7eb;
+  overflow-wrap: anywhere;
+}
+
+.hint,
+.secondary-link {
+  font-size: 13px;
+}
+
+.camera-form {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(6, minmax(120px, 1fr)) auto;
+  margin-bottom: 12px;
+}
+
+.camera-form label {
+  color: var(--muted);
+  display: grid;
+  font-size: 13px;
+  gap: 4px;
+}
+
+.camera-form input,
+.camera-form select {
+  border: 1px solid #b8c5d1;
+  border-radius: 6px;
+  min-height: 38px;
+  padding: 7px 8px;
+  width: 100%;
+}
+
+.camera-form button {
+  align-self: end;
+}
+
+.camera-shell {
+  background: #0f172a;
+  border-radius: 8px;
+  height: 460px;
+  overflow: hidden;
+}
+
+.camera-shell iframe {
+  background: #101820;
+  border: 0;
+  height: 100%;
+  width: 100%;
+}
+
+.secondary-link {
+  margin-top: 10px;
+}
+
+@media (max-width: 980px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+
+  .topbar {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .camera-form {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 620px) {
+  .layout {
+    padding: 10px;
+  }
+
+  .shell-windows {
+    align-items: stretch;
+    bottom: 10px;
+    left: 10px;
+    max-height: calc(100vh - 92px);
+    right: 10px;
+  }
+
+  .shell-dialog {
+    height: min(70vh, calc(100vh - 92px));
+    min-width: 0;
+    width: 100%;
+  }
+
+  .camera-form {
+    grid-template-columns: 1fr;
+  }
+}

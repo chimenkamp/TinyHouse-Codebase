@@ -1,0 +1,24 @@
+[Unit]
+Description=Sensor Raw Logger — reads Arduino Serial and writes JSONL
+After=network.target
+# waits until usb device is available (optional, Logger has Auto-Reconnect)
+# Wants=dev-ttyACM0.device
+
+[Service]
+Type=simple
+User=admin
+Group=admin
+ExecStart=/usr/bin/python3 /home/admin/discovery/sensor_raw_logger.py --port /dev/ttyACM0 --baud 9600 --outdir /home/admin/discovery/logs
+Restart=always
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+
+# Security
+DeviceAllow=/dev/ttyACM0 rw
+DeviceAllow=/dev/ttyACM1 rw
+DeviceAllow=/dev/ttyUSB0 rw
+DeviceAllow=/dev/ttyUSB1 rw
+
+[Install]
+WantedBy=multi-user.target

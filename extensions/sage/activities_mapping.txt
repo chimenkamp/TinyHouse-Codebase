@@ -1,0 +1,17 @@
+Sensor Waage Stein und Werkzeug:
+
+0: idle
+1: positive delta
+2: negative_delta
+
+Sensor Lautstärke:
+
+0: idle
+1: loud
+
+Sensor Colour:
+
+0: idle
+1: red
+2: blue
+3: green

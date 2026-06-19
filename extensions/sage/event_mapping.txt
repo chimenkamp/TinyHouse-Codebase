@@ -1,0 +1,14 @@
+Sensor Waage Steine und Werkzeug:
+
+idle -> positive_delta: brick placed
+idle -> negative_delta: brick removed
+
+Sensor Lautstärke:
+idle -> loud: print started
+loud -> idle: print finished
+
+Sensor colour:
+
+idle -> red: red brick
+idle -> blue: blue brick
+idle -> green: green brick

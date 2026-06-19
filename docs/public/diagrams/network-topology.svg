@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="720" viewBox="0 0 1100 720" role="img" aria-labelledby="title desc">
+  <title id="title">TinyHouse network topology</title>
+  <desc id="desc">The diagram shows the external client, VPS, management PC, university network, router, switch, private network, Raspberry Pis, Jetsons, scale, and sensor nodes.</desc>
+  <defs>
+    <style>
+      .bg { fill: #f7f9fb; }
+      .zone { fill: #ffffff; stroke: #d3dce6; stroke-width: 2; }
+      .public { fill: #e8f3ff; stroke: #3b82f6; }
+      .private { fill: #ecfdf3; stroke: #22a06b; }
+      .compute { fill: #fff7ed; stroke: #f97316; }
+      .device { fill: #ffffff; stroke: #334155; stroke-width: 1.6; }
+      .warn { fill: #fff1f2; stroke: #e11d48; }
+      .text { font-family: Inter, Arial, sans-serif; font-size: 16px; fill: #0f172a; }
+      .small { font-size: 13px; fill: #475569; }
+      .label { font-size: 14px; font-weight: 700; fill: #0f172a; }
+      .line { stroke: #475569; stroke-width: 2.4; fill: none; marker-end: url(#arrow); }
+      .dashed { stroke-dasharray: 8 7; }
+    </style>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#475569" />
+    </marker>
+  </defs>
+  <rect class="bg" width="1100" height="720" />
+
+  <rect x="40" y="42" width="290" height="250" rx="8" class="zone public" />
+  <text x="64" y="78" class="label">External access</text>
+  <rect x="75" y="112" width="215" height="58" rx="6" class="device" />
+  <text x="94" y="137" class="text">Client PC</text>
+  <text x="94" y="158" class="small">Mac or Linux</text>
+  <rect x="75" y="205" width="215" height="58" rx="6" class="device" />
+  <text x="94" y="230" class="text">VPS</text>
+  <text x="94" y="251" class="small">46.224.118.171</text>
+
+  <rect x="390" y="42" width="300" height="250" rx="8" class="zone public" />
+  <text x="414" y="78" class="label">Management PC</text>
+  <rect x="430" y="112" width="220" height="62" rx="6" class="device" />
+  <text x="449" y="138" class="text">BTQ8X1 Windows</text>
+  <text x="449" y="159" class="small">132.180.196.164</text>
+  <rect x="430" y="207" width="220" height="62" rx="6" class="device" />
+  <text x="449" y="233" class="text">WSL Ubuntu</text>
+  <text x="449" y="254" class="small">172.18.168.140</text>
+
+  <rect x="760" y="42" width="300" height="250" rx="8" class="zone public" />
+  <text x="784" y="78" class="label">University side</text>
+  <rect x="800" y="112" width="220" height="62" rx="6" class="device" />
+  <text x="819" y="138" class="text">SW1-TH switch</text>
+  <text x="819" y="159" class="small">132.180.196.166</text>
+  <rect x="800" y="207" width="220" height="62" rx="6" class="device" />
+  <text x="819" y="233" class="text">Archer MR600 WAN</text>
+  <text x="819" y="254" class="small">132.180.196.167</text>
+
+  <rect x="80" y="370" width="980" height="290" rx="8" class="zone private" />
+  <text x="108" y="405" class="label">Private TinyHouse network 192.168.1.0/24</text>
+
+  <rect x="130" y="445" width="220" height="62" rx="6" class="device" />
+  <text x="149" y="471" class="text">Router LAN</text>
+  <text x="149" y="492" class="small">192.168.1.1</text>
+
+  <rect x="420" y="430" width="250" height="92" rx="6" class="compute" />
+  <text x="443" y="458" class="text">Raspberry Pi brokers</text>
+  <text x="443" y="481" class="small">EMQX004 to EMQX006 live</text>
+  <text x="443" y="502" class="small">Mosquitto on 1883</text>
+
+  <rect x="730" y="430" width="250" height="92" rx="6" class="compute" />
+  <text x="753" y="458" class="text">Jetson devices</text>
+  <text x="753" y="481" class="small">192.168.1.141 to .142</text>
+  <text x="753" y="502" class="small">DNAT ports 4041 and 4042</text>
+
+  <rect x="420" y="560" width="250" height="62" rx="6" class="device" />
+  <text x="443" y="586" class="text">Arduino sensor nodes</text>
+  <text x="443" y="607" class="small">RX/TX into Raspberry Pis</text>
+
+  <rect x="730" y="560" width="250" height="62" rx="6" class="warn" />
+  <text x="753" y="586" class="text">Network scale</text>
+  <text x="753" y="607" class="small">192.168.1.106 not verified</text>
+
+  <path class="line" d="M183 170 L183 205" />
+  <path class="line" d="M290 234 C345 234 374 144 430 144" />
+  <path class="line" d="M650 144 C710 144 740 144 800 144" />
+  <path class="line" d="M910 174 L910 207" />
+  <path class="line" d="M910 269 C910 330 240 330 240 445" />
+  <path class="line" d="M350 476 L420 476" />
+  <path class="line" d="M670 476 L730 476" />
+  <path class="line" d="M545 522 L545 560" />
+  <path class="line dashed" d="M855 522 L855 560" />
+  <path class="line dashed" d="M540 269 L540 342 L240 342 L240 445" />
+
+  <text x="314" y="214" class="small">reverse tunnel</text>
+  <text x="690" y="128" class="small">public subnet</text>
+  <text x="545" y="355" class="small">Wi-Fi was disconnected during inspection</text>
+</svg>

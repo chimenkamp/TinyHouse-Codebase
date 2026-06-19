@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.pyc
+*.egg-info/
+.venv/
+
+# Environment
+.env
+
+# OS / Editor
+.DS_Store
+.idea/
+.vscode/
+*.swp
+
+# Project data / outputs
+data/
+received_data/
+output/
+broker/process_discovery/
+broker/received_events/
+*.xes
+*.jsonl

@@ -1,0 +1,91 @@
+{
+  "feature_keys": [
+    "median_value",
+    "mean_value",
+    "min_value",
+    "max_value",
+    "variance_value",
+    "delta_value",
+    "max_delta_value"
+  ],
+  "clusters": [
+    {
+      "cluster_id": 0,
+      "count": 1870,
+      "centroid": {
+        "median_value": 0.0006,
+        "mean_value": 0.0196,
+        "min_value": 0.0001,
+        "max_value": 0.0764,
+        "variance_value": 0.0017,
+        "delta_value": -0.0017,
+        "max_delta_value": 0.076
+      }
+    },
+    {
+      "cluster_id": 1,
+      "count": 2247,
+      "centroid": {
+        "median_value": 0.0001,
+        "mean_value": 0.0005,
+        "min_value": 0.0001,
+        "max_value": 0.0017,
+        "variance_value": 0.0,
+        "delta_value": 0.0,
+        "max_delta_value": 0.0016
+      }
+    },
+    {
+      "cluster_id": 2,
+      "count": 293,
+      "centroid": {
+        "median_value": 3.7585,
+        "mean_value": 3.729,
+        "min_value": 2.4773,
+        "max_value": 4.914,
+        "variance_value": 3.1198,
+        "delta_value": 0.1225,
+        "max_delta_value": 2.3162
+      }
+    },
+    {
+      "cluster_id": 3,
+      "count": 198,
+      "centroid": {
+        "median_value": 0.5657,
+        "mean_value": 0.5817,
+        "min_value": 0.2733,
+        "max_value": 0.9259,
+        "variance_value": 0.1598,
+        "delta_value": 0.0493,
+        "max_delta_value": 0.5747
+      }
+    }
+  ],
+  "thresholds": [
+    {
+      "between_clusters": [
+        1,
+        0
+      ],
+      "feature": "median_value",
+      "threshold": 0.0003
+    },
+    {
+      "between_clusters": [
+        0,
+        3
+      ],
+      "feature": "median_value",
+      "threshold": 0.2832
+    },
+    {
+      "between_clusters": [
+        3,
+        2
+      ],
+      "feature": "median_value",
+      "threshold": 2.1621
+    }
+  ]
+}

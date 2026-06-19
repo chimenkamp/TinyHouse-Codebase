@@ -1,0 +1,16 @@
+beispiel:
+{
+  "scale_1": {
+    "idle -> positive_delta": "brick_placed",
+    "idle -> negative_delta": "brick_removed"
+  },
+  "sound_1": {
+    "idle -> loud": "print_started",
+    "loud -> idle": "print_finished"
+  },
+  "colour_1": {
+    "idle -> red": "red_brick_detected",
+    "idle -> blue": "blue_brick_detected",
+    "idle -> green": "green_brick_detected"
+  }
+}

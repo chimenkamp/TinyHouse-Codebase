@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1050" height="520" viewBox="0 0 1050 520" role="img" aria-labelledby="title desc">
+  <title id="title">TinyHouse data flow</title>
+  <desc id="desc">The diagram shows sensor readings moving from sensors to Arduino boards, Raspberry Pis, MQTT brokers, Kafka, stream processing, storage, and dashboards.</desc>
+  <defs>
+    <style>
+      .bg { fill: #f8fafc; }
+      .box { fill: #ffffff; stroke: #334155; stroke-width: 1.6; }
+      .sensor { fill: #ecfeff; stroke: #0891b2; }
+      .edge { fill: #fefce8; stroke: #ca8a04; }
+      .broker { fill: #ecfdf3; stroke: #16a34a; }
+      .backend { fill: #eff6ff; stroke: #2563eb; }
+      .store { fill: #fff7ed; stroke: #ea580c; }
+      .text { font-family: Inter, Arial, sans-serif; font-size: 16px; fill: #0f172a; }
+      .small { font-size: 13px; fill: #475569; }
+      .line { stroke: #475569; stroke-width: 2.4; fill: none; marker-end: url(#arrow); }
+      .todo { stroke-dasharray: 8 7; }
+    </style>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#475569" />
+    </marker>
+  </defs>
+  <rect class="bg" width="1050" height="520" />
+
+  <rect x="40" y="90" width="150" height="92" rx="8" class="box sensor" />
+  <text x="66" y="123" class="text">Sensors</text>
+  <text x="66" y="148" class="small">Weight</text>
+  <text x="66" y="169" class="small">IR and camera</text>
+
+  <rect x="245" y="90" width="170" height="92" rx="8" class="box edge" />
+  <text x="271" y="123" class="text">Arduino node</text>
+  <text x="271" y="148" class="small">8 analog inputs</text>
+  <text x="271" y="169" class="small">4 digital inputs</text>
+
+  <rect x="470" y="90" width="170" height="92" rx="8" class="box edge" />
+  <text x="496" y="123" class="text">Pi receiver</text>
+  <text x="496" y="148" class="small">RX/TX parser</text>
+  <text x="496" y="169" class="small">Not complete</text>
+
+  <rect x="695" y="90" width="170" height="92" rx="8" class="box broker" />
+  <text x="721" y="123" class="text">MQTT broker</text>
+  <text x="721" y="148" class="small">Mosquitto live</text>
+  <text x="721" y="169" class="small">EMQX planned</text>
+
+  <rect x="470" y="300" width="170" height="92" rx="8" class="box backend" />
+  <text x="496" y="333" class="text">Kafka bridge</text>
+  <text x="496" y="358" class="small">MQTT to Kafka</text>
+  <text x="496" y="379" class="small">Planned</text>
+
+  <rect x="695" y="300" width="170" height="92" rx="8" class="box backend" />
+  <text x="721" y="333" class="text">Stream layer</text>
+  <text x="721" y="358" class="small">Spark or Flink</text>
+  <text x="721" y="379" class="small">Planned</text>
+
+  <rect x="895" y="205" width="125" height="74" rx="8" class="box store" />
+  <text x="916" y="237" class="text">Storage</text>
+  <text x="916" y="260" class="small">Time series</text>
+
+  <rect x="895" y="318" width="125" height="74" rx="8" class="box store" />
+  <text x="916" y="350" class="text">Dashboard</text>
+  <text x="916" y="373" class="small">Monitoring</text>
+
+  <path class="line" d="M190 136 L245 136" />
+  <path class="line" d="M415 136 L470 136" />
+  <path class="line todo" d="M640 136 L695 136" />
+  <path class="line todo" d="M780 182 L780 242 L640 300" />
+  <path class="line todo" d="M640 346 L695 346" />
+  <path class="line todo" d="M865 346 L895 355" />
+  <path class="line todo" d="M865 346 L895 242" />
+
+  <text x="203" y="124" class="small">analog</text>
+  <text x="430" y="124" class="small">serial</text>
+  <text x="650" y="124" class="small">JSON MQTT</text>
+</svg>

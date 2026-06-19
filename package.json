@@ -1,0 +1,17 @@
+{
+  "name": "tinyhouse-codebase",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "docs:dev": "vitepress dev docs --host 0.0.0.0",
+    "docs:build": "vitepress build docs",
+    "docs:preview": "vitepress preview docs --host 0.0.0.0",
+    "dashboard:run:tunnel": "cd modules/dashboard && source .venv/bin/activate && python server.py --mode tunnel",
+    "dashboard:run:local": "cd modules/dashboard && source .venv/bin/activate && python server.py --on-management-pc",
+    "dashboard:kill": "cd modules/dashboard && source .venv/bin/activate && python kill_dashboard.py"
+  },
+  "devDependencies": {
+    "vitepress": "^1.6.4"
+  }
+}

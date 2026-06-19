@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1180" height="650" viewBox="0 0 1180 650" role="img" aria-labelledby="title desc">
+  <title id="title">Raspberry Pi service state</title>
+  <desc id="desc">The diagram shows reachable broker Pis, their active MQTT listener owner, and unreachable DNAT nodes.</desc>
+  <defs>
+    <style>
+      .bg { fill: #f8fafc; }
+      .card { fill: #ffffff; stroke: #cbd5e1; stroke-width: 1.6; }
+      .mosq { fill: #dcfce7; stroke: #16a34a; }
+      .emqx { fill: #fff7ed; stroke: #ea580c; }
+      .bad { fill: #ffe4e6; stroke: #e11d48; }
+      .warn { fill: #fef9c3; stroke: #ca8a04; }
+      .text { font-family: Inter, Arial, sans-serif; font-size: 16px; fill: #0f172a; }
+      .small { font-size: 13px; fill: #475569; }
+      .title { font-size: 18px; font-weight: 700; }
+    </style>
+  </defs>
+  <rect class="bg" width="1180" height="650" />
+
+  <rect x="40" y="50" width="250" height="185" rx="8" class="card mosq" />
+  <text x="70" y="88" class="text title">EMQX001</text>
+  <text x="70" y="116" class="small">192.168.1.121</text>
+  <text x="70" y="140" class="small">DNAT 4021</text>
+  <text x="70" y="174" class="small">Mosquitto owns 1883</text>
+  <text x="70" y="198" class="small">EMQX installed</text>
+
+  <rect x="325" y="50" width="250" height="185" rx="8" class="card bad" />
+  <text x="355" y="88" class="text title">EMQX002</text>
+  <text x="355" y="116" class="small">192.168.1.122</text>
+  <text x="355" y="140" class="small">DNAT 4022</text>
+  <text x="355" y="174" class="small">No route to host</text>
+  <text x="355" y="198" class="small">Inventory host pi01</text>
+
+  <rect x="610" y="50" width="250" height="185" rx="8" class="card emqx" />
+  <text x="640" y="88" class="text title">EMQX003</text>
+  <text x="640" y="116" class="small">192.168.1.123</text>
+  <text x="640" y="140" class="small">DNAT 4023</text>
+  <text x="640" y="174" class="small">EMQX owns 1883</text>
+  <text x="640" y="198" class="small">Dashboard 18083</text>
+
+  <rect x="895" y="50" width="245" height="185" rx="8" class="card mosq" />
+  <text x="925" y="88" class="text title">EMQX004</text>
+  <text x="925" y="116" class="small">192.168.1.124</text>
+  <text x="925" y="140" class="small">DNAT 4024</text>
+  <text x="925" y="174" class="small">Mosquitto owns 1883</text>
+  <text x="925" y="198" class="small">Inventory host pi02</text>
+
+  <rect x="40" y="280" width="250" height="185" rx="8" class="card mosq" />
+  <text x="70" y="318" class="text title">EMQX005</text>
+  <text x="70" y="346" class="small">192.168.1.125</text>
+  <text x="70" y="370" class="small">DNAT 4025</text>
+  <text x="70" y="404" class="small">Mosquitto owns 1883</text>
+  <text x="70" y="428" class="small">Inventory host pi03</text>
+
+  <rect x="325" y="280" width="250" height="185" rx="8" class="card mosq" />
+  <text x="355" y="318" class="text title">EMQX006</text>
+  <text x="355" y="346" class="small">192.168.1.126</text>
+  <text x="355" y="370" class="small">DNAT 4026</text>
+  <text x="355" y="404" class="small">Mosquitto owns 1883</text>
+  <text x="355" y="428" class="small">EMQX process observed</text>
+
+  <rect x="610" y="280" width="250" height="185" rx="8" class="card bad" />
+  <text x="640" y="318" class="text title">EMQX007</text>
+  <text x="640" y="346" class="small">192.168.1.127</text>
+  <text x="640" y="370" class="small">DNAT 4027</text>
+  <text x="640" y="404" class="small">No route to host</text>
+  <text x="640" y="428" class="small">Not in inventory</text>
+
+  <rect x="895" y="280" width="245" height="185" rx="8" class="card warn" />
+  <text x="925" y="318" class="text title">Common services</text>
+  <text x="925" y="346" class="small">Cockpit 9090</text>
+  <text x="925" y="370" class="small">Docker installed</text>
+  <text x="925" y="394" class="small">MySQL 3306</text>
+  <text x="925" y="418" class="small">XRDP 3389</text>
+
+  <rect x="40" y="520" width="1100" height="54" rx="8" class="warn" />
+  <text x="66" y="552" class="small">EMQX Enterprise 5.8.0 is installed on reachable broker Pis, but only EMQX003 exposes EMQX listener ports in the collection report.</text>
+</svg>

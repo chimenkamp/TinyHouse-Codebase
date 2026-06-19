@@ -1,0 +1,31 @@
+- name: Clean user accounts on Raspberry Pis
+  hosts: raspis
+  become: yes
+
+  vars:
+    keep_users:
+      - root
+      - admin
+
+  tasks:
+    - name: Ensure admin user exists with correct password
+      ansible.builtin.user:
+        name: admin
+        state: present
+        create_home: yes
+        shell: /bin/bash
+
+    - name: Get list of all users
+      ansible.builtin.getent:
+        database: passwd
+
+    - name: Remove unwanted users
+      ansible.builtin.user:
+        name: "{{ item.key }}"
+        state: absent
+        remove: yes
+      loop: "{{ getent_passwd | dict2items }}"
+      when: >
+        item.key not in keep_users
+        and item.value[5] not in ["/sbin/nologin", "/usr/sbin/nologin", "/bin/false"]
+

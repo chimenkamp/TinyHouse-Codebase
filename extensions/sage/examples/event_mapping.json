@@ -1,0 +1,4 @@
+{
+  "idle -> placed": "object_placed",
+  "idle -> removed": "object_removed"
+}

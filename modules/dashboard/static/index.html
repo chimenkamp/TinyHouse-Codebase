@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TinyHouse Dashboard</title>
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <h1>TinyHouse Dashboard</h1>
+      <p id="modeLine">Loading configuration...</p>
+    </div>
+    <nav>
+      <span id="tunnelStatus" class="connection-badge unknown" title="Connection has not been checked yet.">Checking connection</span>
+      <a id="docsLink" href="#" target="_blank" rel="noreferrer">Documentation</a>
+      <button id="refreshStatus" type="button">Refresh Status</button>
+    </nav>
+  </header>
+
+  <main class="layout">
+    <section class="panel panel-wide">
+      <div class="panel-heading">
+        <div>
+          <h2>Network Status</h2>
+          <p id="statusSummary">No scan has run yet.</p>
+        </div>
+        <span id="scanTime" class="badge">Idle</span>
+      </div>
+      <div id="statusGrid" class="status-grid"></div>
+    </section>
+
+    <section class="panel">
+      <div class="panel-heading">
+        <div>
+          <h2>MQTT Stream</h2>
+          <p id="mqttSummary">Disconnected.</p>
+        </div>
+        <div class="button-row">
+          <button id="mqttConnect" type="button">Connect</button>
+          <button id="mqttClear" type="button">Clear</button>
+        </div>
+      </div>
+      <div id="mqttLog" class="log"></div>
+    </section>
+
+    <section class="panel">
+      <div class="panel-heading">
+        <div>
+          <h2>Shell</h2>
+          <p id="shellSummary">Disconnected.</p>
+        </div>
+        <button id="shellConnect" type="button">Connect</button>
+      </div>
+      <pre id="terminalOutput" class="terminal" tabindex="0" role="terminal" aria-label="Management PC shell"></pre>
+    </section>
+
+    <section class="panel panel-wide">
+      <div class="panel-heading">
+        <div>
+          <h2>Camera</h2>
+          <p id="cameraSummary">No camera is configured.</p>
+        </div>
+        <button id="cameraReload" type="button">Reload Feed</button>
+      </div>
+
+      <form id="cameraForm" class="camera-form">
+        <label>
+          IP address
+          <input id="cameraIp" name="ip" placeholder="192.168.1.x" autocomplete="off">
+        </label>
+        <label>
+          Port
+          <input id="cameraPort" name="port" type="number" min="1" max="65535" value="80">
+        </label>
+        <label>
+          Scheme
+          <select id="cameraScheme" name="scheme">
+            <option value="http">http</option>
+            <option value="https">https</option>
+          </select>
+        </label>
+        <label>
+          Path
+          <input id="cameraPath" name="path" value="/" autocomplete="off">
+        </label>
+        <label>
+          User
+          <input id="cameraUser" name="username" autocomplete="off">
+        </label>
+        <label>
+          Password
+          <input id="cameraPassword" name="password" type="password" autocomplete="new-password">
+        </label>
+        <button type="submit">Save Camera</button>
+      </form>
+
+      <div class="camera-shell">
+        <iframe id="cameraFrame" title="TinyHouse camera feed"></iframe>
+      </div>
+      <a id="cameraOpen" class="secondary-link" href="/api/camera/feed" target="_blank" rel="noreferrer">Open camera feed</a>
+    </section>
+  </main>
+
+  <div id="shellWindows" class="shell-windows" aria-live="polite"></div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
