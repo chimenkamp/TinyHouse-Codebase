@@ -1,6 +1,11 @@
 # TinyHouse Codebase
 
 ## Documentation Commands
+Install the dependencies
+```bash
+npm install (root)
+pip install -r requirements.txt (For a specific module)
+```
 
 The documentation server runs with this command.
 
