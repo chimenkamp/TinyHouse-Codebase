@@ -1,0 +1,403 @@
+---
+- name: Optionally configure central Linux MQTT broker
+  hosts: mqtt_central
+  gather_facts: false
+  become: true
+
+  vars:
+    mqtt_manage_central_broker: false
+    mqtt_central_port: 1883
+    mqtt_central_listener_bind: 0.0.0.0
+    mqtt_central_local_listener: 127.0.0.1
+    mqtt_topic_root: tinyhouse/lab
+    mqtt_command_root: tinyhouse/cmd
+    mqtt_dashboard_username: dashboard_readonly
+
+  tasks:
+    - name: Explain skipped central broker management
+      ansible.builtin.debug:
+        msg: >-
+          Central broker management is disabled. The Edge Pi bridges will still
+          target {{ mqtt_central_host }}:{{ mqtt_central_port }}. Set
+          mqtt_manage_central_broker=true only if this central host is a Linux
+          machine that Ansible should configure.
+      when: not (mqtt_manage_central_broker | bool)
+
+    - name: Install central Mosquitto packages
+      ansible.builtin.package:
+        name:
+          - mosquitto
+        state: present
+      when: mqtt_manage_central_broker | bool
+
+    - name: Ensure central Mosquitto directories exist
+      ansible.builtin.file:
+        path: "{{ item.path }}"
+        state: directory
+        owner: root
+        group: root
+        mode: "{{ item.mode }}"
+      loop:
+        - { path: /etc/mosquitto, mode: "0755" }
+        - { path: /etc/mosquitto/conf.d, mode: "0755" }
+        - { path: /var/lib/mosquitto, mode: "0755" }
+      when: mqtt_manage_central_broker | bool
+
+    - name: Ensure central Mosquitto password file exists
+      ansible.builtin.file:
+        path: /etc/mosquitto/passwd
+        state: touch
+        owner: root
+        group: root
+        mode: "0640"
+      changed_when: false
+      when: mqtt_manage_central_broker | bool
+
+    - name: Configure central Mosquitto broker
+      ansible.builtin.copy:
+        dest: /etc/mosquitto/mosquitto.conf
+        owner: root
+        group: root
+        mode: "0644"
+        content: |
+          pid_file /run/mosquitto/mosquitto.pid
+          persistence true
+          persistence_location /var/lib/mosquitto/
+          log_dest syslog
+
+          listener {{ mqtt_central_port }} {{ mqtt_central_local_listener }}
+          listener {{ mqtt_central_port }} {{ mqtt_central_listener_bind }}
+
+          allow_anonymous false
+          password_file /etc/mosquitto/passwd
+          acl_file /etc/mosquitto/acl
+      notify: Restart central mosquitto
+      when: mqtt_manage_central_broker | bool
+
+    - name: Create central MQTT users for Edge bridges
+      ansible.builtin.command:
+        argv:
+          - mosquitto_passwd
+          - -b
+          - /etc/mosquitto/passwd
+          - "{{ hostvars[item].mqtt_bridge_remote_username }}"
+          - "{{ hostvars[item].mqtt_bridge_remote_password }}"
+      loop: "{{ groups['mqtt_edge'] | default([]) }}"
+      no_log: true
+      changed_when: true
+      notify: Restart central mosquitto
+      when: mqtt_manage_central_broker | bool
+
+    - name: Create central dashboard read-only user
+      ansible.builtin.command:
+        argv:
+          - mosquitto_passwd
+          - -b
+          - /etc/mosquitto/passwd
+          - "{{ mqtt_dashboard_username }}"
+          - "{{ mqtt_dashboard_password }}"
+      no_log: true
+      changed_when: true
+      notify: Restart central mosquitto
+      when: mqtt_manage_central_broker | bool
+
+    - name: Configure central MQTT ACL
+      ansible.builtin.copy:
+        dest: /etc/mosquitto/acl
+        owner: root
+        group: root
+        mode: "0640"
+        content: |
+          {% for host in groups['mqtt_edge'] | default([]) %}
+          user {{ hostvars[host].mqtt_bridge_remote_username }}
+          topic write {{ mqtt_topic_root }}/{{ hostvars[host].mqtt_edge_node }}/#
+          topic read {{ mqtt_command_root }}/{{ hostvars[host].mqtt_edge_node }}/#
+
+          {% endfor %}
+          user {{ mqtt_dashboard_username }}
+          topic read {{ mqtt_topic_root }}/#
+      notify: Restart central mosquitto
+      when: mqtt_manage_central_broker | bool
+
+    - name: Enable central Mosquitto
+      ansible.builtin.systemd:
+        name: mosquitto
+        enabled: true
+        state: started
+      when: mqtt_manage_central_broker | bool
+
+  handlers:
+    - name: Restart central mosquitto
+      ansible.builtin.systemd:
+        name: mosquitto
+        state: restarted
+      when: mqtt_manage_central_broker | bool
+
+- name: Configure TinyHouse MQTT Edge Pis
+  hosts: mqtt_edge
+  serial: 1
+  gather_facts: true
+  become: true
+
+  vars:
+    mqtt_central_port: 1883
+    mqtt_local_port: 1883
+    mqtt_topic_root: tinyhouse/lab
+    mqtt_command_root: tinyhouse/cmd
+    mqtt_health_interval_seconds: 30
+    mqtt_bridge_qos: 1
+    mqtt_bridge_cleansession: false
+    mqtt_bridge_try_private: false
+
+  tasks:
+    - name: Validate required MQTT variables
+      ansible.builtin.assert:
+        that:
+          - mqtt_central_host is defined
+          - mqtt_edge_node is defined
+          - mqtt_private_ip is defined
+          - mqtt_local_username is defined
+          - mqtt_local_password is defined
+          - mqtt_bridge_remote_username is defined
+          - mqtt_bridge_remote_password is defined
+        fail_msg: "Missing required MQTT inventory variables for {{ inventory_hostname }}."
+
+    - name: Set Edge Pi hostname
+      ansible.builtin.hostname:
+        name: "{{ hostname | default(mqtt_edge_node) }}"
+
+    - name: Install Edge MQTT packages
+      ansible.builtin.dnf:
+        name:
+          - mosquitto
+          - python3
+          - python3-pip
+        state: present
+        update_cache: true
+
+    - name: Install Python MQTT client library
+      ansible.builtin.pip:
+        name:
+          - paho-mqtt
+        executable: pip3
+
+    - name: Ensure Mosquitto directories exist
+      ansible.builtin.file:
+        path: "{{ item.path }}"
+        state: directory
+        owner: root
+        group: root
+        mode: "{{ item.mode }}"
+      loop:
+        - { path: /etc/mosquitto, mode: "0755" }
+        - { path: /etc/mosquitto/conf.d, mode: "0755" }
+        - { path: /var/lib/mosquitto, mode: "0755" }
+        - { path: /etc/tinyhouse, mode: "0750" }
+
+    - name: Ensure Edge Mosquitto password file exists
+      ansible.builtin.file:
+        path: /etc/mosquitto/passwd
+        state: touch
+        owner: root
+        group: root
+        mode: "0640"
+      changed_when: false
+
+    - name: Create local MQTT user for sensors and health publisher
+      ansible.builtin.command:
+        argv:
+          - mosquitto_passwd
+          - -b
+          - /etc/mosquitto/passwd
+          - "{{ mqtt_local_username }}"
+          - "{{ mqtt_local_password }}"
+      no_log: true
+      changed_when: true
+      notify: Restart edge mosquitto
+
+    - name: Configure local MQTT ACL
+      ansible.builtin.copy:
+        dest: /etc/mosquitto/acl
+        owner: root
+        group: root
+        mode: "0640"
+        content: |
+          user {{ mqtt_local_username }}
+          topic write {{ mqtt_topic_root }}/{{ mqtt_edge_node }}/#
+          topic read {{ mqtt_command_root }}/{{ mqtt_edge_node }}/#
+      notify: Restart edge mosquitto
+
+    - name: Configure Edge Mosquitto broker and bridge
+      ansible.builtin.copy:
+        dest: /etc/mosquitto/mosquitto.conf
+        owner: root
+        group: root
+        mode: "0644"
+        content: |
+          pid_file /run/mosquitto/mosquitto.pid
+          persistence true
+          persistence_location /var/lib/mosquitto/
+          log_dest syslog
+
+          listener {{ mqtt_local_port }} 0.0.0.0
+          allow_anonymous false
+          password_file /etc/mosquitto/passwd
+          acl_file /etc/mosquitto/acl
+
+          connection bridge_to_management_pc
+          address {{ mqtt_central_host }}:{{ mqtt_central_port }}
+          remote_username {{ mqtt_bridge_remote_username }}
+          remote_password {{ mqtt_bridge_remote_password }}
+          topic {{ mqtt_topic_root }}/{{ mqtt_edge_node }}/# out {{ mqtt_bridge_qos }}
+          topic {{ mqtt_command_root }}/{{ mqtt_edge_node }}/# in {{ mqtt_bridge_qos }}
+          cleansession {{ (mqtt_bridge_cleansession | bool) | ternary('true', 'false') }}
+          start_type automatic
+          try_private {{ (mqtt_bridge_try_private | bool) | ternary('true', 'false') }}
+      no_log: true
+      notify: Restart edge mosquitto
+
+    - name: Write Edge MQTT environment
+      ansible.builtin.copy:
+        dest: /etc/tinyhouse/mqtt-edge.env
+        owner: root
+        group: root
+        mode: "0640"
+        content: |
+          MQTT_EDGE_NODE={{ mqtt_edge_node }}
+          MQTT_TOPIC_ROOT={{ mqtt_topic_root }}
+          MQTT_COMMAND_ROOT={{ mqtt_command_root }}
+          MQTT_LOCAL_HOST=127.0.0.1
+          MQTT_LOCAL_PORT={{ mqtt_local_port }}
+          MQTT_LOCAL_USERNAME={{ mqtt_local_username }}
+          MQTT_LOCAL_PASSWORD={{ mqtt_local_password }}
+          MQTT_HEALTH_INTERVAL_SECONDS={{ mqtt_health_interval_seconds }}
+      no_log: true
+      notify: Restart mqtt health publisher
+
+    - name: Install Edge health publisher
+      ansible.builtin.copy:
+        dest: /usr/local/bin/tinyhouse-mqtt-health-publisher.py
+        owner: root
+        group: root
+        mode: "0755"
+        content: |
+          #!/usr/bin/env python3
+          from __future__ import annotations
+
+          import json
+          import os
+          import time
+          from datetime import datetime, timezone
+          from pathlib import Path
+
+          import paho.mqtt.publish as publish
+
+
+          def read_env(path: str) -> dict[str, str]:
+              values: dict[str, str] = {}
+              for line in Path(path).read_text(encoding="utf-8").splitlines():
+                  line = line.strip()
+                  if not line or line.startswith("#") or "=" not in line:
+                      continue
+                  key, value = line.split("=", 1)
+                  values[key.strip()] = value.strip()
+              return values
+
+
+          env = read_env("/etc/tinyhouse/mqtt-edge.env")
+          edge_node = env["MQTT_EDGE_NODE"]
+          topic_root = env.get("MQTT_TOPIC_ROOT", "tinyhouse/lab")
+          topic = f"{topic_root}/{edge_node}/_health"
+          interval = int(env.get("MQTT_HEALTH_INTERVAL_SECONDS", "30"))
+          host = env.get("MQTT_LOCAL_HOST", "127.0.0.1")
+          port = int(env.get("MQTT_LOCAL_PORT", "1883"))
+          auth = {
+              "username": env["MQTT_LOCAL_USERNAME"],
+              "password": env["MQTT_LOCAL_PASSWORD"],
+          }
+
+          while True:
+              try:
+                  uptime_seconds = int(float(Path("/proc/uptime").read_text().split()[0]))
+                  payload = {
+                      "timestamp": datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z"),
+                      "edge_node": edge_node,
+                      "status": "online",
+                      "broker": "mosquitto",
+                      "uptime_seconds": uptime_seconds,
+                  }
+                  publish.single(
+                      topic,
+                      payload=json.dumps(payload, separators=(",", ":")),
+                      qos=1,
+                      retain=True,
+                      hostname=host,
+                      port=port,
+                      auth=auth,
+                  )
+              except Exception as error:
+                  print(f"health publish failed: {error}", flush=True)
+
+              time.sleep(interval)
+      notify: Restart mqtt health publisher
+
+    - name: Install Edge health publisher service
+      ansible.builtin.copy:
+        dest: /etc/systemd/system/tinyhouse-mqtt-health.service
+        owner: root
+        group: root
+        mode: "0644"
+        content: |
+          [Unit]
+          Description=TinyHouse MQTT Edge Health Publisher
+          After=network-online.target mosquitto.service
+          Wants=network-online.target
+          Requires=mosquitto.service
+
+          [Service]
+          Type=simple
+          ExecStart=/usr/local/bin/tinyhouse-mqtt-health-publisher.py
+          Restart=always
+          RestartSec=10
+
+          [Install]
+          WantedBy=multi-user.target
+      notify:
+        - Reload systemd
+        - Restart mqtt health publisher
+
+    - name: Enable Edge Mosquitto
+      ansible.builtin.systemd:
+        name: mosquitto
+        enabled: true
+        state: started
+
+    - name: Enable Edge health publisher
+      ansible.builtin.systemd:
+        name: tinyhouse-mqtt-health.service
+        enabled: true
+        state: started
+        daemon_reload: true
+
+    - name: Show local sensor publish target
+      ansible.builtin.debug:
+        msg:
+          - "Sensors for {{ mqtt_edge_node }} publish to {{ mqtt_private_ip }}:{{ mqtt_local_port }}"
+          - "Allowed data topic prefix: {{ mqtt_topic_root }}/{{ mqtt_edge_node }}/#"
+          - "Command topic prefix bridged back: {{ mqtt_command_root }}/{{ mqtt_edge_node }}/#"
+
+  handlers:
+    - name: Reload systemd
+      ansible.builtin.systemd:
+        daemon_reload: true
+
+    - name: Restart edge mosquitto
+      ansible.builtin.systemd:
+        name: mosquitto
+        state: restarted
+
+    - name: Restart mqtt health publisher
+      ansible.builtin.systemd:
+        name: tinyhouse-mqtt-health.service
+        state: restarted
+        daemon_reload: true

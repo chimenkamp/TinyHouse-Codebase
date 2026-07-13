@@ -54,6 +54,7 @@ export default defineConfig({
       {
         text: 'Operations',
         items: [
+          { text: 'Offene Punkte IoT-Landschaft', link: '/iot-landscape-offene-punkte' },
           { text: 'Ansible', link: '/operations/ansible' },
           { text: 'Access', link: '/operations/access' }
         ]

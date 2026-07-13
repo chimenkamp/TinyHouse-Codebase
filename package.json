@@ -7,9 +7,12 @@
     "docs:dev": "vitepress dev docs --host 0.0.0.0",
     "docs:build": "vitepress build docs",
     "docs:preview": "vitepress preview docs --host 0.0.0.0",
-    "dashboard:run:tunnel": "cd modules/dashboard && source .venv/bin/activate && python server.py --mode tunnel",
-    "dashboard:run:local": "cd modules/dashboard && source .venv/bin/activate && python server.py --on-management-pc",
-    "dashboard:kill": "cd modules/dashboard && source .venv/bin/activate && python kill_dashboard.py"
+    "dashboard:run:tunnel": "./run_dashboard.sh tunnel",
+    "dashboard:run:local": "./run_dashboard.sh local",
+    "dashboard:kill": "./run_dashboard.sh stop",
+    "scotty:run": "./run_scotty.sh",
+    "digital-twin:backend": "./run_digital_twin.sh backend",
+    "digital-twin:frontend": "./run_digital_twin.sh frontend"
   },
   "devDependencies": {
     "vitepress": "^1.6.4"

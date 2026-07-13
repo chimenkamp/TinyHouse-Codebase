@@ -1,0 +1,217 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1900" height="1220" viewBox="0 0 1900 1220" role="img" aria-labelledby="title desc">
+  <title id="title">TinyHouse MQTT Architektur</title>
+  <desc id="desc">Entzerrte MQTT Architektur mit Waagen, zwei Sensor-Pis, lokalen Edge-Brokern und zentralem Broker auf dem Management-PC.</desc>
+  <defs>
+    <marker id="arrowData" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="strokeWidth">
+      <path d="M 0 0 L 12 6 L 0 12 z" fill="#1f5f8b" />
+    </marker>
+    <marker id="arrowCmd" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="strokeWidth">
+      <path d="M 0 0 L 12 6 L 0 12 z" fill="#8a3f1f" />
+    </marker>
+    <style>
+      .bg { fill: #f7f8f4; }
+      .box {
+        stroke-width: 2.5;
+        rx: 8;
+      }
+      .source {
+        fill: #fff9df;
+        stroke: #7a6a2b;
+      }
+      .edge {
+        fill: #eef6fb;
+        stroke: #1f5f8b;
+      }
+      .central {
+        fill: #edf7ef;
+        stroke: #295c40;
+      }
+      .service {
+        fill: #f3f5f6;
+        stroke: #5d6570;
+      }
+      .topicBand {
+        fill: #ffffff;
+        stroke: #c3c9cd;
+        stroke-width: 1.6;
+        rx: 8;
+      }
+      .label {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 22px;
+        font-weight: 700;
+        fill: #17222a;
+      }
+      .text {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 16px;
+        fill: #26333c;
+      }
+      .small {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 14px;
+        fill: #34444f;
+      }
+      .mono {
+        font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+        font-size: 15px;
+        fill: #202a31;
+      }
+      .monoSmall {
+        font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+        font-size: 14px;
+        fill: #202a31;
+      }
+      .monoTitle {
+        font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+        font-size: 15px;
+        font-weight: 700;
+        fill: #17222a;
+      }
+      .dataLine {
+        fill: none;
+        stroke: #1f5f8b;
+        stroke-width: 3.2;
+        marker-end: url(#arrowData);
+      }
+      .cmdLine {
+        fill: none;
+        stroke: #8a3f1f;
+        stroke-width: 2.8;
+        stroke-dasharray: 10 8;
+        marker-end: url(#arrowCmd);
+      }
+      .localLine {
+        fill: none;
+        stroke: #68737d;
+        stroke-width: 2.6;
+        marker-end: url(#arrowData);
+      }
+      .legendData {
+        fill: #e4f1fa;
+        stroke: #1f5f8b;
+        stroke-width: 1.4;
+      }
+      .legendCmd {
+        fill: #faeee7;
+        stroke: #8a3f1f;
+        stroke-width: 1.4;
+      }
+    </style>
+  </defs>
+
+  <rect class="bg" x="0" y="0" width="1900" height="1220" />
+
+  <rect class="legendData" x="82" y="42" width="172" height="36" rx="8" />
+  <text x="104" y="66" class="small">Datenfluss, QoS 1</text>
+  <rect class="legendCmd" x="276" y="42" width="210" height="36" rx="8" />
+  <text x="298" y="66" class="small">Steuerbefehle zurueck</text>
+  <text x="520" y="66" class="mono">Zentrale Topic-Struktur: tinyhouse/lab/&lt;edge-node&gt;/&lt;device-id&gt;/&lt;sensor-id&gt;/&lt;measure&gt;</text>
+
+  <rect class="box source" x="80" y="120" width="380" height="142" />
+  <text x="108" y="154" class="label">Waagen</text>
+  <text x="108" y="184" class="text">Scale Clients oder Scale Adapter</text>
+  <text x="108" y="212" class="mono">Publish broker</text>
+  <text x="108" y="238" class="mono">192.168.1.121:1883</text>
+
+  <rect class="box edge" x="600" y="100" width="470" height="182" />
+  <text x="628" y="136" class="label">Scale Gateway Pi</text>
+  <text x="628" y="166" class="mono">Hostname: scale-gw</text>
+  <text x="628" y="192" class="mono">IP: 192.168.1.121</text>
+  <text x="628" y="218" class="mono">Local broker: Mosquitto :1883</text>
+  <text x="628" y="244" class="mono">Bridge user: edge_scale_gw</text>
+
+  <rect class="topicBand" x="80" y="312" width="1200" height="112" />
+  <text x="108" y="342" class="monoTitle">scale-gw Topics</text>
+  <text x="108" y="370" class="mono">data out:   tinyhouse/lab/scale-gw/#</text>
+  <text x="108" y="398" class="mono">example:    tinyhouse/lab/scale-gw/scale-01/loadcell-01/weight</text>
+  <text x="760" y="370" class="mono">commands in: tinyhouse/cmd/scale-gw/#</text>
+  <text x="760" y="398" class="mono">health:      tinyhouse/lab/scale-gw/_health</text>
+
+  <rect class="box source" x="80" y="470" width="380" height="142" />
+  <text x="108" y="504" class="label">Sensorgruppe 1</text>
+  <text x="108" y="534" class="text">Arduino / ESP / Serial Receiver</text>
+  <text x="108" y="562" class="mono">Publish broker</text>
+  <text x="108" y="588" class="mono">192.168.1.124:1883</text>
+
+  <rect class="box edge" x="600" y="450" width="470" height="182" />
+  <text x="628" y="486" class="label">Sensor Pi 01</text>
+  <text x="628" y="516" class="mono">Hostname: sensor-pi-01</text>
+  <text x="628" y="542" class="mono">IP: 192.168.1.124</text>
+  <text x="628" y="568" class="mono">Local broker: Mosquitto :1883</text>
+  <text x="628" y="594" class="mono">Bridge user: edge_sensor_pi_01</text>
+
+  <rect class="topicBand" x="80" y="662" width="1200" height="112" />
+  <text x="108" y="692" class="monoTitle">sensor-pi-01 Topics</text>
+  <text x="108" y="720" class="mono">data out:   tinyhouse/lab/sensor-pi-01/#</text>
+  <text x="108" y="748" class="mono">example:    tinyhouse/lab/sensor-pi-01/arduino-01/temp-01/temperature</text>
+  <text x="760" y="720" class="mono">commands in: tinyhouse/cmd/sensor-pi-01/#</text>
+  <text x="760" y="748" class="mono">health:      tinyhouse/lab/sensor-pi-01/_health</text>
+
+  <rect class="box source" x="80" y="820" width="380" height="142" />
+  <text x="108" y="854" class="label">Sensorgruppe 2</text>
+  <text x="108" y="884" class="text">Arduino / ESP / Serial Receiver</text>
+  <text x="108" y="912" class="mono">Publish broker</text>
+  <text x="108" y="938" class="mono">192.168.1.125:1883</text>
+
+  <rect class="box edge" x="600" y="800" width="470" height="182" />
+  <text x="628" y="836" class="label">Sensor Pi 02</text>
+  <text x="628" y="866" class="mono">Hostname: sensor-pi-02</text>
+  <text x="628" y="892" class="mono">IP: 192.168.1.125</text>
+  <text x="628" y="918" class="mono">Local broker: Mosquitto :1883</text>
+  <text x="628" y="944" class="mono">Bridge user: edge_sensor_pi_02</text>
+
+  <rect class="topicBand" x="80" y="1012" width="1200" height="112" />
+  <text x="108" y="1042" class="monoTitle">sensor-pi-02 Topics</text>
+  <text x="108" y="1070" class="mono">data out:   tinyhouse/lab/sensor-pi-02/#</text>
+  <text x="108" y="1098" class="mono">example:    tinyhouse/lab/sensor-pi-02/esp32-01/motion-01/state</text>
+  <text x="760" y="1070" class="mono">commands in: tinyhouse/cmd/sensor-pi-02/#</text>
+  <text x="760" y="1098" class="mono">health:      tinyhouse/lab/sensor-pi-02/_health</text>
+
+  <rect class="box central" x="1390" y="120" width="420" height="202" />
+  <text x="1418" y="156" class="label">Management-PC Broker</text>
+  <text x="1418" y="188" class="mono">Host: BTQ8X1</text>
+  <text x="1418" y="216" class="mono">Private IP: 192.168.1.100</text>
+  <text x="1418" y="244" class="mono">MQTT: 1883</text>
+  <text x="1418" y="272" class="mono">Local: 127.0.0.1:1883</text>
+  <text x="1418" y="300" class="small">Zentrale Instanz fuer alle lab Topics</text>
+
+  <rect class="box service" x="1390" y="390" width="420" height="156" />
+  <text x="1418" y="426" class="label">Dashboard / Monitoring</text>
+  <text x="1418" y="460" class="mono">Subscribe: tinyhouse/lab/#</text>
+  <text x="1418" y="488" class="mono">Health: tinyhouse/lab/+/_health</text>
+  <text x="1418" y="516" class="mono">Commands: tinyhouse/cmd/#</text>
+
+  <rect class="box service" x="1390" y="616" width="420" height="144" />
+  <text x="1418" y="652" class="label">Datenplattform spaeter</text>
+  <text x="1418" y="686" class="text">Kafka / Datenbank / Timeseries / Export</text>
+  <text x="1418" y="716" class="mono">Input: tinyhouse/lab/#</text>
+
+  <rect class="box service" x="1390" y="830" width="420" height="150" />
+  <text x="1418" y="866" class="label">Security Boundary</text>
+  <text x="1418" y="900" class="text">Kein MQTT-DNAT ohne Auth/ACL/TLS.</text>
+  <text x="1418" y="928" class="text">Jeder Edge-Pi hat eigenen User.</text>
+  <text x="1418" y="956" class="monoSmall">ACL: write tinyhouse/lab/&lt;edge&gt;/#</text>
+
+  <path class="localLine" d="M 460 191 L 600 191" />
+  <path class="localLine" d="M 460 541 L 600 541" />
+  <path class="localLine" d="M 460 891 L 600 891" />
+
+  <path class="dataLine" d="M 1070 176 C 1196 176 1262 176 1390 210" />
+  <path class="dataLine" d="M 1070 526 C 1198 526 1260 386 1390 250" />
+  <path class="dataLine" d="M 1070 876 C 1198 876 1262 492 1390 292" />
+
+  <path class="cmdLine" d="M 1390 235 C 1262 235 1196 226 1070 226" />
+  <path class="cmdLine" d="M 1390 265 C 1260 366 1198 558 1070 576" />
+  <path class="cmdLine" d="M 1390 295 C 1262 528 1198 904 1070 926" />
+
+  <text x="1110" y="162" class="monoSmall">bridge out QoS 1</text>
+  <text x="1110" y="512" class="monoSmall">bridge out QoS 1</text>
+  <text x="1110" y="862" class="monoSmall">bridge out QoS 1</text>
+  <text x="1110" y="246" class="monoSmall">cmd in</text>
+  <text x="1110" y="596" class="monoSmall">cmd in</text>
+  <text x="1110" y="946" class="monoSmall">cmd in</text>
+
+  <path class="dataLine" d="M 1600 322 L 1600 390" />
+  <path class="dataLine" d="M 1600 546 L 1600 616" />
+</svg>

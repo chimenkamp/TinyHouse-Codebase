@@ -1,63 +1,79 @@
 # TinyHouse Codebase
 
-## Documentation Commands
-Install the dependencies
-```bash
-npm install (root)
-pip install -r requirements.txt (For a specific module)
-```
+This monorepo collects the TinyHouse documentation, operations dashboard,
+SAGE sensor pipeline, administration tooling, and the Scotty/PAROL6 robot-arm
+software.
 
-The documentation server runs with this command.
+## Setup
 
-```bash
-npm run docs:dev
-```
-
-The documentation build runs with this command.
+Python 3.11 or newer is required. The root environment is shared by the
+Python projects:
 
 ```bash
-npm run docs:build
+python3 -m venv .venv
+.venv/bin/python -m pip install --upgrade pip
+.venv/bin/python -m pip install -r requirements.txt
 ```
 
-The documentation preview runs with this command.
+Install the documentation dependencies and the digital-twin frontend
+dependencies separately:
 
 ```bash
-npm run docs:preview
+npm ci
+npm ci --prefix "Scotty - ROBOT ARM/digital_twin/frontend"
 ```
 
-## Dashboard Commands
+The legacy local YOLOv7 model has its own requirements in
+`Scotty - ROBOT ARM/models/yolov7/requirements.txt`. Install those in a
+separate environment: its NumPy `<1.24` constraint is incompatible with the
+current Scotty controller and digital-twin backend.
 
-The dashboard therefore needs its Python environment first.
+## Root launchers
+
+All launchers can be called from any working directory.
 
 ```bash
-cd modules/dashboard
-python -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
+./run_scotty.sh
+./run_dashboard.sh local
+./run_dashboard.sh tunnel
+./run_dashboard.sh stop
+./run_sage.sh broker --broker localhost --port 1883
+./run_sage.sh sensor
+./run_sage.sh orchestrator
+./run_sage.sh arduino
+./run_sage.sh camera
+./run_digital_twin.sh backend
+./run_digital_twin.sh frontend
+./run_docs.sh dev
 ```
 
-The local dashboard starts with this command.
+The digital twin needs the backend and frontend in separate terminals. Open
+`http://127.0.0.1:5173` after both are running. The dashboard is available at
+`http://127.0.0.1:8088`.
+
+Scotty starts in viewer/simulation mode and can run without robot hardware.
+Hardware control needs a supported `pinokin` wheel and the configured PAROL6
+serial connection. Cloud detection additionally uses `ROBOFLOW_API_KEY` from
+`Scotty - ROBOT ARM/.env`; local color detection works without it.
+
+## Documentation
 
 ```bash
-npm run dashboard:run:local
+./run_docs.sh dev
+./run_docs.sh build
+./run_docs.sh preview
 ```
 
-The tunnel dashboard starts with this command.
+The equivalent npm commands are `npm run docs:dev`, `npm run docs:build`, and
+`npm run docs:preview`.
 
-```bash
-npm run dashboard:run:tunnel
-```
+## Repository layout
 
-The dashboard stop helper runs with this command.
+- `docs/` — VitePress documentation.
+- `modules/dashboard/` — FastAPI operations dashboard.
+- `modules/administration/` — Ansible and network collection tooling.
+- `extensions/sage/` — sensor abstraction, MQTT, and XES pipeline.
+- `Scotty - ROBOT ARM/` — Scotty desktop UI, PAROL6 controller, camera tools,
+  ROS2/MoveIt sources, and the digital twin.
 
-```bash
-npm run dashboard:kill
-```
-
-## Main Paths
-
-The root `package.json` stores project scripts.
-The `docs` directory stores VitePress documentation.
-The `modules/dashboard` directory stores the operations dashboard.
-The `modules/administration` directory stores Ansible and collection scripts.
-The `extensions/sage` directory stores sensor abstraction code.
+Project-specific details remain in the README files inside each project.

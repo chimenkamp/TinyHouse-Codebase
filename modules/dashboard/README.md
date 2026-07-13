@@ -4,10 +4,10 @@ The TinyHouse dashboard provides a small web view for operations. The dashboard 
 
 ## Installation
 
-The dashboard uses Python packages only. The Management PC should install the dependencies inside a virtual environment.
+The dashboard uses the shared Python environment at the repository root.
 
 ```bash
-cd modules/dashboard
+cd /path/to/TinyHouse-Codebase
 python -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
@@ -16,7 +16,7 @@ pip install -r requirements.txt
 On Windows PowerShell the activation command is different.
 
 ```powershell
-cd modules\dashboard
+cd C:\path\to\TinyHouse-Codebase
 python -m venv .venv
 .\.venv\Scripts\Activate.ps1
 pip install -r requirements.txt
@@ -27,7 +27,7 @@ pip install -r requirements.txt
 Local mode is for the Management PC. Local mode scans `192.168.1.0/24` directly. Local mode connects to the local MQTT broker. Local mode opens a local shell from the main shell button. Online device cards show a shell button when port `22` is open.
 
 ```bash
-python run_dashboard_local.py
+./run_dashboard.sh local
 ```
 
 The browser should open this address.
@@ -41,7 +41,7 @@ http://127.0.0.1:8088/
 Tunnel mode is for a computer outside the TinyHouse network. Tunnel mode uses the SSH settings from `config.yaml`. Tunnel mode runs status checks on the Management PC. Tunnel mode opens the Management PC shell from the main shell button. Online device cards show a shell button when a public SSH route is open. Tunnel mode starts `mosquitto_sub` on the Management PC.
 
 ```bash
-python run_dashboard_tunnel.py
+./run_dashboard.sh tunnel
 ```
 
 The browser should open this address.
@@ -62,12 +62,13 @@ The dashboard uses `ssh_command` as the SSH alias source. For example `ssh tinyh
 
 The default tunnel backend is `openssh`. This backend runs the real `ssh tinyhouse` command in a PTY. The backend sends the configured password when the nested Management PC login asks for it. If the header says `SSH connected` but all private IP targets are offline, then the Management PC is reachable but it currently has no route to the TinyHouse private subnet.
 
-The run scripts use constants at the top of each file. The run scripts do not use CLI arguments. The run scripts automatically restart themselves with the dashboard virtual environment.
+The legacy Python launchers in this directory retain their constants. The root
+launcher uses the shared environment and accepts additional server options.
 
 The dashboard can be stopped with this helper.
 
 ```bash
-python kill_dashboard.py
+./run_dashboard.sh stop
 ```
 
 ## Port Forward Mode

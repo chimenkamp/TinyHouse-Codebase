@@ -1,4 +1,8 @@
 node_modules/
+dist/
+build/
+install/
+log/
 docs/.vitepress/dist/
 docs/.vitepress/cache/
 docs/.vitepress/.temp/
@@ -8,5 +12,13 @@ docs/tinyhouse_collection_*.zip
 npm-debug.log*
 __pycache__/
 *.py[cod]
-modules/dashboard/.venv/
+.venv/
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.matplotlib-cache/
+.pio/
+*.tsbuildinfo
+.env
 modules/dashboard/dashboard.pid
