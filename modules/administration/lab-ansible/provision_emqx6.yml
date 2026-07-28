@@ -1,0 +1,105 @@
+---
+- name: Standardize EMQX Raspberry Pis (admin key-only access + core packages)
+  hosts: raspis
+  serial: 1
+  gather_facts: true
+  become: true
+
+  vars:
+    admin_user: admin
+    admin_groups:
+      - wheel
+    admin_public_key_path: "~/.ssh/id_ed25519.pub"
+    enforce_hostname: false
+    skip_hostname_hosts:
+      - emqx004
+      - emqx005
+    mqtt_packages:
+      - mosquitto
+      - python3
+      - python3-pip
+
+  pre_tasks:
+    - name: Ensure controller public key exists
+      ansible.builtin.stat:
+        path: "{{ admin_public_key_path | expanduser }}"
+      register: controller_pubkey
+      delegate_to: localhost
+      become: false
+
+    - name: Stop when controller key is missing
+      ansible.builtin.assert:
+        that:
+          - controller_pubkey.stat.exists
+        fail_msg: "Controller key not found at {{ admin_public_key_path | expanduser }}"
+
+  tasks:
+    - name: Ensure admin user exists
+      ansible.builtin.user:
+        name: "{{ admin_user }}"
+        state: present
+        shell: /bin/bash
+        create_home: true
+        groups: "{{ admin_groups }}"
+        append: true
+
+    - name: Lock admin password (SSH key only)
+      ansible.builtin.user:
+        name: "{{ admin_user }}"
+        password_lock: true
+
+    - name: Allow passwordless sudo for admin
+      ansible.builtin.copy:
+        dest: "/etc/sudoers.d/90-{{ admin_user }}-nopasswd"
+        content: "{{ admin_user }} ALL=(ALL) NOPASSWD:ALL\n"
+        owner: root
+        group: root
+        mode: "0440"
+        validate: "visudo -cf %s"
+
+    - name: Install controller key for admin user
+      ansible.posix.authorized_key:
+        user: "{{ admin_user }}"
+        state: present
+        key: "{{ lookup('file', admin_public_key_path) }}"
+
+    - name: Disable SSH password-based auth
+      ansible.builtin.lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: "^{{ item.key }}\\s+"
+        line: "{{ item.key }} {{ item.value }}"
+        backup: true
+      loop:
+        - { key: "PasswordAuthentication", value: "no" }
+        - { key: "KbdInteractiveAuthentication", value: "no" }
+        - { key: "PermitEmptyPasswords", value: "no" }
+      notify: Restart sshd
+
+    - name: Keep hostnames unchanged by default
+      ansible.builtin.hostname:
+        name: "{{ hostvars[inventory_hostname].hostname | default(inventory_hostname) }}"
+      when:
+        - enforce_hostname | bool
+        - inventory_hostname not in skip_hostname_hosts
+
+    - name: Install MQTT and Python packages
+      ansible.builtin.package:
+        name: "{{ mqtt_packages }}"
+        state: present
+
+    - name: Install magic-wormhole via pip
+      ansible.builtin.pip:
+        name: magic-wormhole
+        executable: pip3
+
+    - name: Ensure mosquitto service is enabled and running
+      ansible.builtin.systemd:
+        name: mosquitto
+        enabled: true
+        state: started
+
+  handlers:
+    - name: Restart sshd
+      ansible.builtin.service:
+        name: sshd
+        state: restarted

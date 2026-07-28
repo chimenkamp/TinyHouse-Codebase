@@ -10,9 +10,12 @@ The WSL controller is the preferred execution place. The WSL controller has the 
 | --- | --- |
 | `hosts.bootstrap.ini` | First time access with the bootstrap user |
 | `hosts.admin.ini` | Normal access with the admin user and SSH key |
+| `hosts.emqx6.bootstrap.ini` | Six-node bootstrap inventory (EMQX001 to EMQX006) |
+| `hosts.emqx6.admin.ini` | Six-node admin inventory (EMQX001 to EMQX006) |
 | `hosts.ini` | Guest oriented inventory from earlier setup |
 | `bootstrap_python.yml` | Python bootstrap for minimal AlmaLinux images |
 | `streamline.yml` | Main provisioning playbook |
+| `provision_emqx6.yml` | Safe standardization playbook (admin key-only SSH, MQTT, Python, magic-wormhole) |
 | `cleanup.yml` | Non admin user cleanup |
 
 ## Provisioning Flow
@@ -38,6 +41,27 @@ cd ~/lab-ansible
 ansible -i hosts.admin.ini raspis -m ping
 ansible -i hosts.admin.ini raspis -m shell -a 'hostname; systemctl is-active mosquitto cockpit.socket'
 ```
+
+## EMQX Six-Node Standardization
+
+Use the EMQX six-node inventories when you want one mapping for `EMQX001` to `EMQX006` on DNAT ports `4021` to `4026`.
+
+Use bootstrap credentials only for first access. Provide passwords at runtime so they are not stored in inventory files.
+
+```bash
+cd ~/lab-ansible
+ansible -i hosts.emqx6.bootstrap.ini raspis -m ping -e ansible_password='<guest-password>' -e ansible_become_password='<guest-password>'
+```
+
+Then run the standardization playbook. The playbook creates or updates `admin`, installs the controller SSH key, disables SSH password login, and installs `mosquitto`, `python3`, `python3-pip`, and `magic-wormhole`.
+
+```bash
+cd ~/lab-ansible
+ansible-playbook -i hosts.emqx6.bootstrap.ini provision_emqx6.yml -e ansible_password='<guest-password>' -e ansible_become_password='<guest-password>'
+ansible-playbook -i hosts.emqx6.admin.ini provision_emqx6.yml
+```
+
+The playbook does not force hostname changes unless `-e enforce_hostname=true` is set. It also skips hostname changes for `emqx004` and `emqx005` by default.
 
 ## Provisioned State
 
