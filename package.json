@@ -10,6 +10,9 @@
     "dashboard:run:tunnel": "./run_dashboard.sh tunnel",
     "dashboard:run:local": "./run_dashboard.sh local",
     "dashboard:kill": "./run_dashboard.sh stop",
+    "process-mining:dev": "npm run dev --prefix modules/process-mining-frontend",
+    "process-mining:build": "npm run build --prefix modules/process-mining-frontend",
+    "process-mining:preview": "npm run preview --prefix modules/process-mining-frontend",
     "scotty:run": "./run_scotty.sh",
     "digital-twin:backend": "./run_digital_twin.sh backend",
     "digital-twin:frontend": "./run_digital_twin.sh frontend"

@@ -21,6 +21,7 @@ dependencies separately:
 ```bash
 npm ci
 npm ci --prefix "Scotty - ROBOT ARM/digital_twin/frontend"
+npm ci --prefix modules/process-mining-frontend
 ```
 
 The legacy local YOLOv7 model has its own requirements in
@@ -37,6 +38,7 @@ All launchers can be called from any working directory.
 ./run_dashboard.sh local
 ./run_dashboard.sh tunnel
 ./run_dashboard.sh stop
+npm run process-mining:dev
 ./run_sage.sh broker --broker localhost --port 1883
 ./run_sage.sh sensor
 ./run_sage.sh orchestrator
@@ -49,7 +51,8 @@ All launchers can be called from any working directory.
 
 The digital twin needs the backend and frontend in separate terminals. Open
 `http://127.0.0.1:5173` after both are running. The dashboard is available at
-`http://127.0.0.1:8088`.
+`http://127.0.0.1:8088`. The standalone mock process-mining dashboard runs at
+`http://127.0.0.1:5174` and does not require a backend or connected hardware.
 
 Scotty starts in viewer/simulation mode and can run without robot hardware.
 Hardware control needs a supported `pinokin` wheel and the configured PAROL6
@@ -71,6 +74,8 @@ The equivalent npm commands are `npm run docs:dev`, `npm run docs:build`, and
 
 - `docs/` — VitePress documentation.
 - `modules/dashboard/` — FastAPI operations dashboard.
+- `modules/process-mining-frontend/` — mock IoT process-mining dashboard with
+  interactive signal, case-correlation, and BPMN visualizations.
 - `modules/administration/` — Ansible and network collection tooling.
 - `extensions/sage/` — sensor abstraction, MQTT, and XES pipeline.
 - `Scotty - ROBOT ARM/` — Scotty desktop UI, PAROL6 controller, camera tools,
