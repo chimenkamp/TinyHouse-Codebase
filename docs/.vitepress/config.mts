@@ -28,6 +28,7 @@ export default defineConfig({
         text: 'Network',
         items: [
           { text: 'Network Overview', link: '/network/' },
+          { text: 'Router and Switch', link: '/network/router-and-switch' },
           { text: 'Inventory', link: '/network/inventory' },
           { text: 'Live Findings', link: '/network/live-findings' }
         ]

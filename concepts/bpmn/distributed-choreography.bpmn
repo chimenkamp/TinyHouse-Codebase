@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+  xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+  xmlns:bioc="http://bpmn.io/schema/bpmn/biocolor/1.0"
+  id="Definitions_DistributedSensorNode_Choreography"
+  targetNamespace="https://tinyhouse.local/bpmn/distributed-sensor-node"
+  exporter="TinyHouse-Codebase"
+  exporterVersion="1.0">
+
+  <bpmn:message id="Message_Choreo_LidRequest" name="Remote lid request" />
+  <bpmn:message id="Message_Choreo_CommitmentDecision" name="Commitment decision" />
+  <bpmn:message id="Message_Choreo_LidDispatch" name="Lid dispatch" />
+  <bpmn:message id="Message_Choreo_DeliveryDecision" name="Delivery decision" />
+  <bpmn:message id="Message_Choreo_Outcome" name="Minimized outcome" />
+
+  <bpmn:choreography id="Choreography_DistributedSensorNode" name="Distributed sensor-node collaboration">
+    <bpmn:participant id="ChoreoParticipant_TinyHouse" name="TinyHouse" />
+    <bpmn:participant id="ChoreoParticipant_Munich" name="Munich Lab" />
+
+    <bpmn:messageFlow id="ChoreoMessageFlow_LidRequest" name="request" sourceRef="ChoreoParticipant_TinyHouse" targetRef="ChoreoParticipant_Munich" messageRef="Message_Choreo_LidRequest" />
+    <bpmn:messageFlow id="ChoreoMessageFlow_CommitmentDecision" name="decision" sourceRef="ChoreoParticipant_Munich" targetRef="ChoreoParticipant_TinyHouse" messageRef="Message_Choreo_CommitmentDecision" />
+    <bpmn:messageFlow id="ChoreoMessageFlow_LidDispatch" name="dispatch" sourceRef="ChoreoParticipant_Munich" targetRef="ChoreoParticipant_TinyHouse" messageRef="Message_Choreo_LidDispatch" />
+    <bpmn:messageFlow id="ChoreoMessageFlow_DeliveryDecision" name="delivery decision" sourceRef="ChoreoParticipant_TinyHouse" targetRef="ChoreoParticipant_Munich" messageRef="Message_Choreo_DeliveryDecision" />
+    <bpmn:messageFlow id="ChoreoMessageFlow_Outcome" name="outcome" sourceRef="ChoreoParticipant_TinyHouse" targetRef="ChoreoParticipant_Munich" messageRef="Message_Choreo_Outcome" />
+
+    <bpmn:startEvent id="ChoreoStart">
+      <bpmn:outgoing>ChoreoFlow_01</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:choreographyTask id="ChoreoTask_Negotiate" name="Negotiate lid" initiatingParticipantRef="ChoreoParticipant_TinyHouse">
+      <bpmn:incoming>ChoreoFlow_01</bpmn:incoming>
+      <bpmn:outgoing>ChoreoFlow_02</bpmn:outgoing>
+      <bpmn:participantRef>ChoreoParticipant_TinyHouse</bpmn:participantRef>
+      <bpmn:participantRef>ChoreoParticipant_Munich</bpmn:participantRef>
+      <bpmn:messageFlowRef>ChoreoMessageFlow_LidRequest</bpmn:messageFlowRef>
+      <bpmn:messageFlowRef>ChoreoMessageFlow_CommitmentDecision</bpmn:messageFlowRef>
+    </bpmn:choreographyTask>
+    <bpmn:exclusiveGateway id="ChoreoGateway_Commitment" name="Accepted?" default="ChoreoFlow_03_Rejected">
+      <bpmn:incoming>ChoreoFlow_02</bpmn:incoming>
+      <bpmn:outgoing>ChoreoFlow_03_Accepted</bpmn:outgoing>
+      <bpmn:outgoing>ChoreoFlow_03_Rejected</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:endEvent id="ChoreoEnd_Local" name="Local route">
+      <bpmn:incoming>ChoreoFlow_03_Rejected</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:choreographyTask id="ChoreoTask_Dispatch" name="Dispatch lid" initiatingParticipantRef="ChoreoParticipant_Munich">
+      <bpmn:incoming>ChoreoFlow_03_Accepted</bpmn:incoming>
+      <bpmn:incoming>ChoreoFlow_06_Replacement</bpmn:incoming>
+      <bpmn:outgoing>ChoreoFlow_04</bpmn:outgoing>
+      <bpmn:participantRef>ChoreoParticipant_Munich</bpmn:participantRef>
+      <bpmn:participantRef>ChoreoParticipant_TinyHouse</bpmn:participantRef>
+      <bpmn:messageFlowRef>ChoreoMessageFlow_LidDispatch</bpmn:messageFlowRef>
+    </bpmn:choreographyTask>
+    <bpmn:choreographyTask id="ChoreoTask_DeliveryDecision" name="Confirm delivery" initiatingParticipantRef="ChoreoParticipant_TinyHouse">
+      <bpmn:incoming>ChoreoFlow_04</bpmn:incoming>
+      <bpmn:outgoing>ChoreoFlow_05</bpmn:outgoing>
+      <bpmn:participantRef>ChoreoParticipant_TinyHouse</bpmn:participantRef>
+      <bpmn:participantRef>ChoreoParticipant_Munich</bpmn:participantRef>
+      <bpmn:messageFlowRef>ChoreoMessageFlow_DeliveryDecision</bpmn:messageFlowRef>
+    </bpmn:choreographyTask>
+    <bpmn:exclusiveGateway id="ChoreoGateway_Delivery" name="Accepted?" default="ChoreoFlow_06_Replacement">
+      <bpmn:incoming>ChoreoFlow_05</bpmn:incoming>
+      <bpmn:outgoing>ChoreoFlow_06_Accepted</bpmn:outgoing>
+      <bpmn:outgoing>ChoreoFlow_06_Replacement</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:choreographyTask id="ChoreoTask_Outcome" name="Share outcome" initiatingParticipantRef="ChoreoParticipant_TinyHouse">
+      <bpmn:incoming>ChoreoFlow_06_Accepted</bpmn:incoming>
+      <bpmn:outgoing>ChoreoFlow_07</bpmn:outgoing>
+      <bpmn:participantRef>ChoreoParticipant_TinyHouse</bpmn:participantRef>
+      <bpmn:participantRef>ChoreoParticipant_Munich</bpmn:participantRef>
+      <bpmn:messageFlowRef>ChoreoMessageFlow_Outcome</bpmn:messageFlowRef>
+    </bpmn:choreographyTask>
+    <bpmn:endEvent id="ChoreoEnd_Complete" name="Complete">
+      <bpmn:incoming>ChoreoFlow_07</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:sequenceFlow id="ChoreoFlow_01" sourceRef="ChoreoStart" targetRef="ChoreoTask_Negotiate" />
+    <bpmn:sequenceFlow id="ChoreoFlow_02" sourceRef="ChoreoTask_Negotiate" targetRef="ChoreoGateway_Commitment" />
+    <bpmn:sequenceFlow id="ChoreoFlow_03_Accepted" name="yes" sourceRef="ChoreoGateway_Commitment" targetRef="ChoreoTask_Dispatch">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression"><![CDATA[commitmentStatus = 'accepted']]></bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="ChoreoFlow_03_Rejected" name="no" sourceRef="ChoreoGateway_Commitment" targetRef="ChoreoEnd_Local" />
+    <bpmn:sequenceFlow id="ChoreoFlow_04" sourceRef="ChoreoTask_Dispatch" targetRef="ChoreoTask_DeliveryDecision" />
+    <bpmn:sequenceFlow id="ChoreoFlow_05" sourceRef="ChoreoTask_DeliveryDecision" targetRef="ChoreoGateway_Delivery" />
+    <bpmn:sequenceFlow id="ChoreoFlow_06_Accepted" name="yes" sourceRef="ChoreoGateway_Delivery" targetRef="ChoreoTask_Outcome">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression"><![CDATA[deliveryStatus = 'accepted']]></bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="ChoreoFlow_06_Replacement" name="no" sourceRef="ChoreoGateway_Delivery" targetRef="ChoreoTask_Dispatch" />
+    <bpmn:sequenceFlow id="ChoreoFlow_07" sourceRef="ChoreoTask_Outcome" targetRef="ChoreoEnd_Complete" />
+  </bpmn:choreography>
+
+  <bpmndi:BPMNDiagram id="BPMNDiagram_Choreography">
+    <bpmndi:BPMNPlane id="BPMNPlane_Choreography" bpmnElement="Choreography_DistributedSensorNode">
+      <bpmndi:BPMNShape id="ChoreoStart_di" bpmnElement="ChoreoStart" bioc:fill="#FAE7EB" bioc:stroke="#C9B6BA"><dc:Bounds x="50" y="202" width="36" height="36" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ChoreoTask_Negotiate_di" bpmnElement="ChoreoTask_Negotiate" bioc:fill="#DBEEF7" bioc:stroke="#AABDC6"><dc:Bounds x="130" y="140" width="180" height="160" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ChoreoGateway_Commitment_di" bpmnElement="ChoreoGateway_Commitment" isMarkerVisible="true" bioc:fill="#BDD2E4" bioc:stroke="#8CA1B3"><dc:Bounds x="350" y="195" width="50" height="50" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ChoreoEnd_Local_di" bpmnElement="ChoreoEnd_Local" bioc:fill="#EECEDA" bioc:stroke="#BD9DA9"><dc:Bounds x="455" y="332" width="36" height="36" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ChoreoTask_Dispatch_di" bpmnElement="ChoreoTask_Dispatch" bioc:fill="#E0D4E7" bioc:stroke="#AFA3B6"><dc:Bounds x="470" y="140" width="180" height="160" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ChoreoTask_DeliveryDecision_di" bpmnElement="ChoreoTask_DeliveryDecision" bioc:fill="#CCDCEB" bioc:stroke="#9BABBA"><dc:Bounds x="700" y="140" width="180" height="160" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ChoreoGateway_Delivery_di" bpmnElement="ChoreoGateway_Delivery" isMarkerVisible="true" bioc:fill="#BDD2E4" bioc:stroke="#8CA1B3"><dc:Bounds x="920" y="195" width="50" height="50" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ChoreoTask_Outcome_di" bpmnElement="ChoreoTask_Outcome" bioc:fill="#FAE7EB" bioc:stroke="#C9B6BA"><dc:Bounds x="1020" y="140" width="180" height="160" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ChoreoEnd_Complete_di" bpmnElement="ChoreoEnd_Complete" bioc:fill="#EECEDA" bioc:stroke="#BD9DA9"><dc:Bounds x="1250" y="202" width="36" height="36" /></bpmndi:BPMNShape>
+
+      <bpmndi:BPMNEdge id="ChoreoFlow_01_di" bpmnElement="ChoreoFlow_01" bioc:stroke="#8CA1B3"><di:waypoint x="86" y="220" /><di:waypoint x="130" y="220" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="ChoreoFlow_02_di" bpmnElement="ChoreoFlow_02" bioc:stroke="#8CA1B3"><di:waypoint x="310" y="220" /><di:waypoint x="350" y="220" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="ChoreoFlow_03_Accepted_di" bpmnElement="ChoreoFlow_03_Accepted" bioc:stroke="#8CA1B3"><di:waypoint x="400" y="220" /><di:waypoint x="470" y="220" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="ChoreoFlow_03_Rejected_di" bpmnElement="ChoreoFlow_03_Rejected" bioc:stroke="#8CA1B3"><di:waypoint x="375" y="245" /><di:waypoint x="375" y="350" /><di:waypoint x="455" y="350" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="ChoreoFlow_04_di" bpmnElement="ChoreoFlow_04" bioc:stroke="#8CA1B3"><di:waypoint x="650" y="220" /><di:waypoint x="700" y="220" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="ChoreoFlow_05_di" bpmnElement="ChoreoFlow_05" bioc:stroke="#8CA1B3"><di:waypoint x="880" y="220" /><di:waypoint x="920" y="220" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="ChoreoFlow_06_Accepted_di" bpmnElement="ChoreoFlow_06_Accepted" bioc:stroke="#8CA1B3"><di:waypoint x="970" y="220" /><di:waypoint x="1020" y="220" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="ChoreoFlow_06_Replacement_di" bpmnElement="ChoreoFlow_06_Replacement" bioc:stroke="#8CA1B3"><di:waypoint x="945" y="245" /><di:waypoint x="945" y="390" /><di:waypoint x="560" y="390" /><di:waypoint x="560" y="300" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="ChoreoFlow_07_di" bpmnElement="ChoreoFlow_07" bioc:stroke="#8CA1B3"><di:waypoint x="1200" y="220" /><di:waypoint x="1250" y="220" /></bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

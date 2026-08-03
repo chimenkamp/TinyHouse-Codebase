@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="820" viewBox="0 0 1400 820" role="img" aria-label="Object-centric model for the distributed sensor-node process">
+  <defs>
+    <style>
+      text{font-family:Inter,Arial,sans-serif;fill:#3B3440}.node{stroke-width:2;rx:12}.main{font-size:16px;font-weight:700}.edge-label{font-size:11px;font-weight:650;paint-order:stroke;stroke:#FFFFFF;stroke-width:4px;stroke-linejoin:round}.edge{fill:none;stroke:#8CA1B3;stroke-width:2;marker-end:url(#arrow)}.governance{fill:none;stroke:#BD9DA9;stroke-width:2;stroke-dasharray:7 5;marker-end:url(#rose-arrow)}
+    </style>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0 0L9 3L0 6Z" fill="#8CA1B3"/></marker>
+    <marker id="rose-arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0 0L9 3L0 6Z" fill="#BD9DA9"/></marker>
+  </defs>
+  <rect width="1400" height="820" fill="#FFFFFF"/>
+
+  <path d="M245 115H400" class="edge"/><text x="322" y="103" text-anchor="middle" class="edge-label">scopes</text>
+  <path d="M560 115H690" class="edge"/><text x="625" y="103" text-anchor="middle" class="edge-label">requests</text>
+  <path d="M850 115C960 140 1000 235 1020 320" class="edge"/><text x="950" y="180" class="edge-label">promises</text>
+  <path d="M560 115C650 115 660 280 670 320" class="edge"/><text x="625" y="190" class="edge-label">creates</text>
+  <path d="M790 370H950" class="edge"/><text x="870" y="358" text-anchor="middle" class="edge-label">contains</text>
+  <path d="M1090 370H1200" class="edge"/><text x="1145" y="358" text-anchor="middle" class="edge-label">ships</text>
+  <path d="M1090 340C1140 300 1170 250 1205 215" class="edge"/><text x="1148" y="277" class="edge-label">realizes</text>
+  <path d="M340 630C420 590 500 520 620 410" class="edge"/><text x="425" y="560" class="edge-label">produces</text>
+  <path d="M550 630C590 555 630 480 680 415" class="edge"/><text x="590" y="535" class="edge-label">handles</text>
+  <path d="M760 630V420" class="edge"/><text x="772" y="535" class="edge-label">assembles</text>
+  <path d="M975 630C930 545 860 465 780 410" class="edge"/><text x="915" y="540" class="edge-label">checks</text>
+  <path d="M1185 630C1100 540 980 465 790 395" class="edge"/><text x="1055" y="520" class="edge-label">calibrates</text>
+  <path d="M250 330C360 350 490 360 620 370" class="edge"/><text x="430" y="350" class="edge-label">supplies</text>
+  <path d="M260 670V700" class="edge"/><text x="272" y="690" class="edge-label">uses</text>
+
+  <path d="M680 755H620" class="governance"/><text x="650" y="743" text-anchor="middle" class="edge-label">authorizes</text>
+  <path d="M1065 755H1115" class="governance"/><text x="1090" y="743" text-anchor="middle" class="edge-label">documents</text>
+
+  <rect x="85" y="75" width="160" height="80" fill="#BDD2E4" stroke="#8CA1B3" class="node"/><text x="165" y="121" text-anchor="middle" class="main">experiment-run</text>
+  <rect x="400" y="75" width="160" height="80" fill="#BDD2E4" stroke="#8CA1B3" class="node"/><text x="480" y="121" text-anchor="middle" class="main">work-order</text>
+  <rect x="690" y="75" width="160" height="80" fill="#BDD2E4" stroke="#8CA1B3" class="node"/><text x="770" y="121" text-anchor="middle" class="main">commitment</text>
+
+  <rect x="620" y="320" width="170" height="100" fill="#DBEEF7" stroke="#AABDC6" class="node"/><text x="705" y="376" text-anchor="middle" class="main">product-unit</text>
+  <rect x="950" y="320" width="140" height="100" fill="#DBEEF7" stroke="#AABDC6" class="node"/><text x="1020" y="376" text-anchor="middle" class="main">component</text>
+  <rect x="1200" y="320" width="140" height="100" fill="#CCDCEB" stroke="#9BABBA" class="node"/><text x="1270" y="376" text-anchor="middle" class="main">shipment</text>
+  <rect x="1120" y="135" width="170" height="80" fill="#E0D4E7" stroke="#AFA3B6" class="node"/><text x="1205" y="181" text-anchor="middle" class="main">design-revision</text>
+  <rect x="90" y="290" width="160" height="80" fill="#CCDCEB" stroke="#9BABBA" class="node"/><text x="170" y="336" text-anchor="middle" class="main">material-batch</text>
+
+  <rect x="180" y="590" width="160" height="80" fill="#E0D4E7" stroke="#AFA3B6" class="node"/><text x="260" y="636" text-anchor="middle" class="main">print-job</text>
+  <rect x="470" y="590" width="160" height="80" fill="#E0D4E7" stroke="#AFA3B6" class="node"/><text x="550" y="636" text-anchor="middle" class="main">robot-job</text>
+  <rect x="680" y="590" width="160" height="80" fill="#FAE7EB" stroke="#C9B6BA" class="node"/><text x="760" y="636" text-anchor="middle" class="main">human-task</text>
+  <rect x="895" y="590" width="160" height="80" fill="#EECEDA" stroke="#BD9DA9" class="node"/><text x="975" y="636" text-anchor="middle" class="main">inspection</text>
+  <rect x="1105" y="590" width="160" height="80" fill="#EECEDA" stroke="#BD9DA9" class="node"/><text x="1185" y="636" text-anchor="middle" class="main">calibration</text>
+  <rect x="180" y="700" width="150" height="70" fill="#CCDCEB" stroke="#9BABBA" class="node"/><text x="255" y="741" text-anchor="middle" class="main">equipment</text>
+  <rect x="470" y="700" width="150" height="70" fill="#FAE7EB" stroke="#C9B6BA" class="node"/><text x="545" y="741" text-anchor="middle" class="main">participant</text>
+
+  <rect x="680" y="720" width="150" height="70" fill="#EECEDA" stroke="#BD9DA9" class="node"/><text x="755" y="761" text-anchor="middle" class="main">consent-record</text>
+  <rect x="905" y="720" width="160" height="70" fill="#EECEDA" stroke="#BD9DA9" class="node"/><text x="985" y="761" text-anchor="middle" class="main">disclosure-policy</text>
+  <rect x="1115" y="720" width="180" height="70" fill="#EECEDA" stroke="#BD9DA9" class="node"/><text x="1205" y="761" text-anchor="middle" class="main">dataset-manifest</text>
+</svg>

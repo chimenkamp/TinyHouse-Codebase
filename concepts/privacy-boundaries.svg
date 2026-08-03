@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1450" height="720" viewBox="0 0 1450 720" role="img" aria-label="Privacy and safety zones for local operation partner sharing and public release">
+  <defs>
+    <style>
+      text{font-family:Inter,Arial,sans-serif;fill:#3B3440}.zone{font-size:17px;font-weight:750}.box{stroke-width:2;rx:14}.boundary{stroke-width:2;stroke-dasharray:9 7;rx:22}.flow{fill:none;stroke:#8CA1B3;stroke-width:2.4;marker-end:url(#arrow)}.audit{fill:none;stroke:#BD9DA9;stroke-width:2.2;stroke-dasharray:7 5;marker-end:url(#rose-arrow)}.blocked{fill:none;stroke:#BD9DA9;stroke-width:3}.x{font-size:28px;font-weight:800;fill:#BD9DA9}
+    </style>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0 0L9 3L0 6Z" fill="#8CA1B3"/></marker>
+    <marker id="rose-arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0 0L9 3L0 6Z" fill="#BD9DA9"/></marker>
+  </defs>
+  <rect width="1450" height="720" fill="#FFFFFF"/>
+
+  <rect x="35" y="35" width="590" height="650" fill="#DBEEF7" fill-opacity=".25" stroke="#AABDC6" class="boundary"/>
+  <text x="330" y="75" text-anchor="middle" class="zone">Local site</text>
+
+  <rect x="75" y="115" width="220" height="105" fill="#EECEDA" stroke="#BD9DA9" class="box"/><text x="185" y="174" text-anchor="middle" class="zone">Safety control</text>
+  <rect x="365" y="115" width="220" height="105" fill="#E0D4E7" stroke="#AFA3B6" class="box"/><text x="475" y="174" text-anchor="middle" class="zone">Identity vault</text>
+  <rect x="75" y="300" width="220" height="120" fill="#FAE7EB" stroke="#C9B6BA" class="box"/><text x="185" y="367" text-anchor="middle" class="zone">Raw evidence</text>
+  <rect x="365" y="300" width="220" height="120" fill="#DBEEF7" stroke="#AABDC6" class="box"/><text x="475" y="367" text-anchor="middle" class="zone">Local OCEL</text>
+  <rect x="220" y="525" width="240" height="110" fill="#CCDCEB" stroke="#9BABBA" class="box"/><text x="340" y="587" text-anchor="middle" class="zone">Disclosure policy</text>
+
+  <rect x="705" y="150" width="260" height="150" fill="#E0D4E7" stroke="#AFA3B6" class="boundary"/><text x="835" y="232" text-anchor="middle" class="zone">Partner view</text>
+  <rect x="705" y="410" width="260" height="150" fill="#BDD2E4" stroke="#8CA1B3" class="boundary"/><text x="835" y="492" text-anchor="middle" class="zone">Frozen dataset</text>
+  <rect x="1085" y="280" width="310" height="170" fill="#CCDCEB" stroke="#9BABBA" class="boundary"/><text x="1240" y="372" text-anchor="middle" class="zone">Public release</text>
+
+  <path d="M295 360H365" class="flow"/>
+  <path d="M475 220V300" class="audit"/>
+  <path d="M475 420C475 480 410 495 370 525" class="flow"/>
+  <path d="M460 580C590 580 610 225 705 225" class="flow"/>
+  <path d="M835 300V410" class="flow"/>
+  <path d="M965 485C1040 485 1035 365 1085 365" class="flow"/>
+
+  <path d="M185 220V300" class="blocked"/>
+  <text x="174" y="272" class="x">×</text>
+</svg>

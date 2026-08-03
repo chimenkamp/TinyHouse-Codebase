@@ -1,0 +1,242 @@
+{
+  "eventTypes": [
+    {
+      "name": "Register experiment",
+      "attributes": [
+        { "name": "site", "type": "string" }
+      ]
+    },
+    {
+      "name": "Configure product",
+      "attributes": [
+        { "name": "configuration", "type": "string" }
+      ]
+    },
+    {
+      "name": "Complete print",
+      "attributes": [
+        { "name": "result", "type": "string" }
+      ]
+    },
+    {
+      "name": "Pack shipment",
+      "attributes": [
+        { "name": "seal", "type": "string" }
+      ]
+    },
+    {
+      "name": "Receive shipment",
+      "attributes": [
+        { "name": "seal_state", "type": "string" }
+      ]
+    },
+    {
+      "name": "Assemble product",
+      "attributes": [
+        { "name": "mode", "type": "string" }
+      ]
+    }
+  ],
+  "objectTypes": [
+    {
+      "name": "experiment-run",
+      "attributes": [
+        { "name": "status", "type": "string" }
+      ]
+    },
+    {
+      "name": "work-order",
+      "attributes": [
+        { "name": "route", "type": "string" }
+      ]
+    },
+    {
+      "name": "product-unit",
+      "attributes": [
+        { "name": "status", "type": "string" }
+      ]
+    },
+    {
+      "name": "component",
+      "attributes": [
+        { "name": "part_role", "type": "string" }
+      ]
+    },
+    {
+      "name": "shipment",
+      "attributes": [
+        { "name": "status", "type": "string" }
+      ]
+    },
+    {
+      "name": "equipment",
+      "attributes": [
+        { "name": "site", "type": "string" }
+      ]
+    }
+  ],
+  "events": [
+    {
+      "id": "tinyhouse:event:00000000-0000-4000-8000-000000000001",
+      "type": "Register experiment",
+      "time": "2026-01-15T09:00:00Z",
+      "attributes": [
+        { "name": "site", "value": "tinyhouse" }
+      ],
+      "relationships": [
+        { "objectId": "experiment-run:00000000-0000-4000-8000-000000000101", "qualifier": "output" }
+      ]
+    },
+    {
+      "id": "tinyhouse:event:00000000-0000-4000-8000-000000000002",
+      "type": "Configure product",
+      "time": "2026-01-15T09:05:00Z",
+      "attributes": [
+        { "name": "configuration", "value": "weight-and-temperature" }
+      ],
+      "relationships": [
+        { "objectId": "experiment-run:00000000-0000-4000-8000-000000000101", "qualifier": "scope" },
+        { "objectId": "work-order:00000000-0000-4000-8000-000000000102", "qualifier": "output" },
+        { "objectId": "product-unit:00000000-0000-4000-8000-000000000103", "qualifier": "output" }
+      ]
+    },
+    {
+      "id": "tinyhouse:event:00000000-0000-4000-8000-000000000003",
+      "type": "Complete print",
+      "time": "2026-01-15T10:15:00Z",
+      "attributes": [
+        { "name": "result", "value": "accepted" }
+      ],
+      "relationships": [
+        { "objectId": "work-order:00000000-0000-4000-8000-000000000102", "qualifier": "request" },
+        { "objectId": "component:00000000-0000-4000-8000-000000000104", "qualifier": "output" },
+        { "objectId": "tinyhouse:equipment:printer-01", "qualifier": "resource" }
+      ]
+    },
+    {
+      "id": "munich:event:00000000-0000-4000-8000-000000000004",
+      "type": "Complete print",
+      "time": "2026-01-15T10:10:00Z",
+      "attributes": [
+        { "name": "result", "value": "accepted" }
+      ],
+      "relationships": [
+        { "objectId": "work-order:00000000-0000-4000-8000-000000000102", "qualifier": "request" },
+        { "objectId": "component:00000000-0000-4000-8000-000000000105", "qualifier": "output" },
+        { "objectId": "munich:equipment:printer-01", "qualifier": "resource" }
+      ]
+    },
+    {
+      "id": "munich:event:00000000-0000-4000-8000-000000000005",
+      "type": "Pack shipment",
+      "time": "2026-01-15T10:30:00Z",
+      "attributes": [
+        { "name": "seal", "value": "seal-study-001" }
+      ],
+      "relationships": [
+        { "objectId": "shipment:00000000-0000-4000-8000-000000000106", "qualifier": "container" },
+        { "objectId": "component:00000000-0000-4000-8000-000000000105", "qualifier": "input" }
+      ]
+    },
+    {
+      "id": "tinyhouse:event:00000000-0000-4000-8000-000000000006",
+      "type": "Receive shipment",
+      "time": "2026-01-16T09:10:00Z",
+      "attributes": [
+        { "name": "seal_state", "value": "intact" }
+      ],
+      "relationships": [
+        { "objectId": "shipment:00000000-0000-4000-8000-000000000106", "qualifier": "input" },
+        { "objectId": "component:00000000-0000-4000-8000-000000000105", "qualifier": "output" }
+      ]
+    },
+    {
+      "id": "tinyhouse:event:00000000-0000-4000-8000-000000000007",
+      "type": "Assemble product",
+      "time": "2026-01-16T09:30:00Z",
+      "attributes": [
+        { "name": "mode", "value": "hybrid" }
+      ],
+      "relationships": [
+        { "objectId": "component:00000000-0000-4000-8000-000000000104", "qualifier": "input" },
+        { "objectId": "component:00000000-0000-4000-8000-000000000105", "qualifier": "input" },
+        { "objectId": "product-unit:00000000-0000-4000-8000-000000000103", "qualifier": "output" }
+      ]
+    }
+  ],
+  "objects": [
+    {
+      "id": "experiment-run:00000000-0000-4000-8000-000000000101",
+      "type": "experiment-run",
+      "attributes": [
+        { "name": "status", "time": "2026-01-15T09:00:00Z", "value": "active" }
+      ],
+      "relationships": [
+        { "objectId": "work-order:00000000-0000-4000-8000-000000000102", "qualifier": "scopes" }
+      ]
+    },
+    {
+      "id": "work-order:00000000-0000-4000-8000-000000000102",
+      "type": "work-order",
+      "attributes": [
+        { "name": "route", "time": "2026-01-15T09:05:00Z", "value": "split" }
+      ],
+      "relationships": [
+        { "objectId": "product-unit:00000000-0000-4000-8000-000000000103", "qualifier": "requests" }
+      ]
+    },
+    {
+      "id": "product-unit:00000000-0000-4000-8000-000000000103",
+      "type": "product-unit",
+      "attributes": [
+        { "name": "status", "time": "2026-01-16T09:30:00Z", "value": "assembled" }
+      ],
+      "relationships": [
+        { "objectId": "component:00000000-0000-4000-8000-000000000104", "qualifier": "composed-of" },
+        { "objectId": "component:00000000-0000-4000-8000-000000000105", "qualifier": "composed-of" }
+      ]
+    },
+    {
+      "id": "component:00000000-0000-4000-8000-000000000104",
+      "type": "component",
+      "attributes": [
+        { "name": "part_role", "time": "2026-01-15T10:15:00Z", "value": "enclosure-base" }
+      ],
+      "relationships": []
+    },
+    {
+      "id": "component:00000000-0000-4000-8000-000000000105",
+      "type": "component",
+      "attributes": [
+        { "name": "part_role", "time": "2026-01-15T10:10:00Z", "value": "lid" }
+      ],
+      "relationships": []
+    },
+    {
+      "id": "shipment:00000000-0000-4000-8000-000000000106",
+      "type": "shipment",
+      "attributes": [
+        { "name": "status", "time": "2026-01-16T09:10:00Z", "value": "received" }
+      ],
+      "relationships": [
+        { "objectId": "component:00000000-0000-4000-8000-000000000105", "qualifier": "contains" }
+      ]
+    },
+    {
+      "id": "tinyhouse:equipment:printer-01",
+      "type": "equipment",
+      "attributes": [
+        { "name": "site", "time": "2026-01-15T00:00:00Z", "value": "tinyhouse" }
+      ],
+      "relationships": []
+    },
+    {
+      "id": "munich:equipment:printer-01",
+      "type": "equipment",
+      "attributes": [
+        { "name": "site", "time": "2026-01-15T00:00:00Z", "value": "munich" }
+      ],
+      "relationships": []
+    }
+  ]
+}

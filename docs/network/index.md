@@ -6,7 +6,9 @@ The management PC currently sits on the public side. The live host name is `BTQ8
 
 The router bridges access into the private side. The router WAN address is `132.180.196.167`. The router LAN address is `192.168.1.1`. The router exposes Raspberry Pis, Jetsons, and planned jump hosts through SSH ports.
 
-The switch separates public and private port groups. The switch management address is `132.180.196.166`. The documented public port group is `1/1/11`, `1/1/13`, `1/1/15`, and `1/1/16`. The documented private port group is `1/1/1` through `1/1/10`, plus `1/1/12` and `1/1/14`.
+The switch separates public and private port groups. The switch management address is `132.180.196.166`. The follow-up questionnaire records the current public ports as `1/1/5`, `1/1/11`, `1/1/12`, `1/1/13`, `1/1/15`, and `1/1/16`. The current private ports are `1/1/1` through `1/1/4` and `1/1/6` through `1/1/9`.
+
+The router is a TP-Link Archer MR600 V3.0. Administrative access uses the Web UI or a USB console from the internal network. The [Router and Switch](/network/router-and-switch) page records the WAN configuration, firewall state, backup procedure, switch details, and current port groups.
 
 ![TinyHouse access model](/diagrams/access-model.svg)
 
@@ -30,11 +32,14 @@ The physical uplink is part of the network baseline. The installation photos sho
 | Device | Address | Role | Live note |
 | --- | --- | --- | --- |
 | Management PC | `132.180.196.164` | Windows and WSL controller | Live host reported `BTQ8X1` |
+| Reserved address | `132.180.196.163` | TinyHouse allocation | Device assignment not supplied |
+| Camera | `132.180.196.165` | Camera | Reservation method not supplied |
 | TinyHouse router WAN | `132.180.196.167` | DNAT endpoint | Several DNAT ports are reachable |
 | Switch `SW1-TH` | `132.180.196.166` | Managed switch | Source PDF lists this address |
 | University gateway | `132.180.196.254` | Default gateway | Live route uses this gateway |
 | DNS server | `132.180.17.1` | DNS | Live management PC uses this server |
 | DNS server | `132.180.17.128` | DNS | Live management PC uses this server |
+| DNS server | `132.180.17.129` | DNS | Router questionnaire lists this secondary server |
 
 ## Private Network
 

@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1276" height="293" viewBox="30 120 1276 293" role="img" aria-label="BPMN choreography for TinyHouse and Munich interaction points">
+  <defs>
+    <style>
+      text{font-family:Inter,Arial,sans-serif;fill:#3B3440}
+      .node-label{font-size:13px;font-weight:650}
+      .small-label{font-size:11px;font-weight:600}
+      .pool-label{font-size:16px;font-weight:700;letter-spacing:.2px}
+      .participant-label{font-size:12px;font-weight:700}
+      .edge-label{font-size:10px;font-weight:650;paint-order:stroke;stroke:#FFFFFF;stroke-width:4px;stroke-linejoin:round}
+      .gateway-marker,.task-icon{fill:none;stroke:#8CA1B3;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+    </style>
+    <marker id="sequence-arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L9,3 z" fill="#8CA1B3"/></marker>
+    <marker id="message-arrow" markerWidth="12" markerHeight="12" refX="11" refY="4" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L11,4 L0,8 z" fill="#FFFFFF" stroke="#9BABBA" stroke-width="1.4"/></marker>
+  </defs>
+  <rect x="30" y="120" width="1276" height="293" fill="#FFFFFF"/>
+  <g data-bpmn-element="ChoreoFlow_01"><path d="M86 220 L130 220" fill="none" stroke="#8CA1B3" stroke-width="2"  marker-end="url(#sequence-arrow)"/></g>
+  <g data-bpmn-element="ChoreoFlow_02"><path d="M310 220 L350 220" fill="none" stroke="#8CA1B3" stroke-width="2"  marker-end="url(#sequence-arrow)"/></g>
+  <g data-bpmn-element="ChoreoFlow_03_Accepted"><path d="M400 220 L470 220" fill="none" stroke="#8CA1B3" stroke-width="2"  marker-end="url(#sequence-arrow)"/><text x="477" y="213" class="edge-label">yes</text></g>
+  <g data-bpmn-element="ChoreoFlow_03_Rejected"><path d="M375 245 L375 350 L455 350" fill="none" stroke="#8CA1B3" stroke-width="2"  marker-end="url(#sequence-arrow)"/><text x="382" y="343" class="edge-label">no</text></g>
+  <g data-bpmn-element="ChoreoFlow_04"><path d="M650 220 L700 220" fill="none" stroke="#8CA1B3" stroke-width="2"  marker-end="url(#sequence-arrow)"/></g>
+  <g data-bpmn-element="ChoreoFlow_05"><path d="M880 220 L920 220" fill="none" stroke="#8CA1B3" stroke-width="2"  marker-end="url(#sequence-arrow)"/></g>
+  <g data-bpmn-element="ChoreoFlow_06_Accepted"><path d="M970 220 L1020 220" fill="none" stroke="#8CA1B3" stroke-width="2"  marker-end="url(#sequence-arrow)"/><text x="1027" y="213" class="edge-label">yes</text></g>
+  <g data-bpmn-element="ChoreoFlow_06_Replacement"><path d="M945 245 L945 390 L560 390 L560 300" fill="none" stroke="#8CA1B3" stroke-width="2"  marker-end="url(#sequence-arrow)"/><text x="567" y="383" class="edge-label">no</text></g>
+  <g data-bpmn-element="ChoreoFlow_07"><path d="M1200 220 L1250 220" fill="none" stroke="#8CA1B3" stroke-width="2"  marker-end="url(#sequence-arrow)"/></g>
+  <g data-bpmn-element="ChoreoStart"><circle cx="68" cy="220" r="16" fill="#FAE7EB" stroke="#C9B6BA" stroke-width="2"/></g>
+  <g data-bpmn-element="ChoreoTask_Negotiate">
+    <rect x="130" y="140" width="180" height="160" rx="9" fill="#DBEEF7" stroke="#AABDC6" stroke-width="2"/>
+    <rect x="130" y="140" width="180" height="36" rx="9" fill="#BDD2E4" stroke="#8CA1B3" stroke-width="2"/>
+    <rect x="130" y="264" width="180" height="36" rx="9" fill="#DBEEF7" stroke="#AABDC6" stroke-width="2"/>
+    <text x="220" y="163" text-anchor="middle" class="participant-label">TinyHouse</text>
+    <text x="220" y="287" text-anchor="middle" class="participant-label">Munich Lab</text>
+    <text x="220" y="224" text-anchor="middle" class="node-label"><tspan x="220" dy="0">Negotiate lid</tspan></text>
+  </g>
+  <g data-bpmn-element="ChoreoGateway_Commitment"><polygon points="375,195 400,220 375,245 350,220" fill="#BDD2E4" stroke="#8CA1B3" stroke-width="2"/><path d="M367 212L383 228M383 212L367 228" class="gateway-marker"/><text x="375" y="267" text-anchor="middle" class="small-label"><tspan x="375" dy="0">Accepted?</tspan></text></g>
+  <g data-bpmn-element="ChoreoEnd_Local"><circle cx="473" cy="350" r="16" fill="#EECEDA" stroke="#BD9DA9" stroke-width="4"/><text x="473" y="390" text-anchor="middle" class="small-label"><tspan x="473" dy="0">Local route</tspan></text></g>
+  <g data-bpmn-element="ChoreoTask_Dispatch">
+    <rect x="470" y="140" width="180" height="160" rx="9" fill="#E0D4E7" stroke="#AFA3B6" stroke-width="2"/>
+    <rect x="470" y="140" width="180" height="36" rx="9" fill="#BDD2E4" stroke="#8CA1B3" stroke-width="2"/>
+    <rect x="470" y="264" width="180" height="36" rx="9" fill="#DBEEF7" stroke="#AABDC6" stroke-width="2"/>
+    <text x="560" y="163" text-anchor="middle" class="participant-label">Munich Lab</text>
+    <text x="560" y="287" text-anchor="middle" class="participant-label">TinyHouse</text>
+    <text x="560" y="224" text-anchor="middle" class="node-label"><tspan x="560" dy="0">Dispatch lid</tspan></text>
+  </g>
+  <g data-bpmn-element="ChoreoTask_DeliveryDecision">
+    <rect x="700" y="140" width="180" height="160" rx="9" fill="#CCDCEB" stroke="#9BABBA" stroke-width="2"/>
+    <rect x="700" y="140" width="180" height="36" rx="9" fill="#BDD2E4" stroke="#8CA1B3" stroke-width="2"/>
+    <rect x="700" y="264" width="180" height="36" rx="9" fill="#DBEEF7" stroke="#AABDC6" stroke-width="2"/>
+    <text x="790" y="163" text-anchor="middle" class="participant-label">TinyHouse</text>
+    <text x="790" y="287" text-anchor="middle" class="participant-label">Munich Lab</text>
+    <text x="790" y="224" text-anchor="middle" class="node-label"><tspan x="790" dy="0">Confirm delivery</tspan></text>
+  </g>
+  <g data-bpmn-element="ChoreoGateway_Delivery"><polygon points="945,195 970,220 945,245 920,220" fill="#BDD2E4" stroke="#8CA1B3" stroke-width="2"/><path d="M937 212L953 228M953 212L937 228" class="gateway-marker"/><text x="945" y="267" text-anchor="middle" class="small-label"><tspan x="945" dy="0">Accepted?</tspan></text></g>
+  <g data-bpmn-element="ChoreoTask_Outcome">
+    <rect x="1020" y="140" width="180" height="160" rx="9" fill="#FAE7EB" stroke="#C9B6BA" stroke-width="2"/>
+    <rect x="1020" y="140" width="180" height="36" rx="9" fill="#BDD2E4" stroke="#8CA1B3" stroke-width="2"/>
+    <rect x="1020" y="264" width="180" height="36" rx="9" fill="#DBEEF7" stroke="#AABDC6" stroke-width="2"/>
+    <text x="1110" y="163" text-anchor="middle" class="participant-label">TinyHouse</text>
+    <text x="1110" y="287" text-anchor="middle" class="participant-label">Munich Lab</text>
+    <text x="1110" y="224" text-anchor="middle" class="node-label"><tspan x="1110" dy="0">Share outcome</tspan></text>
+  </g>
+  <g data-bpmn-element="ChoreoEnd_Complete"><circle cx="1268" cy="220" r="16" fill="#EECEDA" stroke="#BD9DA9" stroke-width="4"/><text x="1268" y="260" text-anchor="middle" class="small-label"><tspan x="1268" dy="0">Complete</tspan></text></g>
+</svg>

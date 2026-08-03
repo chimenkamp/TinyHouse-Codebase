@@ -21,6 +21,8 @@ The Pi Mosquitto brokers share the same edge configuration. Mosquitto uses `/etc
 
 The EMQX broker serving traffic runs on `EMQX003`. EMQX starts through `emqx.service`. The service runs `/usr/bin/emqx foreground`. The broker reported `$SYS/brokers/emqx@127.0.0.1/version 5.8.0` during the topic probe.
 
+The follow-up answer attributes the EMQX migration to Maximilian and identifies the migrated EMQX instance as the broker. The answer does not document the migration procedure or define the intended role of each remaining Pi.
+
 ## Installed Broker Packages
 
 The reachable Pis have both broker stacks installed. Each reachable Pi reported `emqx-enterprise-5.8.0-1.el9.aarch64`. Each reachable Pi also reported `mosquitto-2.0.22-1.el9.aarch64`.
@@ -58,17 +60,40 @@ The Mosquitto configuration allows anonymous access. This setup is practical for
 
 The EMQX listener map applies to `EMQX003`. Other reachable Pis have the EMQX package and service file. Other reachable Pis did not expose these EMQX listener ports in the collection report.
 
+## Architecture Decision State
+
+The final broker architecture remains undecided. The follow-up answer recommends an EMQX cluster. The project has not yet accepted that recommendation or decided whether Mosquitto remains on `EMQX001`, `EMQX004`, `EMQX005`, and `EMQX006`.
+
+The initial transport policy uses MQTT over TCP on port `1883`. MQTT over Transport Layer Security (TLS) on port `8883` is an allowed future option. No TLS certificates, users, access-control lists, or client certificates were reported.
+
+External bridges are prohibited under the supplied project constraint. No MQTT bridge to an external broker, Kafka, database, or cloud service is configured or planned under the current constraint.
+
+The respondent does not use the EMQX dashboard and reports that the dashboard was not installed. However, the 2026-06-15 inspection observed an EMQX listener on private port `18083` on `EMQX003`. The difference requires a current service check. The respondent uses MQTT Explorer instead.
+
 ## Topics
 
 The live topic probe subscribed to `#` on reachable brokers. The Mosquitto brokers produced `$SYS/broker/...` system topics. The Mosquitto brokers did not produce application sensor topics during the probe window.
 
 The EMQX broker produced EMQX system topics. The observed topics were `$SYS/brokers`, `$SYS/brokers/emqx@127.0.0.1/sysdescr`, and `$SYS/brokers/emqx@127.0.0.1/version`. The observed version payload was `5.8.0`.
 
-The application topic scheme is not active yet. The architecture notes suggest machine topics and JSON messages with sensor values. The receiver software for Arduino to Pi data is still incomplete. Therefore no production sensor topic namespace was observed.
+The application topic scheme was not observed during the 2026-06-15 inspection. The follow-up answer defines four application categories and their field sets. The receiver software for Arduino to Pi data is still incomplete.
 
-## Proposed Topic Convention
+## Supplied Topic and Field Convention
 
-The MQTT topic convention should use stable lab identifiers. The convention should separate site, device, sensor, and measure. The convention should avoid spaces because many MQTT tools handle simple path tokens more reliably.
+The supplied convention names `sensor`, `devstatus`, `heartbeat`, and `data`. The answer specifies field names but does not specify the complete MQTT topic paths, value types, units, timestamp format, Quality of Service levels, retained-message behavior, or Last Will and Testament behavior.
+
+| Category | Required fields from the supplied answer |
+| --- | --- |
+| `sensor` | `device_id`, `drawer`, `timestamp`, `weight`, `batvoltage`, `wifi_connencted`, `mqtt_connected` |
+| `devstatus` | `device_id`, `drawer`, `timestamp`, `wifi_rssi`, `wifi_ssid`, `ip_address`, `free_heap`, `uptime`, `batvoltage` |
+| `heartbeat` | `device_id`, `drawer`, `timestamp`, `uptime`, `status`, `wifi_connencted`, `mqtt_connected` |
+| `data` | `device_id`, `drawer`, `timestamp`, `wifi_rssi`, `wifi_ssid`, `ip_address`, `free_heap`, `wifi_ant_m`, `batvoltage` |
+
+The field name `wifi_connencted` preserves the spelling in the supplied contract. A compatibility decision is required before correcting the spelling because deployed producers or consumers may already depend on the field name.
+
+## Earlier Proposed Topic Convention
+
+The earlier documentation proposed stable lab identifiers. The proposal is not the supplied binding convention because the follow-up answer only names the four categories above. The proposal separates site, device, sensor, and measure.
 
 ```text
 tinyhouse/<device>/<sensor>/<measure>
@@ -90,10 +115,10 @@ The payload should be JSON. The payload should include timestamp, value, unit, d
 
 ## Next Actions
 
-The MQTT inventory should be standardized. `EMQX001` and `EMQX003` should be added to Ansible if they are intended broker nodes. `pi01` should be repaired or removed from the inventory. `EMQX003` should be declared as the EMQX node or converted back to Mosquitto.
+The MQTT inventory should be standardized. `EMQX001` and `EMQX003` should be added to Ansible if they are intended broker nodes. `pi01` should be repaired or removed from the inventory. The project should accept or reject the recommended EMQX cluster before changing broker services.
 
 The broker service model should be simplified. Either EMQX should replace Mosquitto on all broker Pis, or EMQX should be disabled where Mosquitto remains the edge broker. The current mixed state makes operational behavior harder to reason about.
 
-The MQTT security model should be decided before student access expands. Anonymous access is currently enabled on Mosquitto. EMQX dashboard exposure should be reviewed because port `18083` is active on the private network.
+The MQTT security model should be decided before student access expands. Anonymous access is currently enabled on Mosquitto. EMQX dashboard exposure should be reviewed because the 2026-06-15 inspection found port `18083` active on the private network.
 
 The topic namespace should be implemented in the Pi receiver. The receiver should publish one test topic before sensors are attached. A retained health topic per Pi would make broker discovery easier.

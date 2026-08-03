@@ -2,6 +2,8 @@
 
 The live inspection ran on 2026-06-15. The first inspection used `ssh tinyhouse`. The second inspection used the collector output in `docs/tinyhouse_collection_20260615_072208_btq8x1`. The collector output is the newer source for this page.
 
+The follow-up router table now records the inactive AI Pi mappings on ports `4061` and `4062` instead of the ports `4031` and `4032` tested during this inspection. The [Network Inventory](/network/inventory) preserves both sources and labels the difference.
+
 ## Management PC
 
 | Item | Observed value |

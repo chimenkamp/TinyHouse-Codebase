@@ -20,6 +20,8 @@ The Raspberry Pis act as edge broker nodes. The active Ansible inventory manages
 
 The reachable Pis do not all run the same operating system version. `EMQX001` and `EMQX003` reported AlmaLinux 9.7. `EMQX004`, `EMQX005`, and `EMQX006` reported AlmaLinux 9.6. Each reachable Pi uses `eth0` on the private subnet. Each reachable Pi has `wlan0` down.
 
+The Pis were originally provisioned from the same AlmaLinux image in the previous year. The image included Mosquitto, EMQX, Cockpit, Docker, XRDP, and related services. The follow-up answer states that the Pi operating systems should be standardized again. The exact target AlmaLinux version remains undecided.
+
 ## Broker Services
 
 | Service | State on reachable Pis | Port |
@@ -46,3 +48,13 @@ The HTTP state needs review. The socket listens on `80` and `443`. The `httpd` s
 The MySQL state needs review. The daemon listens on the reachable Pis. The package query found `mysql-server-8.0.46` in the collection report. The service purpose should be identified before the nodes become production brokers.
 
 The Pi reachability state needs review. `pi01` failed with no route to host. `EMQX001` and `EMQX003` are reachable but are not in the active Ansible inventory. The inventory should match the intended cluster membership.
+
+## AI Pis and Jetsons
+
+The AI Raspberry Pis at `192.168.1.131` and `192.168.1.132` are reported as absent. Their current physical location is unknown. The follow-up answer suggests that the devices may have been sent to Dresden but does not confirm the transfer.
+
+The Jetsons use `192.168.1.141` and `192.168.1.142`. The available documentation covers their IP addresses and DNAT access. Each Jetson retains its original operating system. The respondent was instructed not to modify the Jetsons and could not supply the operating-system version, hardware revision, storage, power supply, roles, or running services.
+
+## Intended Pi Services
+
+The intended Pi baseline includes Mosquitto, EMQX, Cockpit, Docker, MySQL, HTTP, HTTPS, and XRDP. The broker architecture still needs a decision because running Mosquitto and EMQX as serving brokers on the same port creates a listener conflict. The [MQTT overview](/mqtt/) records the current service state and the proposed cluster direction.

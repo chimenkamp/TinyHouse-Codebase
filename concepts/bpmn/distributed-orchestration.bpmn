@@ -1,0 +1,974 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:bioc="http://bpmn.io/schema/bpmn/biocolor/1.0" id="Definitions_DistributedSensorNode_Orchestration" targetNamespace="https://tinyhouse.local/bpmn/distributed-sensor-node" exporter="TinyHouse-Codebase" exporterVersion="1.0">
+  <bpmn:message id="Message_LidRequest" name="Remote lid request" />
+  <bpmn:message id="Message_CommitmentDecision" name="Commitment decision" />
+  <bpmn:message id="Message_LidDispatch" name="Lid dispatch" />
+  <bpmn:message id="Message_DeliveryDecision" name="Delivery decision" />
+  <bpmn:message id="Message_Outcome" name="Minimized outcome" />
+  <bpmn:process id="Process_TinyHouse" name="TinyHouse orchestration" isExecutable="false">
+    <bpmn:startEvent id="Start_TinyHouse" name="Run created">
+      <bpmn:outgoing>Flow_T01</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:userTask id="Task_RegisterRun" name="Register run">
+      <bpmn:incoming>Flow_T01</bpmn:incoming>
+      <bpmn:outgoing>Flow_T02</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:businessRuleTask id="Task_SelectTopology" name="Select topology">
+      <bpmn:incoming>Flow_T02</bpmn:incoming>
+      <bpmn:outgoing>Flow_T03</bpmn:outgoing>
+    </bpmn:businessRuleTask>
+    <bpmn:exclusiveGateway id="Gateway_Topology" name="Distributed?" default="Flow_T04_Local">
+      <bpmn:incoming>Flow_T03</bpmn:incoming>
+      <bpmn:outgoing>Flow_T04_Distributed</bpmn:outgoing>
+      <bpmn:outgoing>Flow_T04_Local</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sendTask id="Task_RequestLid" name="Request lid" messageRef="Message_LidRequest">
+      <bpmn:incoming>Flow_T04_Distributed</bpmn:incoming>
+      <bpmn:outgoing>Flow_T05</bpmn:outgoing>
+    </bpmn:sendTask>
+    <bpmn:intermediateCatchEvent id="Catch_CommitmentDecision" name="Commitment">
+      <bpmn:incoming>Flow_T05</bpmn:incoming>
+      <bpmn:outgoing>Flow_T06</bpmn:outgoing>
+      <bpmn:messageEventDefinition id="MessageEventDefinition_Commitment" messageRef="Message_CommitmentDecision" />
+    </bpmn:intermediateCatchEvent>
+    <bpmn:exclusiveGateway id="Gateway_Commitment" name="Accepted?" default="Flow_T08_Rejected">
+      <bpmn:incoming>Flow_T07</bpmn:incoming>
+      <bpmn:outgoing>Flow_T08_Accepted</bpmn:outgoing>
+      <bpmn:outgoing>Flow_T08_Rejected</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:serviceTask id="Task_ProduceLocally" name="Produce locally">
+      <bpmn:incoming>Flow_T04_Local</bpmn:incoming>
+      <bpmn:incoming>Flow_T08_Rejected</bpmn:incoming>
+      <bpmn:outgoing>Flow_T09_LocalDone</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:parallelGateway id="Gateway_ProductionSplit" name="Split production" gatewayDirection="Diverging">
+      <bpmn:incoming>Flow_T08_Accepted</bpmn:incoming>
+      <bpmn:outgoing>Flow_T10_Base</bpmn:outgoing>
+      <bpmn:outgoing>Flow_T10_Remote</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:serviceTask id="Task_PrintBase" name="Print base">
+      <bpmn:incoming>Flow_T10_Base</bpmn:incoming>
+      <bpmn:incoming>Flow_T15_Reprint</bpmn:incoming>
+      <bpmn:outgoing>Flow_T11</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:businessRuleTask id="Task_InspectBase" name="Inspect base">
+      <bpmn:incoming>Flow_T11</bpmn:incoming>
+      <bpmn:outgoing>Flow_T12</bpmn:outgoing>
+    </bpmn:businessRuleTask>
+    <bpmn:exclusiveGateway id="Gateway_BaseQuality" name="Base passed?" default="Flow_T13_Review">
+      <bpmn:incoming>Flow_T12</bpmn:incoming>
+      <bpmn:outgoing>Flow_T13_Passed</bpmn:outgoing>
+      <bpmn:outgoing>Flow_T13_Review</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:exclusiveGateway id="Gateway_BaseDisposition" name="Reprint?" default="Flow_T15_Release">
+      <bpmn:incoming>Flow_T14</bpmn:incoming>
+      <bpmn:outgoing>Flow_T15_Reprint</bpmn:outgoing>
+      <bpmn:outgoing>Flow_T15_Release</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:manualTask id="Task_ReleaseBase" name="Release base">
+      <bpmn:incoming>Flow_T15_Release</bpmn:incoming>
+      <bpmn:outgoing>Flow_T16_BaseReleased</bpmn:outgoing>
+    </bpmn:manualTask>
+    <bpmn:intermediateCatchEvent id="Catch_LidDispatch" name="Lid dispatched">
+      <bpmn:incoming>Flow_T10_Remote</bpmn:incoming>
+      <bpmn:incoming>Flow_T21_Replacement</bpmn:incoming>
+      <bpmn:outgoing>Flow_T17</bpmn:outgoing>
+      <bpmn:messageEventDefinition id="MessageEventDefinition_Dispatch" messageRef="Message_LidDispatch" />
+    </bpmn:intermediateCatchEvent>
+    <bpmn:manualTask id="Task_ReceiveLid" name="Receive lid">
+      <bpmn:incoming>Flow_T17</bpmn:incoming>
+      <bpmn:outgoing>Flow_T18</bpmn:outgoing>
+    </bpmn:manualTask>
+    <bpmn:businessRuleTask id="Task_VerifyLid" name="Verify lid">
+      <bpmn:incoming>Flow_T18</bpmn:incoming>
+      <bpmn:outgoing>Flow_T19</bpmn:outgoing>
+    </bpmn:businessRuleTask>
+    <bpmn:exclusiveGateway id="Gateway_LidQuality" name="Lid passed?" default="Flow_T20_Replace">
+      <bpmn:incoming>Flow_T19</bpmn:incoming>
+      <bpmn:outgoing>Flow_T20_Accept</bpmn:outgoing>
+      <bpmn:outgoing>Flow_T20_Replace</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sendTask id="Task_AcceptDelivery" name="Accept delivery" messageRef="Message_DeliveryDecision">
+      <bpmn:incoming>Flow_T20_Accept</bpmn:incoming>
+      <bpmn:outgoing>Flow_T21_Accepted</bpmn:outgoing>
+    </bpmn:sendTask>
+    <bpmn:sendTask id="Task_RequestReplacement" name="Request replacement" messageRef="Message_DeliveryDecision">
+      <bpmn:incoming>Flow_T20_Replace</bpmn:incoming>
+      <bpmn:outgoing>Flow_T21_Replacement</bpmn:outgoing>
+    </bpmn:sendTask>
+    <bpmn:parallelGateway id="Gateway_ProductionJoin" name="Parts ready" gatewayDirection="Converging">
+      <bpmn:incoming>Flow_T16_BaseReady</bpmn:incoming>
+      <bpmn:incoming>Flow_T21_Accepted</bpmn:incoming>
+      <bpmn:outgoing>Flow_T22_DistributedDone</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:exclusiveGateway id="Gateway_ProductionMerge" gatewayDirection="Converging">
+      <bpmn:incoming>Flow_T09_LocalDone</bpmn:incoming>
+      <bpmn:incoming>Flow_T22_DistributedDone</bpmn:incoming>
+      <bpmn:outgoing>Flow_T23</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:serviceTask id="Task_RobotKit" name="Robot kit">
+      <bpmn:incoming>Flow_T23</bpmn:incoming>
+      <bpmn:outgoing>Flow_T24</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:userTask id="Task_AssembleNode" name="Assemble node">
+      <bpmn:incoming>Flow_T24</bpmn:incoming>
+      <bpmn:outgoing>Flow_T25</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:serviceTask id="Task_Calibrate" name="Test and calibrate">
+      <bpmn:incoming>Flow_T25</bpmn:incoming>
+      <bpmn:incoming>Flow_T29_Reworked</bpmn:incoming>
+      <bpmn:outgoing>Flow_T26</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:exclusiveGateway id="Gateway_Calibration" name="Passed?" default="Flow_T27_Failed">
+      <bpmn:incoming>Flow_T26</bpmn:incoming>
+      <bpmn:outgoing>Flow_T27_Passed</bpmn:outgoing>
+      <bpmn:outgoing>Flow_T27_Failed</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:userTask id="Task_ResolveCalibration" name="Resolve failure">
+      <bpmn:incoming>Flow_T27_Failed</bpmn:incoming>
+      <bpmn:outgoing>Flow_T28</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:serviceTask id="Task_ReworkSensor" name="Rework sensor">
+      <bpmn:incoming>Flow_T28</bpmn:incoming>
+      <bpmn:outgoing>Flow_T29_Reworked</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:userTask id="Task_ApproveDeployment" name="Approve deployment">
+      <bpmn:incoming>Flow_T27_Passed</bpmn:incoming>
+      <bpmn:outgoing>Flow_T30</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="Gateway_OutcomeRequired" name="Shared run?" default="Flow_T30_Local">
+      <bpmn:incoming>Flow_T30</bpmn:incoming>
+      <bpmn:outgoing>Flow_T30_Shared</bpmn:outgoing>
+      <bpmn:outgoing>Flow_T30_Local</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:businessRuleTask id="Task_ApplyDisclosure" name="Apply disclosure">
+      <bpmn:incoming>Flow_T30_Shared</bpmn:incoming>
+      <bpmn:outgoing>Flow_T31</bpmn:outgoing>
+    </bpmn:businessRuleTask>
+    <bpmn:sendTask id="Task_ShareOutcome" name="Share outcome" messageRef="Message_Outcome">
+      <bpmn:incoming>Flow_T31</bpmn:incoming>
+      <bpmn:outgoing>Flow_T32</bpmn:outgoing>
+    </bpmn:sendTask>
+    <bpmn:endEvent id="End_TinyHouse" name="Run complete">
+      <bpmn:incoming>Flow_T32</bpmn:incoming>
+      <bpmn:incoming>Flow_T30_Local</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_T32" sourceRef="Task_ShareOutcome" targetRef="End_TinyHouse" />
+    <bpmn:sequenceFlow id="Flow_T31" sourceRef="Task_ApplyDisclosure" targetRef="Task_ShareOutcome" />
+    <bpmn:sequenceFlow id="Flow_T30_Local" name="no" sourceRef="Gateway_OutcomeRequired" targetRef="End_TinyHouse" />
+    <bpmn:sequenceFlow id="Flow_T30_Shared" name="yes" sourceRef="Gateway_OutcomeRequired" targetRef="Task_ApplyDisclosure">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">collaborationStatus = 'active'</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_T30" sourceRef="Task_ApproveDeployment" targetRef="Gateway_OutcomeRequired" />
+    <bpmn:sequenceFlow id="Flow_T29_Reworked" sourceRef="Task_ReworkSensor" targetRef="Task_Calibrate" />
+    <bpmn:sequenceFlow id="Flow_T28" sourceRef="Task_ResolveCalibration" targetRef="Task_ReworkSensor" />
+    <bpmn:sequenceFlow id="Flow_T27_Failed" name="no" sourceRef="Gateway_Calibration" targetRef="Task_ResolveCalibration" />
+    <bpmn:sequenceFlow id="Flow_T27_Passed" name="yes" sourceRef="Gateway_Calibration" targetRef="Task_ApproveDeployment">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">calibrationStatus = 'passed'</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_T26" sourceRef="Task_Calibrate" targetRef="Gateway_Calibration" />
+    <bpmn:sequenceFlow id="Flow_T25" sourceRef="Task_AssembleNode" targetRef="Task_Calibrate" />
+    <bpmn:sequenceFlow id="Flow_T24" sourceRef="Task_RobotKit" targetRef="Task_AssembleNode" />
+    <bpmn:sequenceFlow id="Flow_T23" sourceRef="Gateway_ProductionMerge" targetRef="Task_RobotKit" />
+    <bpmn:sequenceFlow id="Flow_T22_DistributedDone" sourceRef="Gateway_ProductionJoin" targetRef="Gateway_ProductionMerge" />
+    <bpmn:sequenceFlow id="Flow_T21_Replacement" sourceRef="Task_RequestReplacement" targetRef="Catch_LidDispatch" />
+    <bpmn:sequenceFlow id="Flow_T21_Accepted" sourceRef="Task_AcceptDelivery" targetRef="Gateway_ProductionJoin" />
+    <bpmn:sequenceFlow id="Flow_T20_Replace" name="no" sourceRef="Gateway_LidQuality" targetRef="Task_RequestReplacement" />
+    <bpmn:sequenceFlow id="Flow_T20_Accept" name="yes" sourceRef="Gateway_LidQuality" targetRef="Task_AcceptDelivery">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">lidQuality = 'accepted'</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_T19" sourceRef="Task_VerifyLid" targetRef="Gateway_LidQuality" />
+    <bpmn:sequenceFlow id="Flow_T18" sourceRef="Task_ReceiveLid" targetRef="Task_VerifyLid" />
+    <bpmn:sequenceFlow id="Flow_T17" sourceRef="Catch_LidDispatch" targetRef="Task_ReceiveLid" />
+    <bpmn:sequenceFlow id="Flow_T16_BaseReady" sourceRef="Gateway_BaseMerge" targetRef="Gateway_ProductionJoin" />
+    <bpmn:sequenceFlow id="Flow_T16_BaseReleased" sourceRef="Task_ReleaseBase" targetRef="Gateway_BaseMerge" />
+    <bpmn:sequenceFlow id="Flow_T15_Release" name="no" sourceRef="Gateway_BaseDisposition" targetRef="Task_ReleaseBase" />
+    <bpmn:sequenceFlow id="Flow_T15_Reprint" name="yes" sourceRef="Gateway_BaseDisposition" targetRef="Task_PrintBase">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">baseDisposition = 'reprint'</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_T14" sourceRef="Task_ReviewBase" targetRef="Gateway_BaseDisposition" />
+    <bpmn:sequenceFlow id="Flow_T13_Review" name="no" sourceRef="Gateway_BaseQuality" targetRef="Task_ReviewBase" />
+    <bpmn:sequenceFlow id="Flow_T13_Passed" name="yes" sourceRef="Gateway_BaseQuality" targetRef="Gateway_BaseMerge">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">baseQuality = 'accepted'</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_T12" sourceRef="Task_InspectBase" targetRef="Gateway_BaseQuality" />
+    <bpmn:sequenceFlow id="Flow_T11" sourceRef="Task_PrintBase" targetRef="Task_InspectBase" />
+    <bpmn:sequenceFlow id="Flow_T10_Remote" sourceRef="Gateway_ProductionSplit" targetRef="Catch_LidDispatch" />
+    <bpmn:sequenceFlow id="Flow_T10_Base" sourceRef="Gateway_ProductionSplit" targetRef="Task_PrintBase" />
+    <bpmn:sequenceFlow id="Flow_T09_LocalDone" sourceRef="Task_ProduceLocally" targetRef="Gateway_ProductionMerge" />
+    <bpmn:sequenceFlow id="Flow_T08_Rejected" name="rejected" sourceRef="Gateway_Commitment" targetRef="Task_ProduceLocally" />
+    <bpmn:sequenceFlow id="Flow_T08_Accepted" name="accepted" sourceRef="Gateway_Commitment" targetRef="Gateway_ProductionSplit">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">commitmentStatus = 'accepted'</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_T07" sourceRef="Task_EvaluateCommitment" targetRef="Gateway_Commitment" />
+    <bpmn:sequenceFlow id="Flow_T06" sourceRef="Catch_CommitmentDecision" targetRef="Task_EvaluateCommitment" />
+    <bpmn:sequenceFlow id="Flow_T05" sourceRef="Task_RequestLid" targetRef="Catch_CommitmentDecision" />
+    <bpmn:sequenceFlow id="Flow_T04_Local" name="no" sourceRef="Gateway_Topology" targetRef="Task_ProduceLocally" />
+    <bpmn:sequenceFlow id="Flow_T04_Distributed" name="yes" sourceRef="Gateway_Topology" targetRef="Task_RequestLid">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">topology = 'distributed'</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_T03" sourceRef="Task_SelectTopology" targetRef="Gateway_Topology" />
+    <bpmn:sequenceFlow id="Flow_T02" sourceRef="Task_RegisterRun" targetRef="Task_SelectTopology" />
+    <bpmn:sequenceFlow id="Flow_T01" sourceRef="Start_TinyHouse" targetRef="Task_RegisterRun" />
+    <bpmn:businessRuleTask id="Task_EvaluateCommitment" name="Evaluate decision">
+      <bpmn:incoming>Flow_T06</bpmn:incoming>
+      <bpmn:outgoing>Flow_T07</bpmn:outgoing>
+    </bpmn:businessRuleTask>
+    <bpmn:userTask id="Task_ReviewBase" name="Review base">
+      <bpmn:incoming>Flow_T13_Review</bpmn:incoming>
+      <bpmn:outgoing>Flow_T14</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="Gateway_BaseMerge" gatewayDirection="Converging">
+      <bpmn:incoming>Flow_T13_Passed</bpmn:incoming>
+      <bpmn:incoming>Flow_T16_BaseReleased</bpmn:incoming>
+      <bpmn:outgoing>Flow_T16_BaseReady</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+  </bpmn:process>
+  <bpmn:process id="Process_Munich" name="Munich orchestration" isExecutable="false">
+    <bpmn:startEvent id="Start_Munich" name="Lid requested">
+      <bpmn:outgoing>Flow_M01</bpmn:outgoing>
+      <bpmn:messageEventDefinition id="MessageEventDefinition_Request" messageRef="Message_LidRequest" />
+    </bpmn:startEvent>
+    <bpmn:userTask id="Task_AssessCommitment" name="Assess commitment">
+      <bpmn:incoming>Flow_M01</bpmn:incoming>
+      <bpmn:outgoing>Flow_M02</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="Gateway_AcceptCommitment" name="Accept?" default="Flow_M03_Reject">
+      <bpmn:incoming>Flow_M02</bpmn:incoming>
+      <bpmn:outgoing>Flow_M03_Accept</bpmn:outgoing>
+      <bpmn:outgoing>Flow_M03_Reject</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sendTask id="Task_SendCommitmentAccepted" name="Accept commitment" messageRef="Message_CommitmentDecision">
+      <bpmn:incoming>Flow_M03_Accept</bpmn:incoming>
+      <bpmn:outgoing>Flow_M04_Accepted</bpmn:outgoing>
+    </bpmn:sendTask>
+    <bpmn:sendTask id="Task_SendCommitmentRejected" name="Reject commitment" messageRef="Message_CommitmentDecision">
+      <bpmn:incoming>Flow_M03_Reject</bpmn:incoming>
+      <bpmn:outgoing>Flow_M04_Rejected</bpmn:outgoing>
+    </bpmn:sendTask>
+    <bpmn:endEvent id="End_MunichRejected" name="Commitment closed">
+      <bpmn:incoming>Flow_M04_Rejected</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:serviceTask id="Task_PrintLid" name="Print lid">
+      <bpmn:incoming>Flow_M04_Accepted</bpmn:incoming>
+      <bpmn:incoming>Flow_M09_Reprint</bpmn:incoming>
+      <bpmn:incoming>Flow_M15_Replacement</bpmn:incoming>
+      <bpmn:outgoing>Flow_M05</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:businessRuleTask id="Task_InspectLid" name="Inspect lid">
+      <bpmn:incoming>Flow_M05</bpmn:incoming>
+      <bpmn:outgoing>Flow_M06</bpmn:outgoing>
+    </bpmn:businessRuleTask>
+    <bpmn:exclusiveGateway id="Gateway_MunichQuality" name="Lid passed?" default="Flow_M07_Review">
+      <bpmn:incoming>Flow_M06</bpmn:incoming>
+      <bpmn:outgoing>Flow_M07_Passed</bpmn:outgoing>
+      <bpmn:outgoing>Flow_M07_Review</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:userTask id="Task_ReviewLid" name="Review lid">
+      <bpmn:incoming>Flow_M07_Review</bpmn:incoming>
+      <bpmn:outgoing>Flow_M08</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="Gateway_MunichDisposition" name="Reprint?" default="Flow_M09_Release">
+      <bpmn:incoming>Flow_M08</bpmn:incoming>
+      <bpmn:outgoing>Flow_M09_Reprint</bpmn:outgoing>
+      <bpmn:outgoing>Flow_M09_Release</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:manualTask id="Task_ReleaseLid" name="Release lid">
+      <bpmn:incoming>Flow_M09_Release</bpmn:incoming>
+      <bpmn:outgoing>Flow_M10_Released</bpmn:outgoing>
+    </bpmn:manualTask>
+    <bpmn:userTask id="Task_PackLid" name="Pack lid">
+      <bpmn:incoming>Flow_M07_Passed</bpmn:incoming>
+      <bpmn:incoming>Flow_M10_Released</bpmn:incoming>
+      <bpmn:outgoing>Flow_M11</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sendTask id="Task_DispatchLid" name="Dispatch lid" messageRef="Message_LidDispatch">
+      <bpmn:incoming>Flow_M11</bpmn:incoming>
+      <bpmn:outgoing>Flow_M12</bpmn:outgoing>
+    </bpmn:sendTask>
+    <bpmn:intermediateCatchEvent id="Catch_DeliveryDecision" name="Delivery decision">
+      <bpmn:incoming>Flow_M12</bpmn:incoming>
+      <bpmn:outgoing>Flow_M13</bpmn:outgoing>
+      <bpmn:messageEventDefinition id="MessageEventDefinition_Delivery" messageRef="Message_DeliveryDecision" />
+    </bpmn:intermediateCatchEvent>
+    <bpmn:businessRuleTask id="Task_EvaluateDelivery" name="Evaluate delivery">
+      <bpmn:incoming>Flow_M13</bpmn:incoming>
+      <bpmn:outgoing>Flow_M14</bpmn:outgoing>
+    </bpmn:businessRuleTask>
+    <bpmn:exclusiveGateway id="Gateway_DeliveryAccepted" name="Accepted?" default="Flow_M15_Replacement">
+      <bpmn:incoming>Flow_M14</bpmn:incoming>
+      <bpmn:outgoing>Flow_M15_Accepted</bpmn:outgoing>
+      <bpmn:outgoing>Flow_M15_Replacement</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:intermediateCatchEvent id="Catch_Outcome" name="Outcome received">
+      <bpmn:incoming>Flow_M15_Accepted</bpmn:incoming>
+      <bpmn:outgoing>Flow_M16</bpmn:outgoing>
+      <bpmn:messageEventDefinition id="MessageEventDefinition_Outcome" messageRef="Message_Outcome" />
+    </bpmn:intermediateCatchEvent>
+    <bpmn:endEvent id="End_MunichComplete" name="Collaboration complete">
+      <bpmn:incoming>Flow_M16</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_M01" sourceRef="Start_Munich" targetRef="Task_AssessCommitment" />
+    <bpmn:sequenceFlow id="Flow_M02" sourceRef="Task_AssessCommitment" targetRef="Gateway_AcceptCommitment" />
+    <bpmn:sequenceFlow id="Flow_M03_Accept" name="yes" sourceRef="Gateway_AcceptCommitment" targetRef="Task_SendCommitmentAccepted">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">capacityDecision = 'accepted'</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_M03_Reject" name="no" sourceRef="Gateway_AcceptCommitment" targetRef="Task_SendCommitmentRejected" />
+    <bpmn:sequenceFlow id="Flow_M04_Accepted" sourceRef="Task_SendCommitmentAccepted" targetRef="Task_PrintLid" />
+    <bpmn:sequenceFlow id="Flow_M04_Rejected" sourceRef="Task_SendCommitmentRejected" targetRef="End_MunichRejected" />
+    <bpmn:sequenceFlow id="Flow_M05" sourceRef="Task_PrintLid" targetRef="Task_InspectLid" />
+    <bpmn:sequenceFlow id="Flow_M06" sourceRef="Task_InspectLid" targetRef="Gateway_MunichQuality" />
+    <bpmn:sequenceFlow id="Flow_M07_Passed" name="yes" sourceRef="Gateway_MunichQuality" targetRef="Task_PackLid">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">lidQuality = 'accepted'</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_M07_Review" name="no" sourceRef="Gateway_MunichQuality" targetRef="Task_ReviewLid" />
+    <bpmn:sequenceFlow id="Flow_M08" sourceRef="Task_ReviewLid" targetRef="Gateway_MunichDisposition" />
+    <bpmn:sequenceFlow id="Flow_M09_Reprint" name="yes" sourceRef="Gateway_MunichDisposition" targetRef="Task_PrintLid">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">lidDisposition = 'reprint'</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_M09_Release" name="no" sourceRef="Gateway_MunichDisposition" targetRef="Task_ReleaseLid" />
+    <bpmn:sequenceFlow id="Flow_M10_Released" sourceRef="Task_ReleaseLid" targetRef="Task_PackLid" />
+    <bpmn:sequenceFlow id="Flow_M11" sourceRef="Task_PackLid" targetRef="Task_DispatchLid" />
+    <bpmn:sequenceFlow id="Flow_M12" sourceRef="Task_DispatchLid" targetRef="Catch_DeliveryDecision" />
+    <bpmn:sequenceFlow id="Flow_M13" sourceRef="Catch_DeliveryDecision" targetRef="Task_EvaluateDelivery" />
+    <bpmn:sequenceFlow id="Flow_M14" sourceRef="Task_EvaluateDelivery" targetRef="Gateway_DeliveryAccepted" />
+    <bpmn:sequenceFlow id="Flow_M15_Accepted" name="yes" sourceRef="Gateway_DeliveryAccepted" targetRef="Catch_Outcome">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">deliveryStatus = 'accepted'</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_M15_Replacement" name="no" sourceRef="Gateway_DeliveryAccepted" targetRef="Task_PrintLid" />
+    <bpmn:sequenceFlow id="Flow_M16" sourceRef="Catch_Outcome" targetRef="End_MunichComplete" />
+  </bpmn:process>
+  <bpmn:collaboration id="Collaboration_DistributedSensorNode">
+    <bpmn:participant id="Participant_TinyHouse" name="TinyHouse" processRef="Process_TinyHouse" />
+    <bpmn:participant id="Participant_Munich" name="Munich Lab" processRef="Process_Munich" />
+    <bpmn:messageFlow id="MessageFlow_LidRequest" name="lid request" sourceRef="Task_RequestLid" targetRef="Start_Munich" messageRef="Message_LidRequest" />
+    <bpmn:messageFlow id="MessageFlow_CommitAccepted" name="accepted" sourceRef="Task_SendCommitmentAccepted" targetRef="Catch_CommitmentDecision" messageRef="Message_CommitmentDecision" />
+    <bpmn:messageFlow id="MessageFlow_CommitRejected" name="rejected" sourceRef="Task_SendCommitmentRejected" targetRef="Catch_CommitmentDecision" messageRef="Message_CommitmentDecision" />
+    <bpmn:messageFlow id="MessageFlow_LidDispatch" name="dispatch" sourceRef="Task_DispatchLid" targetRef="Catch_LidDispatch" messageRef="Message_LidDispatch" />
+    <bpmn:messageFlow id="MessageFlow_DeliveryAccepted" name="accepted" sourceRef="Task_AcceptDelivery" targetRef="Catch_DeliveryDecision" messageRef="Message_DeliveryDecision" />
+    <bpmn:messageFlow id="MessageFlow_DeliveryReplacement" name="replacement" sourceRef="Task_RequestReplacement" targetRef="Catch_DeliveryDecision" messageRef="Message_DeliveryDecision" />
+    <bpmn:messageFlow id="MessageFlow_Outcome" name="outcome" sourceRef="Task_ShareOutcome" targetRef="Catch_Outcome" messageRef="Message_Outcome" />
+  </bpmn:collaboration>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_Orchestration">
+    <bpmndi:BPMNPlane id="BPMNPlane_Orchestration" bpmnElement="Collaboration_DistributedSensorNode">
+      <bpmndi:BPMNShape id="Participant_Munich_di" bpmnElement="Participant_Munich" isHorizontal="true" bioc:stroke="#AFA3B6" bioc:fill="#E0D4E7">
+        <dc:Bounds x="30" y="520" width="3440" height="350" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_M16_di" bpmnElement="Flow_M16" bioc:stroke="#AFA3B6">
+        <di:waypoint x="2796" y="690" />
+        <di:waypoint x="2910" y="690" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_M15_Replacement_di" bpmnElement="Flow_M15_Replacement" bioc:stroke="#AFA3B6">
+        <di:waypoint x="2635" y="715" />
+        <di:waypoint x="2635" y="835" />
+        <di:waypoint x="1210" y="835" />
+        <di:waypoint x="1210" y="630" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_M15_Accepted_di" bpmnElement="Flow_M15_Accepted" bioc:stroke="#AFA3B6">
+        <di:waypoint x="2660" y="690" />
+        <di:waypoint x="2760" y="690" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_M14_di" bpmnElement="Flow_M14" bioc:stroke="#AFA3B6">
+        <di:waypoint x="2570" y="690" />
+        <di:waypoint x="2610" y="690" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_M13_di" bpmnElement="Flow_M13" bioc:stroke="#AFA3B6">
+        <di:waypoint x="2396" y="690" />
+        <di:waypoint x="2450" y="690" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_M12_di" bpmnElement="Flow_M12" bioc:stroke="#AFA3B6">
+        <di:waypoint x="2300" y="690" />
+        <di:waypoint x="2360" y="690" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_M11_di" bpmnElement="Flow_M11" bioc:stroke="#AFA3B6">
+        <di:waypoint x="2140" y="590" />
+        <di:waypoint x="2160" y="590" />
+        <di:waypoint x="2160" y="690" />
+        <di:waypoint x="2180" y="690" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_M10_Released_di" bpmnElement="Flow_M10_Released" bioc:stroke="#AFA3B6">
+        <di:waypoint x="1980" y="590" />
+        <di:waypoint x="2020" y="590" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_M09_Release_di" bpmnElement="Flow_M09_Release" bioc:stroke="#AFA3B6">
+        <di:waypoint x="1800" y="770" />
+        <di:waypoint x="1840" y="770" />
+        <di:waypoint x="1840" y="590" />
+        <di:waypoint x="1860" y="590" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_M09_Reprint_di" bpmnElement="Flow_M09_Reprint" bioc:stroke="#AFA3B6">
+        <di:waypoint x="1775" y="795" />
+        <di:waypoint x="1775" y="835" />
+        <di:waypoint x="1210" y="835" />
+        <di:waypoint x="1210" y="630" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_M08_di" bpmnElement="Flow_M08" bioc:stroke="#AFA3B6">
+        <di:waypoint x="1710" y="770" />
+        <di:waypoint x="1750" y="770" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_M07_Review_di" bpmnElement="Flow_M07_Review" bioc:stroke="#AFA3B6">
+        <di:waypoint x="1505" y="615" />
+        <di:waypoint x="1505" y="770" />
+        <di:waypoint x="1590" y="770" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_M07_Passed_di" bpmnElement="Flow_M07_Passed" bioc:stroke="#AFA3B6">
+        <di:waypoint x="1530" y="590" />
+        <di:waypoint x="2020" y="590" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_M06_di" bpmnElement="Flow_M06" bioc:stroke="#AFA3B6">
+        <di:waypoint x="1440" y="590" />
+        <di:waypoint x="1480" y="590" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_M05_di" bpmnElement="Flow_M05" bioc:stroke="#AFA3B6">
+        <di:waypoint x="1270" y="590" />
+        <di:waypoint x="1320" y="590" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_M04_Rejected_di" bpmnElement="Flow_M04_Rejected" bioc:stroke="#AFA3B6">
+        <di:waypoint x="1090" y="775" />
+        <di:waypoint x="1140" y="775" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_M04_Accepted_di" bpmnElement="Flow_M04_Accepted" bioc:stroke="#AFA3B6">
+        <di:waypoint x="1090" y="590" />
+        <di:waypoint x="1150" y="590" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_M03_Reject_di" bpmnElement="Flow_M03_Reject" bioc:stroke="#AFA3B6">
+        <di:waypoint x="885" y="715" />
+        <di:waypoint x="885" y="775" />
+        <di:waypoint x="970" y="775" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_M03_Accept_di" bpmnElement="Flow_M03_Accept" bioc:stroke="#AFA3B6">
+        <di:waypoint x="885" y="665" />
+        <di:waypoint x="885" y="590" />
+        <di:waypoint x="970" y="590" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_M02_di" bpmnElement="Flow_M02" bioc:stroke="#AFA3B6">
+        <di:waypoint x="820" y="590" />
+        <di:waypoint x="840" y="590" />
+        <di:waypoint x="840" y="690" />
+        <di:waypoint x="860" y="690" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_M01_di" bpmnElement="Flow_M01" bioc:stroke="#AFA3B6">
+        <di:waypoint x="628" y="672" />
+        <di:waypoint x="628" y="590" />
+        <di:waypoint x="700" y="590" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Start_Munich_di" bpmnElement="Start_Munich" bioc:stroke="#C9B6BA" bioc:fill="#FAE7EB">
+        <dc:Bounds x="610" y="672" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_AssessCommitment_di" bpmnElement="Task_AssessCommitment" bioc:stroke="#C9B6BA" bioc:fill="#FAE7EB">
+        <dc:Bounds x="700" y="550" width="120" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_AcceptCommitment_di" bpmnElement="Gateway_AcceptCommitment" isMarkerVisible="true" bioc:stroke="#8CA1B3" bioc:fill="#BDD2E4">
+        <dc:Bounds x="860" y="665" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_SendCommitmentAccepted_di" bpmnElement="Task_SendCommitmentAccepted" bioc:stroke="#9BABBA" bioc:fill="#CCDCEB">
+        <dc:Bounds x="970" y="550" width="120" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_SendCommitmentRejected_di" bpmnElement="Task_SendCommitmentRejected" bioc:stroke="#BD9DA9" bioc:fill="#EECEDA">
+        <dc:Bounds x="970" y="735" width="120" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="End_MunichRejected_di" bpmnElement="End_MunichRejected" bioc:stroke="#BD9DA9" bioc:fill="#EECEDA">
+        <dc:Bounds x="1140" y="757" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_PrintLid_di" bpmnElement="Task_PrintLid" bioc:stroke="#AABDC6" bioc:fill="#DBEEF7">
+        <dc:Bounds x="1150" y="550" width="120" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_InspectLid_di" bpmnElement="Task_InspectLid" bioc:stroke="#AFA3B6" bioc:fill="#E0D4E7">
+        <dc:Bounds x="1320" y="550" width="120" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_MunichQuality_di" bpmnElement="Gateway_MunichQuality" isMarkerVisible="true" bioc:stroke="#8CA1B3" bioc:fill="#BDD2E4">
+        <dc:Bounds x="1480" y="565" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ReviewLid_di" bpmnElement="Task_ReviewLid" bioc:stroke="#C9B6BA" bioc:fill="#FAE7EB">
+        <dc:Bounds x="1590" y="730" width="120" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_MunichDisposition_di" bpmnElement="Gateway_MunichDisposition" isMarkerVisible="true" bioc:stroke="#8CA1B3" bioc:fill="#BDD2E4">
+        <dc:Bounds x="1750" y="745" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ReleaseLid_di" bpmnElement="Task_ReleaseLid" bioc:stroke="#BD9DA9" bioc:fill="#EECEDA">
+        <dc:Bounds x="1860" y="550" width="120" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_PackLid_di" bpmnElement="Task_PackLid" bioc:stroke="#C9B6BA" bioc:fill="#FAE7EB">
+        <dc:Bounds x="2020" y="550" width="120" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_DispatchLid_di" bpmnElement="Task_DispatchLid" bioc:stroke="#9BABBA" bioc:fill="#CCDCEB">
+        <dc:Bounds x="2180" y="650" width="120" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Catch_DeliveryDecision_di" bpmnElement="Catch_DeliveryDecision" bioc:stroke="#BD9DA9" bioc:fill="#EECEDA">
+        <dc:Bounds x="2360" y="672" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_EvaluateDelivery_di" bpmnElement="Task_EvaluateDelivery" bioc:stroke="#AFA3B6" bioc:fill="#E0D4E7">
+        <dc:Bounds x="2450" y="650" width="120" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_DeliveryAccepted_di" bpmnElement="Gateway_DeliveryAccepted" isMarkerVisible="true" bioc:stroke="#8CA1B3" bioc:fill="#BDD2E4">
+        <dc:Bounds x="2610" y="665" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Catch_Outcome_di" bpmnElement="Catch_Outcome" bioc:stroke="#BD9DA9" bioc:fill="#EECEDA">
+        <dc:Bounds x="2760" y="672" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="End_MunichComplete_di" bpmnElement="End_MunichComplete" bioc:stroke="#BD9DA9" bioc:fill="#EECEDA">
+        <dc:Bounds x="2910" y="672" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_TinyHouse_di" bpmnElement="Participant_TinyHouse" isHorizontal="true" bioc:stroke="#AABDC6" bioc:fill="#DBEEF7">
+        <dc:Bounds x="30" y="-20" width="3440" height="440" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_T32_di" bpmnElement="Flow_T32" bioc:stroke="#8CA1B3">
+        <di:waypoint x="3400" y="190" />
+        <di:waypoint x="3420" y="190" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_T31_di" bpmnElement="Flow_T31" bioc:stroke="#8CA1B3">
+        <di:waypoint x="3260" y="190" />
+        <di:waypoint x="3280" y="190" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_T30_Local_di" bpmnElement="Flow_T30_Local" bioc:stroke="#8CA1B3">
+        <di:waypoint x="3095" y="165" />
+        <di:waypoint x="3095" y="120" />
+        <di:waypoint x="3438" y="120" />
+        <di:waypoint x="3438" y="172" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="3260" y="95" width="13" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_T30_Shared_di" bpmnElement="Flow_T30_Shared" bioc:stroke="#8CA1B3">
+        <di:waypoint x="3120" y="190" />
+        <di:waypoint x="3140" y="190" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="3121" y="165" width="18" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_T30_di" bpmnElement="Flow_T30" bioc:stroke="#8CA1B3">
+        <di:waypoint x="3050" y="190" />
+        <di:waypoint x="3070" y="190" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_T29_Reworked_di" bpmnElement="Flow_T29_Reworked" bioc:stroke="#8CA1B3">
+        <di:waypoint x="3150" y="395" />
+        <di:waypoint x="3150" y="410" />
+        <di:waypoint x="2730" y="410" />
+        <di:waypoint x="2730" y="365" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_T28_di" bpmnElement="Flow_T28" bioc:stroke="#8CA1B3">
+        <di:waypoint x="3050" y="355" />
+        <di:waypoint x="3090" y="355" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_T27_Failed_di" bpmnElement="Flow_T27_Failed" bioc:stroke="#8CA1B3">
+        <di:waypoint x="2855" y="350" />
+        <di:waypoint x="2855" y="355" />
+        <di:waypoint x="2930" y="355" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2864" y="343" width="13" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_T27_Passed_di" bpmnElement="Flow_T27_Passed" bioc:stroke="#8CA1B3">
+        <di:waypoint x="2855" y="300" />
+        <di:waypoint x="2855" y="190" />
+        <di:waypoint x="2930" y="190" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2861" y="235" width="18" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_T26_di" bpmnElement="Flow_T26" bioc:stroke="#8CA1B3">
+        <di:waypoint x="2790" y="325" />
+        <di:waypoint x="2830" y="325" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_T25_di" bpmnElement="Flow_T25" bioc:stroke="#8CA1B3">
+        <di:waypoint x="2630" y="55" />
+        <di:waypoint x="2650" y="55" />
+        <di:waypoint x="2650" y="325" />
+        <di:waypoint x="2670" y="325" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_T24_di" bpmnElement="Flow_T24" bioc:stroke="#8CA1B3">
+        <di:waypoint x="2470" y="325" />
+        <di:waypoint x="2490" y="325" />
+        <di:waypoint x="2490" y="55" />
+        <di:waypoint x="2510" y="55" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_T23_di" bpmnElement="Flow_T23" bioc:stroke="#8CA1B3">
+        <di:waypoint x="2310" y="200" />
+        <di:waypoint x="2330" y="200" />
+        <di:waypoint x="2330" y="325" />
+        <di:waypoint x="2350" y="325" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_T22_DistributedDone_di" bpmnElement="Flow_T22_DistributedDone" bioc:stroke="#8CA1B3">
+        <di:waypoint x="2210" y="200" />
+        <di:waypoint x="2260" y="200" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_T21_Replacement_di" bpmnElement="Flow_T21_Replacement" bioc:stroke="#8CA1B3">
+        <di:waypoint x="1870" y="395" />
+        <di:waypoint x="1870" y="405" />
+        <di:waypoint x="1293" y="405" />
+        <di:waypoint x="1293" y="343" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_T21_Accepted_di" bpmnElement="Flow_T21_Accepted" bioc:stroke="#8CA1B3">
+        <di:waypoint x="1930" y="260" />
+        <di:waypoint x="2185" y="260" />
+        <di:waypoint x="2185" y="225" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_T20_Replace_di" bpmnElement="Flow_T20_Replace" bioc:stroke="#8CA1B3">
+        <di:waypoint x="1715" y="350" />
+        <di:waypoint x="1715" y="355" />
+        <di:waypoint x="1810" y="355" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1724" y="343" width="13" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_T20_Accept_di" bpmnElement="Flow_T20_Accept" bioc:stroke="#8CA1B3">
+        <di:waypoint x="1715" y="300" />
+        <di:waypoint x="1715" y="260" />
+        <di:waypoint x="1810" y="260" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1721" y="270" width="18" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_T19_di" bpmnElement="Flow_T19" bioc:stroke="#8CA1B3">
+        <di:waypoint x="1650" y="325" />
+        <di:waypoint x="1690" y="325" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_T18_di" bpmnElement="Flow_T18" bioc:stroke="#8CA1B3">
+        <di:waypoint x="1490" y="325" />
+        <di:waypoint x="1530" y="325" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_T17_di" bpmnElement="Flow_T17" bioc:stroke="#8CA1B3">
+        <di:waypoint x="1311" y="325" />
+        <di:waypoint x="1370" y="325" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_T16_BaseReady_di" bpmnElement="Flow_T16_BaseReady" bioc:stroke="#8CA1B3">
+        <di:waypoint x="2145" y="70" />
+        <di:waypoint x="2145" y="200" />
+        <di:waypoint x="2160" y="200" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_T16_BaseReleased_di" bpmnElement="Flow_T16_BaseReleased" bioc:stroke="#8CA1B3">
+        <di:waypoint x="2090" y="25" />
+        <di:waypoint x="2105" y="25" />
+        <di:waypoint x="2105" y="53" />
+        <di:waypoint x="2128" y="53" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_T15_Release_di" bpmnElement="Flow_T15_Release" bioc:stroke="#8CA1B3">
+        <di:waypoint x="1900" y="45" />
+        <di:waypoint x="1970" y="45" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1929" y="20" width="13" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_T15_Reprint_di" bpmnElement="Flow_T15_Reprint" bioc:stroke="#8CA1B3">
+        <di:waypoint x="1875" y="20" />
+        <di:waypoint x="1875" y="-5" />
+        <di:waypoint x="1330" y="-5" />
+        <di:waypoint x="1330" y="15" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1594" y="-30" width="18" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_T14_di" bpmnElement="Flow_T14" bioc:stroke="#8CA1B3">
+        <di:waypoint x="1810" y="55" />
+        <di:waypoint x="1830" y="55" />
+        <di:waypoint x="1830" y="45" />
+        <di:waypoint x="1850" y="45" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_T13_Review_di" bpmnElement="Flow_T13_Review" bioc:stroke="#8CA1B3">
+        <di:waypoint x="1635" y="60" />
+        <di:waypoint x="1665" y="60" />
+        <di:waypoint x="1665" y="43" />
+        <di:waypoint x="1690" y="43" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1673" y="18" width="13" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_T13_Passed_di" bpmnElement="Flow_T13_Passed" bioc:stroke="#8CA1B3">
+        <di:waypoint x="1615" y="80" />
+        <di:waypoint x="1615" y="110" />
+        <di:waypoint x="2145" y="110" />
+        <di:waypoint x="2145" y="70" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1871" y="85" width="18" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_T12_di" bpmnElement="Flow_T12" bioc:stroke="#8CA1B3">
+        <di:waypoint x="1550" y="55" />
+        <di:waypoint x="1590" y="55" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_T11_di" bpmnElement="Flow_T11" bioc:stroke="#8CA1B3">
+        <di:waypoint x="1390" y="55" />
+        <di:waypoint x="1430" y="55" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_T10_Remote_di" bpmnElement="Flow_T10_Remote" bioc:stroke="#8CA1B3">
+        <di:waypoint x="1175" y="225" />
+        <di:waypoint x="1175" y="325" />
+        <di:waypoint x="1275" y="325" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_T10_Base_di" bpmnElement="Flow_T10_Base" bioc:stroke="#8CA1B3">
+        <di:waypoint x="1175" y="175" />
+        <di:waypoint x="1175" y="55" />
+        <di:waypoint x="1270" y="55" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_T09_LocalDone_di" bpmnElement="Flow_T09_LocalDone" bioc:stroke="#8CA1B3">
+        <di:waypoint x="1220" y="345" />
+        <di:waypoint x="2285" y="345" />
+        <di:waypoint x="2285" y="225" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_T08_Rejected_di" bpmnElement="Flow_T08_Rejected" bioc:stroke="#8CA1B3">
+        <di:waypoint x="1035" y="225" />
+        <di:waypoint x="1035" y="345" />
+        <di:waypoint x="1100" y="345" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1030" y="275" width="40" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_T08_Accepted_di" bpmnElement="Flow_T08_Accepted" bioc:stroke="#8CA1B3">
+        <di:waypoint x="1060" y="200" />
+        <di:waypoint x="1150" y="200" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1083" y="175" width="45" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_T07_di" bpmnElement="Flow_T07" bioc:stroke="#8CA1B3">
+        <di:waypoint x="965" y="200" />
+        <di:waypoint x="1010" y="200" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_T06_di" bpmnElement="Flow_T06" bioc:stroke="#8CA1B3">
+        <di:waypoint x="791" y="200" />
+        <di:waypoint x="845" y="200" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_T05_di" bpmnElement="Flow_T05" bioc:stroke="#8CA1B3">
+        <di:waypoint x="695" y="200" />
+        <di:waypoint x="755" y="200" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_T04_Local_di" bpmnElement="Flow_T04_Local" bioc:stroke="#8CA1B3">
+        <di:waypoint x="490" y="225" />
+        <di:waypoint x="490" y="345" />
+        <di:waypoint x="1100" y="345" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="499" y="275" width="13" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_T04_Distributed_di" bpmnElement="Flow_T04_Distributed" bioc:stroke="#8CA1B3">
+        <di:waypoint x="515" y="200" />
+        <di:waypoint x="575" y="200" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="536" y="175" width="18" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_T03_di" bpmnElement="Flow_T03" bioc:stroke="#8CA1B3">
+        <di:waypoint x="425" y="200" />
+        <di:waypoint x="465" y="200" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_T02_di" bpmnElement="Flow_T02" bioc:stroke="#8CA1B3">
+        <di:waypoint x="265" y="60" />
+        <di:waypoint x="285" y="60" />
+        <di:waypoint x="285" y="200" />
+        <di:waypoint x="305" y="200" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_T01_di" bpmnElement="Flow_T01" bioc:stroke="#8CA1B3">
+        <di:waypoint x="98" y="182" />
+        <di:waypoint x="98" y="60" />
+        <di:waypoint x="145" y="60" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Start_TinyHouse_di" bpmnElement="Start_TinyHouse" bioc:stroke="#C9B6BA" bioc:fill="#FAE7EB">
+        <dc:Bounds x="80" y="182" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="68" y="218" width="60" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_RegisterRun_di" bpmnElement="Task_RegisterRun" bioc:stroke="#C9B6BA" bioc:fill="#FAE7EB">
+        <dc:Bounds x="145" y="20" width="120" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_SelectTopology_di" bpmnElement="Task_SelectTopology" bioc:stroke="#AFA3B6" bioc:fill="#E0D4E7">
+        <dc:Bounds x="305" y="160" width="120" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_Topology_di" bpmnElement="Gateway_Topology" isMarkerVisible="true" bioc:stroke="#8CA1B3" bioc:fill="#BDD2E4">
+        <dc:Bounds x="465" y="175" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="461" y="225" width="59" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_RequestLid_di" bpmnElement="Task_RequestLid" bioc:stroke="#9BABBA" bioc:fill="#CCDCEB">
+        <dc:Bounds x="575" y="160" width="120" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Catch_CommitmentDecision_di" bpmnElement="Catch_CommitmentDecision" bioc:stroke="#BD9DA9" bioc:fill="#EECEDA">
+        <dc:Bounds x="755" y="182" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="741" y="158" width="63" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_Commitment_di" bpmnElement="Gateway_Commitment" isMarkerVisible="true" bioc:stroke="#8CA1B3" bioc:fill="#BDD2E4">
+        <dc:Bounds x="1010" y="175" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1009" y="151" width="52" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ProduceLocally_di" bpmnElement="Task_ProduceLocally" bioc:stroke="#AABDC6" bioc:fill="#DBEEF7">
+        <dc:Bounds x="1100" y="305" width="120" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_ProductionSplit_di" bpmnElement="Gateway_ProductionSplit" isMarkerVisible="true" bioc:stroke="#8CA1B3" bioc:fill="#BDD2E4">
+        <dc:Bounds x="1150" y="175" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1137" y="225" width="76" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_PrintBase_di" bpmnElement="Task_PrintBase" bioc:stroke="#AABDC6" bioc:fill="#DBEEF7">
+        <dc:Bounds x="1270" y="15" width="120" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_InspectBase_di" bpmnElement="Task_InspectBase" bioc:stroke="#AFA3B6" bioc:fill="#E0D4E7">
+        <dc:Bounds x="1430" y="15" width="120" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_BaseQuality_di" bpmnElement="Gateway_BaseQuality" isMarkerVisible="true" bioc:stroke="#8CA1B3" bioc:fill="#BDD2E4">
+        <dc:Bounds x="1590" y="30" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1580" y="6" width="70" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_BaseDisposition_di" bpmnElement="Gateway_BaseDisposition" isMarkerVisible="true" bioc:stroke="#8CA1B3" bioc:fill="#BDD2E4">
+        <dc:Bounds x="1850" y="20" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1854" y="70" width="42" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ReleaseBase_di" bpmnElement="Task_ReleaseBase" bioc:stroke="#BD9DA9" bioc:fill="#EECEDA">
+        <dc:Bounds x="1970" y="5" width="120" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Catch_LidDispatch_di" bpmnElement="Catch_LidDispatch" bioc:stroke="#BD9DA9" bioc:fill="#EECEDA">
+        <dc:Bounds x="1275" y="307" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1257" y="283" width="71" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ReceiveLid_di" bpmnElement="Task_ReceiveLid" bioc:stroke="#C9B6BA" bioc:fill="#FAE7EB">
+        <dc:Bounds x="1370" y="285" width="120" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_VerifyLid_di" bpmnElement="Task_VerifyLid" bioc:stroke="#AFA3B6" bioc:fill="#E0D4E7">
+        <dc:Bounds x="1530" y="285" width="120" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_LidQuality_di" bpmnElement="Gateway_LidQuality" isMarkerVisible="true" bioc:stroke="#8CA1B3" bioc:fill="#BDD2E4">
+        <dc:Bounds x="1690" y="300" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1685" y="350" width="60" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_AcceptDelivery_di" bpmnElement="Task_AcceptDelivery" bioc:stroke="#9BABBA" bioc:fill="#CCDCEB">
+        <dc:Bounds x="1810" y="220" width="120" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_RequestReplacement_di" bpmnElement="Task_RequestReplacement" bioc:stroke="#BD9DA9" bioc:fill="#EECEDA">
+        <dc:Bounds x="1810" y="315" width="120" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_ProductionJoin_di" bpmnElement="Gateway_ProductionJoin" isMarkerVisible="true" bioc:stroke="#8CA1B3" bioc:fill="#BDD2E4">
+        <dc:Bounds x="2160" y="175" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2156" y="151" width="57" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_ProductionMerge_di" bpmnElement="Gateway_ProductionMerge" isMarkerVisible="true" bioc:stroke="#8CA1B3" bioc:fill="#BDD2E4">
+        <dc:Bounds x="2260" y="175" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_RobotKit_di" bpmnElement="Task_RobotKit" bioc:stroke="#AABDC6" bioc:fill="#DBEEF7">
+        <dc:Bounds x="2350" y="285" width="120" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_AssembleNode_di" bpmnElement="Task_AssembleNode" bioc:stroke="#C9B6BA" bioc:fill="#FAE7EB">
+        <dc:Bounds x="2510" y="15" width="120" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_Calibrate_di" bpmnElement="Task_Calibrate" bioc:stroke="#AABDC6" bioc:fill="#DBEEF7">
+        <dc:Bounds x="2670" y="285" width="120" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_Calibration_di" bpmnElement="Gateway_Calibration" isMarkerVisible="true" bioc:stroke="#8CA1B3" bioc:fill="#BDD2E4">
+        <dc:Bounds x="2830" y="300" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2834" y="350" width="43" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ResolveCalibration_di" bpmnElement="Task_ResolveCalibration" bioc:stroke="#C9B6BA" bioc:fill="#FAE7EB">
+        <dc:Bounds x="2930" y="315" width="120" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ReworkSensor_di" bpmnElement="Task_ReworkSensor" bioc:stroke="#AABDC6" bioc:fill="#DBEEF7">
+        <dc:Bounds x="3090" y="315" width="120" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ApproveDeployment_di" bpmnElement="Task_ApproveDeployment" bioc:stroke="#C9B6BA" bioc:fill="#FAE7EB">
+        <dc:Bounds x="2930" y="150" width="120" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_OutcomeRequired_di" bpmnElement="Gateway_OutcomeRequired" isMarkerVisible="true" bioc:stroke="#8CA1B3" bioc:fill="#BDD2E4">
+        <dc:Bounds x="3070" y="165" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="3065" y="215" width="61" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ApplyDisclosure_di" bpmnElement="Task_ApplyDisclosure" bioc:stroke="#AFA3B6" bioc:fill="#E0D4E7">
+        <dc:Bounds x="3140" y="150" width="120" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ShareOutcome_di" bpmnElement="Task_ShareOutcome" bioc:stroke="#9BABBA" bioc:fill="#CCDCEB">
+        <dc:Bounds x="3280" y="150" width="120" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="End_TinyHouse_di" bpmnElement="End_TinyHouse" bioc:stroke="#BD9DA9" bioc:fill="#EECEDA">
+        <dc:Bounds x="3420" y="172" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="3404" y="208" width="68" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_EvaluateCommitment_di" bpmnElement="Task_EvaluateCommitment" bioc:stroke="#AFA3B6" bioc:fill="#E0D4E7">
+        <dc:Bounds x="845" y="160" width="120" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ReviewBase_di" bpmnElement="Task_ReviewBase" bioc:stroke="#C9B6BA" bioc:fill="#FAE7EB">
+        <dc:Bounds x="1690" y="15" width="120" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_BaseMerge_di" bpmnElement="Gateway_BaseMerge" isMarkerVisible="true" bioc:stroke="#8CA1B3" bioc:fill="#BDD2E4">
+        <dc:Bounds x="2120" y="20" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="MessageFlow_LidRequest_di" bpmnElement="MessageFlow_LidRequest" bioc:stroke="#9BABBA">
+        <di:waypoint x="627" y="240" />
+        <di:waypoint x="627" y="672" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="617" y="443" width="51" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_CommitAccepted_di" bpmnElement="MessageFlow_CommitAccepted" bioc:stroke="#9BABBA">
+        <di:waypoint x="1030" y="550" />
+        <di:waypoint x="1030" y="500" />
+        <di:waypoint x="773" y="500" />
+        <di:waypoint x="773" y="218" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="879" y="475" width="45" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_CommitRejected_di" bpmnElement="MessageFlow_CommitRejected" bioc:stroke="#9BABBA">
+        <di:waypoint x="1030" y="735" />
+        <di:waypoint x="1030" y="495" />
+        <di:waypoint x="773" y="495" />
+        <di:waypoint x="773" y="218" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="882" y="470" width="40" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_LidDispatch_di" bpmnElement="MessageFlow_LidDispatch" bioc:stroke="#9BABBA">
+        <di:waypoint x="2240" y="650" />
+        <di:waypoint x="2240" y="500" />
+        <di:waypoint x="1293" y="500" />
+        <di:waypoint x="1293" y="343" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1746" y="475" width="41" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_DeliveryAccepted_di" bpmnElement="MessageFlow_DeliveryAccepted" bioc:stroke="#9BABBA">
+        <di:waypoint x="1870" y="300" />
+        <di:waypoint x="1870" y="500" />
+        <di:waypoint x="2378" y="500" />
+        <di:waypoint x="2378" y="672" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2102" y="475" width="45" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_DeliveryReplacement_di" bpmnElement="MessageFlow_DeliveryReplacement" bioc:stroke="#9BABBA">
+        <di:waypoint x="1930" y="355" />
+        <di:waypoint x="2378" y="355" />
+        <di:waypoint x="2378" y="672" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2124" y="330" width="61" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_Outcome_di" bpmnElement="MessageFlow_Outcome" bioc:stroke="#9BABBA">
+        <di:waypoint x="3340" y="230" />
+        <di:waypoint x="3340" y="500" />
+        <di:waypoint x="2778" y="500" />
+        <di:waypoint x="2778" y="672" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="3038" y="475" width="43" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

@@ -1,6 +1,6 @@
 # Sensor Layer
 
-The sensor layer starts at Arduino class boards. Each board can read eight analog inputs and four digital inputs. Each board can provide five volt power for attached sensors. Each board sends readings to a Raspberry Pi through RX/TX.
+The sensor layer starts at Arduino class boards. Each board can read eight analog inputs and four digital inputs. Each board can provide five volt power for attached sensors. The current installation uses USB serial between the Nano and Raspberry Pi. An RX/TX connection is under development.
 
 The Raspberry Pi receiver is the missing bridge. The receiver should parse the serial data. The receiver should publish readings into MQTT. The receiver software is not finished yet.
 
@@ -15,6 +15,12 @@ The Raspberry Pi receiver is the missing bridge. The receiver should parse the s
 | IR cameras | Two devices are available but not implemented |
 | XIAO ESP32S3 Sense camera | Candidate camera module from source notes |
 | XIAO 5MP camera | Candidate camera accessory from source notes |
+
+## Installed and Planned Boards
+
+The installation currently has five ESP boards for the scales and one Arduino Nano for sensor reading. The plan calls for ten Nano boards. Each of ten Raspberry Pis should receive one Nano.
+
+The current Nano connection uses USB serial. An RX/TX replacement is under development. The supplied answers do not map individual boards to Pis or document pins, wiring diagrams, firmware versions, serial protocol details, sampling rates, timestamp ownership, identifier assignment, calibration storage, or ownership of the Pi receiver implementation.
 
 The network scale has a known private address. The source note lists `192.168.1.106`. The source note says the scale has no user and no password. The source note says the scale sends weight data.
 

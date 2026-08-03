@@ -6,17 +6,17 @@ The Raspberry Pi layer receives sensor values. The planned receiver software rea
 
 ![TinyHouse data flow](/diagrams/data-flow.svg)
 
-The MQTT broker layer has three documented designs. The first design uses one broker for all sensor nodes. The second design uses a broker cluster. The third design gives sensor nodes more compute capacity.
+The MQTT broker layer has three documented designs. The first design uses one broker for all sensor nodes. The second design uses a broker cluster. The third design gives sensor nodes more compute capacity. The final design remains undecided and the follow-up answer recommends the cluster design.
 
 The current live system implements mixed broker services. The management PC runs Mosquitto on loopback. Several Raspberry Pis run Mosquitto on `0.0.0.0:1883`. `EMQX003` runs EMQX on `0.0.0.0:1883`.
 
-The target analytics layer remains a proposal. The architecture PDF names Kafka, stream processing, time series storage, and dashboarding. Kafka can receive data through an MQTT bridge. Spark or Flink can process streams after Kafka receives messages.
+The target analytics layer remains a historical proposal. The architecture PDF names Kafka, stream processing, time series storage, and dashboarding. However, the current project constraint explicitly prohibits MQTT bridges to external brokers, Kafka, databases, and cloud services. The proposal cannot be implemented through an MQTT bridge unless the project changes that constraint.
 
 ## Message Shape
 
 The architecture proposal shows JSON style MQTT messages. The proposal uses `SensorValues` as the payload field. The proposal uses machine names as topics. For example, a node can publish readings for `Machine A`.
 
-The final topic convention still needs a project decision. A stable convention should include site, device, sensor, and unit. A stable convention should also include a timestamp policy. The policy should define whether the Pi or the sensor board owns the timestamp.
+The follow-up answer defines the message categories `sensor`, `devstatus`, `heartbeat`, and `data`. The answer also defines the field sets on the [MQTT overview](/mqtt/). The complete topic paths, units, value types, and timestamp policy still need a project decision.
 
 ## Implementation Gap
 
