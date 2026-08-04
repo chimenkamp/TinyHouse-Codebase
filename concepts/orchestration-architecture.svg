@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1500" height="760" viewBox="0 0 1500 760" role="img" aria-label="Federated orchestration architecture for TinyHouse and Munich">
+<svg xmlns="http://www.w3.org/2000/svg" width="1500" height="760" viewBox="0 0 1500 760" role="img" aria-label="Federated energy-aware orchestration architecture for TinyHouse Bayreuth and Munich">
   <defs>
     <style>
       text{font-family:Inter,Arial,sans-serif;fill:#3B3440}.site{font-size:18px;font-weight:750}.label{font-size:14px;font-weight:700}.box{stroke-width:2;rx:12}.flow{fill:none;stroke:#8CA1B3;stroke-width:2.2;marker-end:url(#arrow)}.share{fill:none;stroke:#9BABBA;stroke-width:2.2;stroke-dasharray:8 6;marker-end:url(#mist-arrow)}
@@ -9,17 +9,19 @@
   <rect width="1500" height="760" fill="#FFFFFF"/>
 
   <rect x="40" y="40" width="480" height="680" rx="20" fill="#DBEEF7" fill-opacity=".35" stroke="#AABDC6" stroke-width="2"/>
-  <text x="280" y="78" text-anchor="middle" class="site">TinyHouse</text>
+  <text x="280" y="78" text-anchor="middle" class="site">TinyHouse (Bayreuth)</text>
   <rect x="980" y="40" width="480" height="680" rx="20" fill="#E0D4E7" fill-opacity=".35" stroke="#AFA3B6" stroke-width="2"/>
   <text x="1220" y="78" text-anchor="middle" class="site">Munich Lab</text>
 
-  <path d="M280 180V230M280 320V370M280 460V510M1220 180V230M1220 320V370M1220 460V510" class="flow"/>
+  <path d="M170 180V225M390 180V225M280 315V345M280 435V465M280 555V580M1220 180V230M1220 320V370M1220 460V510" class="flow"/>
   <path d="M750 430V500" class="flow"/>
 
-  <rect x="140" y="105" width="280" height="75" fill="#BDD2E4" stroke="#8CA1B3" class="box"/><text x="280" y="149" text-anchor="middle" class="label">Printer · robot · sensors</text>
-  <rect x="140" y="230" width="280" height="90" fill="#CCDCEB" stroke="#9BABBA" class="box"/><text x="280" y="281" text-anchor="middle" class="label">Machine adapters</text>
-  <rect x="140" y="370" width="280" height="90" fill="#DBEEF7" stroke="#AABDC6" class="box"/><text x="280" y="421" text-anchor="middle" class="label">Site orchestrator</text>
-  <rect x="140" y="510" width="280" height="110" fill="#FAE7EB" stroke="#C9B6BA" class="box"/><text x="280" y="571" text-anchor="middle" class="label">Local OCEL · outbox</text>
+  <rect x="70" y="105" width="200" height="75" fill="#BDD2E4" stroke="#8CA1B3" class="box"/><text x="170" y="149" text-anchor="middle" class="label">Solar roof · battery</text>
+  <rect x="290" y="105" width="200" height="75" fill="#BDD2E4" stroke="#8CA1B3" class="box"/><text x="390" y="141" text-anchor="middle" class="label">Printer · robot</text><text x="390" y="160" text-anchor="middle" class="label">· sensors</text>
+  <rect x="140" y="225" width="280" height="90" fill="#CCDCEB" stroke="#9BABBA" class="box"/><text x="280" y="276" text-anchor="middle" class="label">Energy telemetry adapter</text>
+  <rect x="140" y="345" width="280" height="90" fill="#E0D4E7" stroke="#AFA3B6" class="box"/><text x="280" y="396" text-anchor="middle" class="label">Energy-aware scheduler</text>
+  <rect x="140" y="465" width="280" height="90" fill="#DBEEF7" stroke="#AABDC6" class="box"/><text x="280" y="516" text-anchor="middle" class="label">Site orchestrator</text>
+  <rect x="140" y="580" width="280" height="65" fill="#FAE7EB" stroke="#C9B6BA" class="box"/><text x="280" y="618" text-anchor="middle" class="label">Local OCEL · outbox</text>
   <rect x="140" y="655" width="280" height="45" fill="#EECEDA" stroke="#BD9DA9" class="box"/><text x="280" y="683" text-anchor="middle" class="label">Local safety boundary</text>
 
   <rect x="1080" y="105" width="280" height="75" fill="#BDD2E4" stroke="#8CA1B3" class="box"/><text x="1220" y="149" text-anchor="middle" class="label">Printer · robot · sensors</text>
@@ -32,8 +34,8 @@
   <rect x="610" y="280" width="280" height="150" fill="#E0D4E7" stroke="#AFA3B6" class="box"/><text x="750" y="361" text-anchor="middle" class="label">Shared object state</text>
   <rect x="610" y="500" width="280" height="130" fill="#EECEDA" stroke="#BD9DA9" class="box"/><text x="750" y="571" text-anchor="middle" class="label">Disclosure gateway</text>
 
-  <path d="M420 415C520 415 520 160 610 160" class="share"/>
+  <path d="M420 510C525 510 520 160 610 160" class="share"/>
   <path d="M890 160C980 160 980 415 1080 415" class="share"/>
-  <path d="M420 565H610M890 565H1080" class="share"/>
+  <path d="M420 612C540 612 555 565 610 565M890 565H1080" class="share"/>
   <path d="M750 210V280" class="flow"/>
 </svg>

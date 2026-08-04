@@ -1,7 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="760" viewBox="0 0 1100 760" role="img" aria-label="Six-level monitoring abstraction from raw signals to experiment outcomes">
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="760" viewBox="0 0 1100 760" role="img" aria-label="Six-level energy-aware monitoring abstraction from raw signals to experiment outcomes">
   <defs>
     <style>
-      text{font-family:Inter,Arial,sans-serif;fill:#3B3440}.level{font-size:18px;font-weight:800}.name{font-size:18px;font-weight:700}.flow{fill:none;stroke:#8CA1B3;stroke-width:3;marker-end:url(#arrow)}.lineage{fill:none;stroke:#BD9DA9;stroke-width:2;stroke-dasharray:8 6;marker-end:url(#rose-arrow)}
+      text{font-family:Inter,Arial,sans-serif;fill:#3B3440}.level{font-size:18px;font-weight:800}.name{font-size:18px;font-weight:700}.example{font-size:13px;font-weight:600}.flow{fill:none;stroke:#8CA1B3;stroke-width:3;marker-end:url(#arrow)}.lineage{fill:none;stroke:#BD9DA9;stroke-width:2;stroke-dasharray:8 6;marker-end:url(#rose-arrow)}
     </style>
     <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0 0L9 3L0 6Z" fill="#8CA1B3"/></marker>
     <marker id="rose-arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0 0L9 3L0 6Z" fill="#BD9DA9"/></marker>
@@ -9,22 +9,22 @@
   <rect width="1100" height="760" fill="#FFFFFF"/>
 
   <polygon points="100,690 870,690 830,595 140,595" fill="#FAE7EB" stroke="#C9B6BA" stroke-width="2"/>
-  <text x="180" y="650" class="level">L0</text><text x="255" y="650" class="name">Raw signals</text>
+  <text x="180" y="640" class="level">L0</text><text x="255" y="640" class="name">Raw signals</text><text x="255" y="666" class="example">Solar output · battery SoC · printer power</text>
 
   <polygon points="150,575 820,575 785,485 185,485" fill="#EECEDA" stroke="#BD9DA9" stroke-width="2"/>
-  <text x="220" y="538" class="level">L1</text><text x="295" y="538" class="name">State episodes</text>
+  <text x="220" y="528" class="level">L1</text><text x="295" y="528" class="name">State episodes</text><text x="295" y="553" class="example">Energy window · printer heating</text>
 
   <polygon points="195,465 775,465 745,380 225,380" fill="#E0D4E7" stroke="#AFA3B6" stroke-width="2"/>
-  <text x="260" y="430" class="level">L2</text><text x="335" y="430" class="name">Activity instances</text>
+  <text x="260" y="420" class="level">L2</text><text x="335" y="420" class="name">Activity instances</text><text x="335" y="445" class="example">Schedule evaluated · print authorized</text>
 
   <polygon points="235,360 735,360 710,280 260,280" fill="#DBEEF7" stroke="#AABDC6" stroke-width="2"/>
-  <text x="295" y="327" class="level">L3</text><text x="370" y="327" class="name">Site milestones</text>
+  <text x="295" y="317" class="level">L3</text><text x="370" y="317" class="name">Site milestones</text><text x="370" y="342" class="example">Container configuration fixed</text>
 
   <polygon points="270,260 700,260 680,185 290,185" fill="#CCDCEB" stroke="#9BABBA" stroke-width="2"/>
-  <text x="325" y="230" class="level">L4</text><text x="400" y="230" class="name">Collaboration milestones</text>
+  <text x="325" y="220" class="level">L4</text><text x="400" y="220" class="name">Collaboration milestones</text><text x="400" y="245" class="example">Matching lid committed</text>
 
   <polygon points="300,165 670,165 650,90 320,90" fill="#BDD2E4" stroke="#8CA1B3" stroke-width="2"/>
-  <text x="350" y="135" class="level">L5</text><text x="425" y="135" class="name">Experiment outcomes</text>
+  <text x="350" y="125" class="level">L5</text><text x="425" y="125" class="name">Experiment outcomes</text><text x="425" y="150" class="example">Renewable-energy share · product complete</text>
 
   <path d="M930 645V125" class="flow"/>
   <path d="M850 620C1010 520 1010 280 690 130" class="lineage"/>

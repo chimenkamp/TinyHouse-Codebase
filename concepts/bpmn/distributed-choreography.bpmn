@@ -10,17 +10,17 @@
   exporter="TinyHouse-Codebase"
   exporterVersion="1.0">
 
-  <bpmn:message id="Message_Choreo_LidRequest" name="Remote lid request" />
+  <bpmn:message id="Message_Choreo_LidRequest" name="Scheduled lid specification" />
   <bpmn:message id="Message_Choreo_CommitmentDecision" name="Commitment decision" />
   <bpmn:message id="Message_Choreo_LidDispatch" name="Lid dispatch" />
   <bpmn:message id="Message_Choreo_DeliveryDecision" name="Delivery decision" />
   <bpmn:message id="Message_Choreo_Outcome" name="Minimized outcome" />
 
-  <bpmn:choreography id="Choreography_DistributedSensorNode" name="Distributed sensor-node collaboration">
-    <bpmn:participant id="ChoreoParticipant_TinyHouse" name="TinyHouse" />
+  <bpmn:choreography id="Choreography_DistributedSensorNode" name="Energy-aware distributed sensor-node collaboration">
+    <bpmn:participant id="ChoreoParticipant_TinyHouse" name="TinyHouse (Bayreuth)" />
     <bpmn:participant id="ChoreoParticipant_Munich" name="Munich Lab" />
 
-    <bpmn:messageFlow id="ChoreoMessageFlow_LidRequest" name="request" sourceRef="ChoreoParticipant_TinyHouse" targetRef="ChoreoParticipant_Munich" messageRef="Message_Choreo_LidRequest" />
+    <bpmn:messageFlow id="ChoreoMessageFlow_LidRequest" name="scheduled specification" sourceRef="ChoreoParticipant_TinyHouse" targetRef="ChoreoParticipant_Munich" messageRef="Message_Choreo_LidRequest" />
     <bpmn:messageFlow id="ChoreoMessageFlow_CommitmentDecision" name="decision" sourceRef="ChoreoParticipant_Munich" targetRef="ChoreoParticipant_TinyHouse" messageRef="Message_Choreo_CommitmentDecision" />
     <bpmn:messageFlow id="ChoreoMessageFlow_LidDispatch" name="dispatch" sourceRef="ChoreoParticipant_Munich" targetRef="ChoreoParticipant_TinyHouse" messageRef="Message_Choreo_LidDispatch" />
     <bpmn:messageFlow id="ChoreoMessageFlow_DeliveryDecision" name="delivery decision" sourceRef="ChoreoParticipant_TinyHouse" targetRef="ChoreoParticipant_Munich" messageRef="Message_Choreo_DeliveryDecision" />
@@ -29,7 +29,7 @@
     <bpmn:startEvent id="ChoreoStart">
       <bpmn:outgoing>ChoreoFlow_01</bpmn:outgoing>
     </bpmn:startEvent>
-    <bpmn:choreographyTask id="ChoreoTask_Negotiate" name="Negotiate lid" initiatingParticipantRef="ChoreoParticipant_TinyHouse">
+    <bpmn:choreographyTask id="ChoreoTask_Negotiate" name="Request scheduled lid configuration" initiatingParticipantRef="ChoreoParticipant_TinyHouse">
       <bpmn:incoming>ChoreoFlow_01</bpmn:incoming>
       <bpmn:outgoing>ChoreoFlow_02</bpmn:outgoing>
       <bpmn:participantRef>ChoreoParticipant_TinyHouse</bpmn:participantRef>

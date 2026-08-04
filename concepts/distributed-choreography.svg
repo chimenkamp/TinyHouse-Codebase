@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1276" height="293" viewBox="30 120 1276 293" role="img" aria-label="BPMN choreography for TinyHouse and Munich interaction points">
+<svg xmlns="http://www.w3.org/2000/svg" width="1276" height="293" viewBox="30 120 1276 293" role="img" aria-label="Energy-aware BPMN choreography for TinyHouse and Munich interaction points">
   <defs>
     <style>
       text{font-family:Inter,Arial,sans-serif;fill:#3B3440}
@@ -27,9 +27,9 @@
     <rect x="130" y="140" width="180" height="160" rx="9" fill="#DBEEF7" stroke="#AABDC6" stroke-width="2"/>
     <rect x="130" y="140" width="180" height="36" rx="9" fill="#BDD2E4" stroke="#8CA1B3" stroke-width="2"/>
     <rect x="130" y="264" width="180" height="36" rx="9" fill="#DBEEF7" stroke="#AABDC6" stroke-width="2"/>
-    <text x="220" y="163" text-anchor="middle" class="participant-label">TinyHouse</text>
+    <text x="220" y="163" text-anchor="middle" class="participant-label">TinyHouse (Bayreuth)</text>
     <text x="220" y="287" text-anchor="middle" class="participant-label">Munich Lab</text>
-    <text x="220" y="224" text-anchor="middle" class="node-label"><tspan x="220" dy="0">Negotiate lid</tspan></text>
+    <text x="220" y="216" text-anchor="middle" class="node-label"><tspan x="220" dy="0">Request scheduled lid</tspan><tspan x="220" dy="16">configuration</tspan></text>
   </g>
   <g data-bpmn-element="ChoreoGateway_Commitment"><polygon points="375,195 400,220 375,245 350,220" fill="#BDD2E4" stroke="#8CA1B3" stroke-width="2"/><path d="M367 212L383 228M383 212L367 228" class="gateway-marker"/><text x="375" y="267" text-anchor="middle" class="small-label"><tspan x="375" dy="0">Accepted?</tspan></text></g>
   <g data-bpmn-element="ChoreoEnd_Local"><circle cx="473" cy="350" r="16" fill="#EECEDA" stroke="#BD9DA9" stroke-width="4"/><text x="473" y="390" text-anchor="middle" class="small-label"><tspan x="473" dy="0">Local route</tspan></text></g>
@@ -38,14 +38,14 @@
     <rect x="470" y="140" width="180" height="36" rx="9" fill="#BDD2E4" stroke="#8CA1B3" stroke-width="2"/>
     <rect x="470" y="264" width="180" height="36" rx="9" fill="#DBEEF7" stroke="#AABDC6" stroke-width="2"/>
     <text x="560" y="163" text-anchor="middle" class="participant-label">Munich Lab</text>
-    <text x="560" y="287" text-anchor="middle" class="participant-label">TinyHouse</text>
+    <text x="560" y="287" text-anchor="middle" class="participant-label">TinyHouse (Bayreuth)</text>
     <text x="560" y="224" text-anchor="middle" class="node-label"><tspan x="560" dy="0">Dispatch lid</tspan></text>
   </g>
   <g data-bpmn-element="ChoreoTask_DeliveryDecision">
     <rect x="700" y="140" width="180" height="160" rx="9" fill="#CCDCEB" stroke="#9BABBA" stroke-width="2"/>
     <rect x="700" y="140" width="180" height="36" rx="9" fill="#BDD2E4" stroke="#8CA1B3" stroke-width="2"/>
     <rect x="700" y="264" width="180" height="36" rx="9" fill="#DBEEF7" stroke="#AABDC6" stroke-width="2"/>
-    <text x="790" y="163" text-anchor="middle" class="participant-label">TinyHouse</text>
+    <text x="790" y="163" text-anchor="middle" class="participant-label">TinyHouse (Bayreuth)</text>
     <text x="790" y="287" text-anchor="middle" class="participant-label">Munich Lab</text>
     <text x="790" y="224" text-anchor="middle" class="node-label"><tspan x="790" dy="0">Confirm delivery</tspan></text>
   </g>
@@ -54,7 +54,7 @@
     <rect x="1020" y="140" width="180" height="160" rx="9" fill="#FAE7EB" stroke="#C9B6BA" stroke-width="2"/>
     <rect x="1020" y="140" width="180" height="36" rx="9" fill="#BDD2E4" stroke="#8CA1B3" stroke-width="2"/>
     <rect x="1020" y="264" width="180" height="36" rx="9" fill="#DBEEF7" stroke="#AABDC6" stroke-width="2"/>
-    <text x="1110" y="163" text-anchor="middle" class="participant-label">TinyHouse</text>
+    <text x="1110" y="163" text-anchor="middle" class="participant-label">TinyHouse (Bayreuth)</text>
     <text x="1110" y="287" text-anchor="middle" class="participant-label">Munich Lab</text>
     <text x="1110" y="224" text-anchor="middle" class="node-label"><tspan x="1110" dy="0">Share outcome</tspan></text>
   </g>

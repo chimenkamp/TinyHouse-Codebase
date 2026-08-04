@@ -1,136 +1,202 @@
-# Distributed Process Laboratory Overview
+# Sustainable Distributed Process Laboratory
 
 ## Goal
 
-The laboratory generates real distributed process data for object-centric process mining. The TinyHouse and a Munich research laboratory execute one physical process together. Each site uses a 3D printer and a robot arm. Human participants perform selected production, inspection, handover, and exception tasks.
+The primary operational goal is sustainability. The TinyHouse in Bayreuth and a research laboratory in Munich execute one physical production process. The process uses the TinyHouse solar roof and battery state to decide when Bayreuth may print. The process also uses the renewable-energy budget to select the product configuration.
 
-The laboratory also supports live monitoring. Raw machine and sensor data become object states, activities, site milestones, collaboration milestones, and experiment outcomes. Privacy-minimized events can cross the site boundary while raw evidence stays local.
+The primary research goal is a reproducible real-world process laboratory. The laboratory generates distributed and object-centric process data. The process combines local orchestration with a cross-site choreography. The resulting data supports process mining and online monitoring research.
 
 ## Demonstrator
 
-The recommended product is a **Distributed Adaptive Sensor Node**. The product contains a printed enclosure base, a printed lid or mount, an electronics kit, and one or more sensors. Every work order, component, shipment, task, and product receives a stable identifier.
+The demonstrator produces a configurable sensor node. Bayreuth prints the enclosure base and integrates the electronics. Munich produces a utility lid that matches the selected enclosure configuration. Each site keeps local control of its printer and robot arm.
 
-The nominal process follows this path:
+The product contains the following physical parts.
+
+| Part | Default site | Configuration rule | Evidence |
+| --- | --- | --- | --- |
+| Enclosure base | TinyHouse in Bayreuth | `large` or `standard` from the energy schedule | Print job telemetry and component inspection |
+| Utility lid | Munich laboratory | Must equal the requested base size and design revision | Print job telemetry and component inspection |
+| Electronics kit | TinyHouse in Bayreuth | Selected sensor configuration | Kit scan and human confirmation |
+| Completed sensor node | TinyHouse in Bayreuth | Base and lid must match | Assembly and calibration events |
+| Shipping container | Munich and Bayreuth | Contains one or more accepted lids | Dispatch and receipt scans |
+
+The completed sensor node remains useful after production. The node can monitor a storage bin or another TinyHouse area. The product lifecycle can therefore include deployment and maintenance events.
+
+## Energy-Aware Scheduling Concept
+
+The optimization concept is **renewable-energy-aware production scheduling**. The scheduler creates a production plan from measured energy state and predicted solar supply. The scheduler also couples the Bayreuth container size to the Munich lid configuration. The BPMN model represents the schedule evaluation and the resulting wait or production route.
+
+The scheduler uses the following inputs.
+
+| Input | Unit | Meaning |
+| --- | --- | --- |
+| Solar power | kW | Current photovoltaic output from the TinyHouse roof |
+| Forecast solar energy | kWh | Expected photovoltaic energy within a candidate production window |
+| Battery state of charge | % | Current battery charge state |
+| Usable battery energy | kWh | Stored energy within battery operating limits before the protected process reserve |
+| Committed print energy | kWh | Renewable energy already allocated to accepted print jobs |
+| Estimated job energy | kWh | Measured estimate for one printer and configuration |
+| Due window | ISO 8601 interval | Earliest and latest allowed production time |
+| Resource state | categorical | Printer availability and local safety readiness |
+
+The scheduler computes one renewable-energy budget for each candidate window. The formula is:
+
+```text
+availableRenewableEnergyKWh = max(
+  0 kWh,
+  usableBatteryEnergyKWh
+  + forecastSolarEnergyKWhWithinCandidateWindow
+  - committedPrintEnergyKWh
+)
+```
+
+The protected reserve remains unavailable to printing. The variable `reserveEnergyKWh` represents the energy required for protected TinyHouse loads. The reserve value must come from the approved site configuration. The current repository does not provide a verified reserve value.
+
+The configuration policy uses ordered rules. The scheduler evaluates the large option first. The scheduler evaluates the standard option only when the large option is not eligible. The process waits when neither option is eligible.
+
+| Priority | Formal condition | Result |
+| --- | --- | --- |
+| 1 | `availableRenewableEnergyKWh >= largeContainerEnergyKWh + reserveEnergyKWh` | Select a large base and request a large Munich lid |
+| 2 | `availableRenewableEnergyKWh >= standardContainerEnergyKWh + reserveEnergyKWh` and `< largeContainerEnergyKWh + reserveEnergyKWh` | Select a standard base and request a standard Munich lid |
+| 3 | Default | Wait until `nextSolarWindowStart` and evaluate a new energy snapshot |
+
+The print adapter enforces a second authorization at the scheduled start. A print may start only when the renewable-energy budget still covers the selected job and reserve. A failed authorization returns the job to the scheduler. A Bayreuth reprint uses the same rule with `reprintEnergyKWh`.
+
+The energy estimates follow one configuration invariant. `largeContainerEnergyKWh` must be greater than `standardContainerEnergyKWh`. The mutually exclusive gateway conditions make the large and standard routes deterministic.
+
+The scheduler treats energy eligibility as a hard constraint. The scheduler then minimizes expected non-renewable energy use among eligible windows. The scheduler next minimizes due-window lateness. The scheduler finally prefers direct solar consumption over battery discharge when the preceding criteria are equal.
+
+The configuration thresholds require measurement. The project must measure `largeContainerEnergyKWh` and `standardContainerEnergyKWh` for the actual printer and material. The project must also measure conversion losses and battery limits. The concept does not invent those values.
+
+## End-to-End Process
+
+The current production activities remain part of the process. The energy scheduler adds decisions before Bayreuth production and before every Bayreuth reprint.
 
 1. A researcher registers an experiment and work order.
-2. The TinyHouse prints the enclosure base.
-3. The Munich laboratory prints the lid or mount in parallel.
-4. Each site inspects its printed component.
-5. Munich packs and ships the accepted component.
-6. The TinyHouse receives and reconciles the shipment.
-7. A robot prepares the assembly kit.
-8. A human and robot assemble the sensor node.
-9. The TinyHouse tests and calibrates the node.
-10. A human approves deployment.
-11. The deployed node generates lifecycle and maintenance data.
+2. Bayreuth selects a local or distributed production topology.
+3. Bayreuth reads the solar roof and battery state.
+4. The scheduler evaluates candidate production windows.
+5. The scheduler selects a large or standard container when enough renewable energy is available.
+6. The scheduler waits and evaluates again when the renewable-energy budget is insufficient.
+7. Bayreuth requests the matching utility lid for a distributed run.
+8. Munich evaluates the commitment and applies the requested lid configuration.
+9. Bayreuth prints the base while Munich prints the lid.
+10. Each site inspects its component and handles review or reprint paths.
+11. Munich packs and dispatches the accepted lid.
+12. Bayreuth receives the lid and verifies its identity and configuration.
+13. The robot prepares the assembly kit.
+14. A human assembles the sensor node.
+15. Bayreuth tests and calibrates the sensor node.
+16. A human approves deployment.
+17. Bayreuth shares a minimized outcome for a joint run.
 
-## Formal Process Models
+A rejected Munich commitment changes the topology to local fallback. Bayreuth then creates a new energy schedule for the extra local lid print. The process does not start the larger local workload under the earlier distributed energy budget.
 
-The orchestration model contains the private control flow for both laboratories. Human work uses BPMN user and manual tasks. Machine work uses service tasks. Business rules select the topology and quality routes.
+## BPMN Orchestration
 
-![BPMN orchestration](distributed-process.svg)
+The orchestration model contains both private site processes. Human work uses user and manual tasks. Machine work uses service tasks. Policy decisions use business rule tasks. Exclusive gateways use formal conditions and default routes.
 
-The choreography model contains only the cross-site contract. The TinyHouse initiates the lid negotiation. Munich initiates dispatch. The TinyHouse initiates the delivery decision and final minimized outcome.
+![Current energy-aware BPMN orchestration rendered from the editable source](distributed-process.svg)
 
-![BPMN choreography](distributed-choreography.svg)
+The figure reflects the current `distributed-orchestration.bpmn` flow. The distributed branch continues through synchronized production and final assembly. The current local branch stops after `Produce locally` because that task has no outgoing sequence flow.
 
-The editable sources are [distributed-orchestration.bpmn](bpmn/distributed-orchestration.bpmn) and [distributed-choreography.bpmn](bpmn/distributed-choreography.bpmn). The [BPMN model guide](08-bpmn-models.md) defines every gateway condition, message contract, object projection, visual convention, and soundness assumption.
+The Bayreuth energy loop reads the solar and battery state. The loop calculates the schedule and selects the product size. The default path waits for `nextSolarWindowStart`. A timer event then triggers a new energy evaluation.
 
-The distributed route contains one matched parallel region. Base production and remote lid delivery run concurrently. An exclusive merge combines the base-quality alternatives before the two-input parallel join. Delivery rejection returns both formal views to the dispatch interaction.
+The distributed route contains one matched parallel region. Base production and remote lid delivery run concurrently. The accepted base and accepted lid synchronize before assembly. Existing quality and calibration loops remain available.
 
-## Object-Centric Model
+The editable source is [distributed-orchestration.bpmn](bpmn/distributed-orchestration.bpmn). The stored Diagram Interchange coordinates define the rendered layout. Both participant swimlanes use white backgrounds.
 
-The canonical research log uses OCEL 2.0 concepts. Events link to several typed objects through explicit qualifiers such as `input`, `output`, `resource`, `actor`, `container`, and `evidence`. The model does not force every event into one case identifier.
+## BPMN Choreography
+
+The choreography model contains only cross-site contracts. The first interaction transmits the scheduled lid specification. The specification includes the selected size and design revision. Munich returns a commitment decision before production begins.
+
+![Energy-aware BPMN choreography](distributed-choreography.svg)
+
+| Interaction | Initiator | Required content | Result |
+| --- | --- | --- | --- |
+| Request scheduled lid configuration | TinyHouse in Bayreuth | Work order ID, energy schedule ID, size, design revision, and due window | Accepted or rejected commitment |
+| Dispatch lid | Munich laboratory | Shipment ID, component ID, size, and design revision | Lid becomes in transit |
+| Confirm delivery | TinyHouse in Bayreuth | Accepted or replacement-required decision | Delivery closes or Munich reprints |
+| Share outcome | TinyHouse in Bayreuth | Privacy-minimized completion and sustainability measures | Collaboration completes |
+
+The replacement route returns to the dispatch interaction. A replacement creates a new print-job identity and component identity. The work-order identity and commitment identity remain stable.
+
+The editable source is [distributed-choreography.bpmn](bpmn/distributed-choreography.bpmn). The two BPMN sources use the same five message contract names.
+
+## Gateway Conditions
+
+Every exclusive split reads a versioned decision result. Every decision emits a `Decision evaluated` event before the selected flow fires.
+
+| Gateway | Positive condition | Default route |
+| --- | --- | --- |
+| Renewable energy available? | Large condition or standard condition from the energy policy | Wait for the next solar window |
+| Distributed? | `topology = 'distributed'` | Local production |
+| Commitment accepted? | `commitmentStatus = 'accepted'` | Set local fallback and reschedule energy |
+| Base passed? | `baseQuality = 'accepted'` | Human review |
+| Base reprint? | `baseDisposition = 'reprint'` | Human release |
+| Reprint energy available? | `availableRenewableEnergyKWh >= reprintEnergyKWh + reserveEnergyKWh` | Wait for the next solar window |
+| Lid passed? | `lidQuality = 'accepted'` | Request replacement |
+| Calibration passed? | `calibrationStatus = 'passed'` | Human resolution and rework |
+| Shared run? | `collaborationStatus = 'active'` | Complete without remote outcome |
+
+The BPMN models are descriptive. Both processes use `isExecutable="false"`. The actual printer APIs and robot APIs remain unverified.
+
+## Object-Centric Research Model
+
+The canonical research log follows OCEL 2.0 concepts. Events link to several typed objects through explicit qualifiers. The model avoids forcing every event into one case identifier.
 
 | Object group | Main object types |
 | --- | --- |
-| Control | Experiment run, work order, commitment, incident |
-| Physical | Product unit, component, material batch |
-| Execution | Print job, robot job, human task |
-| Quality | Inspection, calibration |
+| Control | Experiment run, work order, commitment, and incident |
+| Sustainability | Energy snapshot and energy schedule |
+| Physical | Product unit, component, and material batch |
+| Execution | Print job, robot job, and human task |
+| Quality | Inspection and calibration |
 | Logistics | Shipment |
-| Resources | Equipment, station, participant |
-| Information | Design revision, data asset, dataset manifest |
-| Governance | Consent record, disclosure policy |
+| Resources | Equipment, station, and participant |
+| Information | Design revision, data asset, and dataset manifest |
+| Governance | Consent record and disclosure policy |
 
-The main synchronization occurs during assembly. One product requires accepted components from both sites. A failed component remains traceable while a reprint receives a new component identity. A shipment can contain several components from several work orders.
+The energy snapshot records source time and ingestion time. The energy schedule records input object identifiers and policy version. The schedule also records eligible configurations and the selected production window. Every print job references the schedule that authorized the job.
 
-![Object-centric process model](object-centric-model.svg)
+![Energy-aware object-centric model](object-centric-model.svg)
 
-## Federated Orchestration
+The [example OCEL 2.0 log](example-ocel20.json) shows one large split-production run. The example includes the energy snapshot and schedule that authorize the Bayreuth print. The Munich lid uses the same configuration value.
 
-Machine control remains local to each laboratory. A site orchestrator manages local printer, robot, sensor, and human tasks. A collaboration coordinator exchanges commitments, deadlines, object identifiers, and process milestones. The coordinator never sends direct robot motion or printer-heater commands.
+## Federated Architecture
 
-Each site keeps an append-only event outbox. Local work can continue during a cross-site network interruption. Late events retain their occurrence time, observation time, source sequence, and clock-quality information.
+Machine control remains local to each laboratory. The Bayreuth energy adapter reads the solar roof and battery interface. The site scheduler produces energy permits and product configurations. The site orchestrator executes only locally authorized tasks.
 
-The cross-site channel uses an approved application gateway. The architecture does not require an external MQTT bridge. Every shared event passes a versioned disclosure policy.
+Each site keeps an append-only event outbox. Local work can continue during a cross-site interruption when the local schedule and safety policy allow the work. Late events retain occurrence time and ingestion time.
 
-![Federated orchestration architecture](orchestration-architecture.svg)
+The cross-site coordinator exchanges commitments and milestones. The coordinator never sends direct robot motion or printer heater commands. An approved disclosure gateway filters every shared event.
 
-## Data-Driven Variants
+![Federated energy-aware orchestration architecture](orchestration-architecture.svg)
 
-Every route decision creates a process event. The event records the policy version, input snapshot, eligible options, selected option, and reason code.
+## Monitoring
 
-| Condition | Possible process change |
-| --- | --- |
-| Printer queue or failure | Move the print job to the other site |
-| Material unavailable | Delay or reroute production |
-| Inspection uncertainty | Create a human review task |
-| Inspection failure | Rework or create a replacement component |
-| Robot unavailable | Use an approved human fallback |
-| Shipment batch available | Combine several components in one shipment |
-| Network unavailable | Continue locally and synchronize later |
-| Minimal privacy profile | Share only role-level and derived data |
-| Calibration drift | Recalibrate, repair, or replace the node |
+The monitoring pipeline separates process events from high-volume telemetry. Raw solar and battery samples remain local evidence. Higher levels represent energy windows and schedule decisions. Collaboration views receive only the summary required for lid production and research.
 
-The experiment controller supports controlled factor changes. The factors include production topology, shipment policy, inspection mode, event delay, clock offset, privacy profile, workload, human availability, and policy version. Safe fault injection occurs above the machine-safety layer.
-
-## Monitoring and Abstraction
-
-The monitoring pipeline separates process events from high-volume telemetry. Raw samples remain evidence. Higher levels represent meaningful state changes and collaboration outcomes.
-
-| Level | Meaning | Example |
+| Level | Meaning | Energy-aware example |
 | --- | --- | --- |
-| L0 | Raw signal | Temperature sample or scale reading |
-| L1 | State episode | Printer heating or robot blocked |
-| L2 | Activity instance | Complete print or receive shipment |
-| L3 | Site milestone | Component accepted |
-| L4 | Collaboration milestone | Shipment reconciled |
-| L5 | Experiment outcome | Run complete with quality score |
+| L0 | Raw signal | Solar power or battery state of charge |
+| L1 | State episode | Renewable-energy window available |
+| L2 | Activity instance | Schedule evaluated or print authorized |
+| L3 | Site milestone | Container configuration fixed |
+| L4 | Collaboration milestone | Matching lid committed |
+| L5 | Experiment outcome | Product completed with measured renewable-energy share |
 
-Live monitoring needs several coordinated views. The views should cover object location, commitment status, resource readiness, human tasks, conformance, data quality, privacy state, and remaining-time predictions. Every derived state should show its confidence, freshness, source time, and policy version.
+![Energy-aware monitoring abstraction](monitoring-abstraction.svg)
 
-![Monitoring abstraction model](monitoring-abstraction.svg)
+Every derived state records confidence and freshness. Every derived state also records source time and policy version. A missing event must remain visible as uncertainty.
 
-## Human Interaction Privacy and Safety
+## Privacy and Safety
 
-Human interaction remains visible in the process model. Humans select product configurations, load materials, review uncertain inspections, install electronics, transfer custody, resolve exceptions, and approve deployment. Shared process data uses a participant role or study pseudonym by default. Direct identity remains in a separate local identity vault.
+Raw energy telemetry remains at the TinyHouse by default. Munich receives the selected configuration and due window. Munich does not need the complete battery history or household load profile. A shared research view may include aggregated renewable-energy measures under the approved disclosure policy.
 
-Raw video remains local by default. Workpiece cameras should exclude faces and unrelated areas. The research pipeline should store derived inspection results instead of continuous media when the experiment permits that approach.
+Human events use a role or study pseudonym in the shared view. Direct identity remains in a separate local identity vault. Raw video remains local by default. Workpiece cameras should exclude faces and unrelated areas.
 
-Safety functions remain local and independent from research orchestration. No experiment may disable emergency stops, guards, thermal limits, safe-speed modes, or manufacturer safety checks.
+Safety functions remain local and independent from research orchestration. No experiment may disable emergency stops or guards. No schedule may override thermal limits or manufacturer safety checks. The protected battery reserve also remains a local hard constraint.
 
 ![Privacy and safety boundaries](privacy-boundaries.svg)
 
-## Existing Hardware Basis
-
-The documented TinyHouse baseline spans several hardware layers. The baseline includes a management PC with WSL, Raspberry Pi broker nodes, Jetson edge computers, Arduino-class boards, ESP scale boards, weight sensors, a network scale, cameras, MQTT services, and a broad sensor-module kit. The user confirms a robot arm and a 3D printer in each laboratory.
-
-The first pilot should use QR labels and existing sensors. Optional low-cost additions include load-cell amplifiers, compact ESP32 camera boards, and a dedicated workpiece camera. RFID should follow only when QR limitations are measured.
-
-## Required Preparation
-
-The following work should precede joint experiments:
-
-- Inventory both robot arms and both printers.
-- Record controller interfaces and validated programs.
-- Complete the Arduino-to-Pi receiver.
-- Standardize the TinyHouse MQTT broker role.
-- Add authentication and topic authorization.
-- Approve the cross-site gateway and data-sharing agreement.
-- Define exact camera zones and retention periods.
-- Validate one manual object-centric run before machine automation.
-
-## First Joint Milestone
-
-The first joint milestone is one nominal split build. Munich prints and ships the lid. The TinyHouse prints the base and completes assembly. Both sites reconstruct the same shared object state. The final OCEL contains the complete custody chain, qualified object relations, decision evidence, human tasks, and privacy transformation record.

@@ -9,13 +9,37 @@
     {
       "name": "Configure product",
       "attributes": [
-        { "name": "configuration", "type": "string" }
+        { "name": "configuration", "type": "string" },
+        { "name": "container_size", "type": "string" }
+      ]
+    },
+    {
+      "name": "Capture energy state",
+      "attributes": [
+        { "name": "solar_power_kw", "type": "float" },
+        { "name": "battery_soc_percent", "type": "float" },
+        { "name": "usable_battery_energy_kwh", "type": "float" },
+        { "name": "forecast_solar_energy_kwh", "type": "float" }
+      ]
+    },
+    {
+      "name": "Evaluate energy schedule",
+      "attributes": [
+        { "name": "policy_version", "type": "string" },
+        { "name": "available_renewable_energy_kwh", "type": "float" },
+        { "name": "required_energy_kwh", "type": "float" },
+        { "name": "reserve_energy_kwh", "type": "float" },
+        { "name": "selected_window", "type": "string" },
+        { "name": "selected_configuration", "type": "string" },
+        { "name": "decision", "type": "string" }
       ]
     },
     {
       "name": "Complete print",
       "attributes": [
-        { "name": "result", "type": "string" }
+        { "name": "result", "type": "string" },
+        { "name": "configuration", "type": "string" },
+        { "name": "energy_used_kwh", "type": "float" }
       ]
     },
     {
@@ -51,6 +75,24 @@
       ]
     },
     {
+      "name": "energy-snapshot",
+      "attributes": [
+        { "name": "solar_power_kw", "type": "float" },
+        { "name": "battery_soc_percent", "type": "float" },
+        { "name": "usable_battery_energy_kwh", "type": "float" },
+        { "name": "forecast_solar_energy_kwh", "type": "float" }
+      ]
+    },
+    {
+      "name": "energy-schedule",
+      "attributes": [
+        { "name": "policy_version", "type": "string" },
+        { "name": "selected_window", "type": "string" },
+        { "name": "selected_configuration", "type": "string" },
+        { "name": "status", "type": "string" }
+      ]
+    },
+    {
       "name": "product-unit",
       "attributes": [
         { "name": "status", "type": "string" }
@@ -59,7 +101,8 @@
     {
       "name": "component",
       "attributes": [
-        { "name": "part_role", "type": "string" }
+        { "name": "part_role", "type": "string" },
+        { "name": "configuration", "type": "string" }
       ]
     },
     {
@@ -81,7 +124,7 @@
       "type": "Register experiment",
       "time": "2026-01-15T09:00:00Z",
       "attributes": [
-        { "name": "site", "value": "tinyhouse" }
+        { "name": "site", "value": "tinyhouse-bayreuth" }
       ],
       "relationships": [
         { "objectId": "experiment-run:00000000-0000-4000-8000-000000000101", "qualifier": "output" }
@@ -92,7 +135,8 @@
       "type": "Configure product",
       "time": "2026-01-15T09:05:00Z",
       "attributes": [
-        { "name": "configuration", "value": "weight-and-temperature" }
+        { "name": "configuration", "value": "weight-and-temperature" },
+        { "name": "container_size", "value": "large" }
       ],
       "relationships": [
         { "objectId": "experiment-run:00000000-0000-4000-8000-000000000101", "qualifier": "scope" },
@@ -101,16 +145,53 @@
       ]
     },
     {
+      "id": "tinyhouse:event:00000000-0000-4000-8000-000000000008",
+      "type": "Capture energy state",
+      "time": "2026-01-15T09:06:00Z",
+      "attributes": [
+        { "name": "solar_power_kw", "value": 1.2 },
+        { "name": "battery_soc_percent", "value": 72.0 },
+        { "name": "usable_battery_energy_kwh", "value": 1.4 },
+        { "name": "forecast_solar_energy_kwh", "value": 1.3 }
+      ],
+      "relationships": [
+        { "objectId": "energy-snapshot:00000000-0000-4000-8000-000000000107", "qualifier": "output" },
+        { "objectId": "work-order:00000000-0000-4000-8000-000000000102", "qualifier": "scope" }
+      ]
+    },
+    {
+      "id": "tinyhouse:event:00000000-0000-4000-8000-000000000009",
+      "type": "Evaluate energy schedule",
+      "time": "2026-01-15T09:07:00Z",
+      "attributes": [
+        { "name": "policy_version", "value": "renewable-scheduler-v1" },
+        { "name": "available_renewable_energy_kwh", "value": 2.5 },
+        { "name": "required_energy_kwh", "value": 1.8 },
+        { "name": "reserve_energy_kwh", "value": 0.4 },
+        { "name": "selected_window", "value": "2026-01-15T09:10:00Z/2026-01-15T10:30:00Z" },
+        { "name": "selected_configuration", "value": "large" },
+        { "name": "decision", "value": "authorized" }
+      ],
+      "relationships": [
+        { "objectId": "energy-snapshot:00000000-0000-4000-8000-000000000107", "qualifier": "input" },
+        { "objectId": "energy-schedule:00000000-0000-4000-8000-000000000108", "qualifier": "output" },
+        { "objectId": "work-order:00000000-0000-4000-8000-000000000102", "qualifier": "target" }
+      ]
+    },
+    {
       "id": "tinyhouse:event:00000000-0000-4000-8000-000000000003",
       "type": "Complete print",
       "time": "2026-01-15T10:15:00Z",
       "attributes": [
-        { "name": "result", "value": "accepted" }
+        { "name": "result", "value": "accepted" },
+        { "name": "configuration", "value": "large" },
+        { "name": "energy_used_kwh", "value": 1.65 }
       ],
       "relationships": [
         { "objectId": "work-order:00000000-0000-4000-8000-000000000102", "qualifier": "request" },
+        { "objectId": "energy-schedule:00000000-0000-4000-8000-000000000108", "qualifier": "authorization" },
         { "objectId": "component:00000000-0000-4000-8000-000000000104", "qualifier": "output" },
-        { "objectId": "tinyhouse:equipment:printer-01", "qualifier": "resource" }
+        { "objectId": "tinyhouse-bayreuth:equipment:printer-01", "qualifier": "resource" }
       ]
     },
     {
@@ -118,10 +199,13 @@
       "type": "Complete print",
       "time": "2026-01-15T10:10:00Z",
       "attributes": [
-        { "name": "result", "value": "accepted" }
+        { "name": "result", "value": "accepted" },
+        { "name": "configuration", "value": "large" },
+        { "name": "energy_used_kwh", "value": 0.48 }
       ],
       "relationships": [
         { "objectId": "work-order:00000000-0000-4000-8000-000000000102", "qualifier": "request" },
+        { "objectId": "energy-schedule:00000000-0000-4000-8000-000000000108", "qualifier": "configuration-source" },
         { "objectId": "component:00000000-0000-4000-8000-000000000105", "qualifier": "output" },
         { "objectId": "munich:equipment:printer-01", "qualifier": "resource" }
       ]
@@ -182,7 +266,33 @@
         { "name": "route", "time": "2026-01-15T09:05:00Z", "value": "split" }
       ],
       "relationships": [
-        { "objectId": "product-unit:00000000-0000-4000-8000-000000000103", "qualifier": "requests" }
+        { "objectId": "product-unit:00000000-0000-4000-8000-000000000103", "qualifier": "requests" },
+        { "objectId": "energy-schedule:00000000-0000-4000-8000-000000000108", "qualifier": "scheduled-by" }
+      ]
+    },
+    {
+      "id": "energy-snapshot:00000000-0000-4000-8000-000000000107",
+      "type": "energy-snapshot",
+      "attributes": [
+        { "name": "solar_power_kw", "time": "2026-01-15T09:06:00Z", "value": 1.2 },
+        { "name": "battery_soc_percent", "time": "2026-01-15T09:06:00Z", "value": 72.0 },
+        { "name": "usable_battery_energy_kwh", "time": "2026-01-15T09:06:00Z", "value": 1.4 },
+        { "name": "forecast_solar_energy_kwh", "time": "2026-01-15T09:06:00Z", "value": 1.3 }
+      ],
+      "relationships": []
+    },
+    {
+      "id": "energy-schedule:00000000-0000-4000-8000-000000000108",
+      "type": "energy-schedule",
+      "attributes": [
+        { "name": "policy_version", "time": "2026-01-15T09:07:00Z", "value": "renewable-scheduler-v1" },
+        { "name": "selected_window", "time": "2026-01-15T09:07:00Z", "value": "2026-01-15T09:10:00Z/2026-01-15T10:30:00Z" },
+        { "name": "selected_configuration", "time": "2026-01-15T09:07:00Z", "value": "large" },
+        { "name": "status", "time": "2026-01-15T09:07:00Z", "value": "authorized" }
+      ],
+      "relationships": [
+        { "objectId": "energy-snapshot:00000000-0000-4000-8000-000000000107", "qualifier": "uses" },
+        { "objectId": "product-unit:00000000-0000-4000-8000-000000000103", "qualifier": "configures" }
       ]
     },
     {
@@ -200,7 +310,8 @@
       "id": "component:00000000-0000-4000-8000-000000000104",
       "type": "component",
       "attributes": [
-        { "name": "part_role", "time": "2026-01-15T10:15:00Z", "value": "enclosure-base" }
+        { "name": "part_role", "time": "2026-01-15T10:15:00Z", "value": "enclosure-base" },
+        { "name": "configuration", "time": "2026-01-15T09:07:00Z", "value": "large" }
       ],
       "relationships": []
     },
@@ -208,7 +319,8 @@
       "id": "component:00000000-0000-4000-8000-000000000105",
       "type": "component",
       "attributes": [
-        { "name": "part_role", "time": "2026-01-15T10:10:00Z", "value": "lid" }
+        { "name": "part_role", "time": "2026-01-15T10:10:00Z", "value": "lid" },
+        { "name": "configuration", "time": "2026-01-15T09:07:00Z", "value": "large" }
       ],
       "relationships": []
     },
@@ -223,10 +335,10 @@
       ]
     },
     {
-      "id": "tinyhouse:equipment:printer-01",
+      "id": "tinyhouse-bayreuth:equipment:printer-01",
       "type": "equipment",
       "attributes": [
-        { "name": "site", "time": "2026-01-15T00:00:00Z", "value": "tinyhouse" }
+        { "name": "site", "time": "2026-01-15T00:00:00Z", "value": "tinyhouse-bayreuth" }
       ],
       "relationships": []
     },
