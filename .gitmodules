@@ -1,0 +1,6 @@
+[submodule "CPEE"]
+	path = CPEE
+	url = https://github.com/etm/CPEE
+[submodule "weel"]
+	path = weel
+	url = https://github.com/etm/weel
