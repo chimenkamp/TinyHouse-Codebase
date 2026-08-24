@@ -1,0 +1,23 @@
+# Gateway address. Keep loopback unless a reverse proxy or VPN exposes it.
+TINYHOUSE_CPEE_HOST=127.0.0.1
+TINYHOUSE_CPEE_PORT=8400
+TINYHOUSE_CPEE_PUBLIC_URL=http://127.0.0.1:8400/
+
+# Munich node that executes the holistic coordinator instance.
+TINYHOUSE_CPEE_COORDINATOR_URL=http://127.0.0.1:8298/
+
+# Static child targets and executable full-instance definitions.
+TINYHOUSE_CPEE_WA1_URL=http://pi-wa1.example:8298/
+TINYHOUSE_CPEE_WA1_MODEL=/srv/tinyhouse-cpee/fragments/wa1.xml
+TINYHOUSE_CPEE_WA2_URL=http://pi-wa2.example:8298/
+TINYHOUSE_CPEE_WA2_MODEL=/srv/tinyhouse-cpee/fragments/wa2.xml
+TINYHOUSE_CPEE_WA3_URL=http://pi-wa3.example:8298/
+TINYHOUSE_CPEE_WA3_MODEL=/srv/tinyhouse-cpee/fragments/wa3.xml
+TINYHOUSE_CPEE_WA4_URL=http://pi-wa4.example:8298/
+TINYHOUSE_CPEE_WA4_MODEL=/srv/tinyhouse-cpee/fragments/wa4.xml
+TINYHOUSE_CPEE_MUNICH_URL=http://munich-cpee.example:8298/
+TINYHOUSE_CPEE_MUNICH_MODEL=/srv/tinyhouse-cpee/fragments/munich.xml
+
+TINYHOUSE_CPEE_REGISTRY=/var/lib/tinyhouse-cpee/orchestration.pstore
+TINYHOUSE_CPEE_REQUEST_TIMEOUT_SECONDS=10
+TINYHOUSE_CPEE_POLL_INTERVAL_SECONDS=2

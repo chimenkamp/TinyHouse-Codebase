@@ -1,0 +1,10 @@
+source 'https://rubygems.org'
+
+ruby '>= 2.7'
+
+gem 'webrick', '~> 1.8'
+
+group :test do
+  gem 'minitest', '~> 5.0'
+  gem 'rake', '~> 13.0'
+end

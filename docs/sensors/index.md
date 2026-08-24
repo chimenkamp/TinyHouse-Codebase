@@ -15,6 +15,18 @@ The Raspberry Pi receiver is the missing bridge. The receiver should parse the s
 | IR cameras | Two devices are available but not implemented |
 | XIAO ESP32S3 Sense camera | Candidate camera module from source notes |
 | XIAO 5MP camera | Candidate camera accessory from source notes |
+| Keyestudio 37-in-1 Sensor Kit V3.0 | Five complete kits are inventory-listed; contents, identity, completeness, and operation are not physically verified |
+| Keyestudio Hall Magnetic module | Candidate digital proximity module shown in the documented kit overview; verify the actual module before assignment |
+
+## WA-1 Tool-Rack Presence Sensing
+
+The WA-1 rack concept uses one Keyestudio Hall Magnetic module behind one designated tool slot. The official KS0487 documentation specifies digital on/off output, magnetic detection up to 3 cm, and a nominal 30 x 20 mm module envelope:
+
+`https://docs.keyestudio.com/projects/KS0487/en/latest/ks0487.html`
+
+The removable tool needs a securely retained magnet or equivalent magnetic tag. Commissioning must measure the actual PCB, Hall-element position, connector envelope, magnet distance, resting orientation, and tool wobble. It must also test debouncing, disconnect, stuck-high, and stuck-low behavior. An invalid or disconnected reading is `unknown`; an empty slot is evidence of removal only and does not prove correct tool use, inspection completion, or operator identity.
+
+The sensor is research telemetry and is not a safety interlock. It must not control the printer or any protective function. Monitoring all seven rack slots requires seven sensor channels. The documented Arduino-class interface exposes four digital inputs, so full-rack coverage needs additional verified input capacity. The workbook lists five complete kits, not seven commissioned Hall modules.
 
 ## Installed and Planned Boards
 

@@ -1,0 +1,129 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1100" viewBox="0 0 1600 1100" role="img" aria-labelledby="title description">
+<title id="title">Bayreuth TinyHouse work-area floorplan</title>
+<desc id="description">Dimensioned four-table layout with the complete right rear 207 centimetre bay free of tables.</desc>
+<defs>
+<pattern id="rearHatch" patternUnits="userSpaceOnUse" width="16" height="16" patternTransform="rotate(45)">
+<rect width="16" height="16" fill="#FFF1F1"/>
+<line x1="0" y1="0" x2="0" y2="16" stroke="#E8A4A4" stroke-width="5"/>
+</pattern>
+<marker id="arrowTeal" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+<path d="M 0 0 L 10 5 L 0 10 z" fill="#15807A"/>
+</marker>
+<filter id="shadow" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="3" stdDeviation="4" flood-opacity="0.18"/></filter>
+</defs>
+<rect x="0" y="0" width="1600" height="1100" fill="#F4F7FA"/>
+<rect x="0" y="0" width="1600" height="112" fill="#17324D"/>
+<rect x="48" y="28" width="156" height="56" rx="12" fill="#1B918B"/>
+<text x="126" y="64" fill="#FFFFFF" font-family="Arial, sans-serif" font-size="25" font-weight="700" text-anchor="middle">BAYREUTH</text>
+<text x="235" y="57" fill="#FFFFFF" font-family="Arial, sans-serif" font-size="31" font-weight="700">TinyHouse work-area floorplan</text>
+<text x="235" y="84" fill="#D8E5F1" font-family="Arial, sans-serif" font-size="16">Four process fragments | four existing table footprints | rear bay table-free</text>
+<text x="1548" y="57" fill="#FFFFFF" font-family="Arial, sans-serif" font-size="15" text-anchor="end">Revision 2026-08-24</text>
+<text x="1548" y="82" fill="#D8E5F1" font-family="Arial, sans-serif" font-size="14" text-anchor="end">Concept - verify by measured survey</text>
+<text x="100.0" y="155" fill="#17324D" font-family="Arial, sans-serif" font-size="23" font-weight="700">Nominal clear interior: 7.00 x 2.20 m</text>
+<text x="100.0" y="183" fill="#53606C" font-family="Arial, sans-serif" font-size="15">Front/storage end at left; rear window end at right. Entrance is on the upper long wall; the 160 x 100 cm window is opposite.</text>
+<rect x="100.00" y="245.00" width="1295.00" height="407.00" fill="#FBF7EF" stroke="#17324D" stroke-width="6" filter="url(#shadow)"/>
+<text x="112.00" y="232.00" fill="#53606C" font-family="Arial, sans-serif" font-size="14" font-weight="700">ENTRANCE WALL</text>
+<text x="112.00" y="675.00" fill="#53606C" font-family="Arial, sans-serif" font-size="14" font-weight="700">OPPOSITE WINDOW WALL</text>
+<text x="104.00" y="448.50" fill="#53606C" font-family="Arial, sans-serif" font-size="14" text-anchor="end" transform="rotate(-90 88.00 448.50)">FRONT / STORAGE END</text>
+<rect id="rear-table-free-zone" x="1012.05" y="245.00" width="382.95" height="407.00" fill="url(#rearHatch)" stroke="#B83232" stroke-width="4"/>
+<text x="1203.53" y="428.50" fill="#B83232" font-family="Arial, sans-serif" font-size="27" font-weight="700" text-anchor="middle">REAR - NO TABLES</text>
+<text x="1203.53" y="461.50" fill="#B83232" font-family="Arial, sans-serif" font-size="20" font-weight="700" text-anchor="middle">207 x 220 cm</text>
+<text x="1203.53" y="492.50" fill="#B83232" font-family="Arial, sans-serif" font-size="15" text-anchor="middle">Relocate current desk, chair, and workbench</text>
+<rect id="rear-return" x="984.30" y="559.50" width="27.75" height="92.50" fill="#CBBBA4" stroke="#766955" stroke-width="2"/>
+<text x="976.30" y="605.75" fill="#53606C" font-family="Arial, sans-serif" font-size="12" text-anchor="end">50 cm return</text>
+<line x1="623.55" y1="245.00" x2="901.05" y2="245.00" stroke="#FFFFFF" stroke-width="12"/>
+<line x1="623.55" y1="245.00" x2="623.55" y2="383.75" stroke="#D97706" stroke-width="3"/>
+<line x1="901.05" y1="245.00" x2="901.05" y2="383.75" stroke="#D97706" stroke-width="3"/>
+<path d="M 762.30 245.00 A 138.75 138.75 0 0 0 623.55 383.75" fill="none" stroke="#D97706" stroke-width="2" stroke-dasharray="8 5"/>
+<path d="M 762.30 245.00 A 138.75 138.75 0 0 1 901.05 383.75" fill="none" stroke="#D97706" stroke-width="2" stroke-dasharray="8 5"/>
+<text x="762.30" y="231.00" fill="#D97706" font-family="Arial, sans-serif" font-size="15" font-weight="700" text-anchor="middle">ENTRANCE 150 x 200 cm</text>
+<line x1="623.55" y1="652.00" x2="919.55" y2="652.00" stroke="#FFFFFF" stroke-width="12"/>
+<line x1="623.55" y1="652.00" x2="623.55" y2="504.00" stroke="#2563A6" stroke-width="3"/>
+<line x1="919.55" y1="652.00" x2="919.55" y2="504.00" stroke="#2563A6" stroke-width="3"/>
+<path d="M 771.55 652.00 A 148.00 148.00 0 0 1 623.55 504.00" fill="none" stroke="#2563A6" stroke-width="2" stroke-dasharray="8 5"/>
+<path d="M 771.55 652.00 A 148.00 148.00 0 0 0 919.55 504.00" fill="none" stroke="#2563A6" stroke-width="2" stroke-dasharray="8 5"/>
+<text x="771.55" y="701.00" fill="#2563A6" font-family="Arial, sans-serif" font-size="15" font-weight="700" text-anchor="middle">WINDOW 160 x 100 cm</text>
+<line x1="1395.00" y1="300.50" x2="1395.00" y2="596.50" stroke="#2563A6" stroke-width="10"/>
+<text x="1379.00" y="448.50" fill="#2563A6" font-family="Arial, sans-serif" font-size="14" font-weight="700" text-anchor="middle" transform="rotate(-90 1379.00 448.50)">REAR WINDOW - VERIFY 150/160 cm SOURCE CONFLICT</text>
+<rect id="t4-t4-printer-table" x="248.00" y="522.50" width="234.95" height="129.50" rx="10" fill="#F7C98B" stroke="#17202A" stroke-width="3"/>
+<rect x="252.00" y="526.50" width="226.95" height="25.00" rx="6" fill="#17324D" fill-opacity="0.94"/>
+<text x="365.48" y="543.50" fill="#FFFFFF" font-family="Arial, sans-serif" font-size="10" font-weight="700" text-anchor="middle">WA-1 / T4 / 127 x 70 cm</text>
+<rect id="t2-t2-robot-table" x="100.00" y="337.50" width="148.00" height="222.00" rx="10" fill="#F4B6B6" stroke="#17202A" stroke-width="3"/>
+<rect x="104.00" y="341.50" width="140.00" height="25.00" rx="6" fill="#17324D" fill-opacity="0.94"/>
+<text x="174.00" y="358.50" fill="#FFFFFF" font-family="Arial, sans-serif" font-size="10" font-weight="700" text-anchor="middle">WA-2 / T2 / 80 x 120 cm</text>
+<rect id="t3-t3-test-wing" x="266.50" y="245.00" width="222.00" height="101.75" rx="10" fill="#A7DDD4" stroke="#17202A" stroke-width="3"/>
+<rect id="t3-t3-assembly-wing" x="488.50" y="245.00" width="120.25" height="129.50" rx="10" fill="#A7DDD4" stroke="#17202A" stroke-width="3"/>
+<rect x="270.50" y="249.00" width="214.00" height="25.00" rx="6" fill="#17324D" fill-opacity="0.94"/>
+<text x="377.50" y="266.00" fill="#FFFFFF" font-family="Arial, sans-serif" font-size="10" font-weight="700" text-anchor="middle">WA-3 / T3 / 120 x 55 + 65 x 70 cm</text>
+<rect id="t1-t1-control-and-receiving-table" x="488.50" y="566.90" width="129.50" height="85.10" rx="10" fill="#AFC9EB" stroke="#17202A" stroke-width="3"/>
+<rect x="492.50" y="570.90" width="121.50" height="25.00" rx="6" fill="#17324D" fill-opacity="0.94"/>
+<text x="553.25" y="587.90" fill="#FFFFFF" font-family="Arial, sans-serif" font-size="10" font-weight="700" text-anchor="middle">WA-4 / T1 / 70 x 46 cm</text>
+<rect x="255.40" y="553.95" width="92.50" height="92.50" rx="5" fill="#D97706" stroke="#53606C" stroke-width="2" stroke-dasharray="7 5"/>
+<text x="301.65" y="605.20" fill="#17202A" font-family="Arial, sans-serif" font-size="11" font-weight="700" text-anchor="middle">INSTALL 50 x 50</text>
+<rect x="265.39" y="562.64" width="72.52" height="75.11" rx="5" fill="#F8E5CD" stroke="#53606C" stroke-width="2"/>
+<text x="301.65" y="605.20" fill="#17202A" font-family="Arial, sans-serif" font-size="11" font-weight="700" text-anchor="middle">P2S</text>
+<rect x="364.55" y="553.95" width="109.15" height="92.50" rx="5" fill="#E8F6F4" stroke="#53606C" stroke-width="2"/>
+<text x="419.12" y="605.20" fill="#17202A" font-family="Arial, sans-serif" font-size="11" font-weight="700" text-anchor="middle">BASE QC</text>
+<rect x="494.05" y="600.20" width="62.90" height="49.95" rx="5" fill="#EAF2FB" stroke="#53606C" stroke-width="2"/>
+<text x="525.50" y="630.18" fill="#17202A" font-family="Arial, sans-serif" font-size="11" font-weight="700" text-anchor="middle">PC</text>
+<rect x="560.65" y="594.65" width="49.95" height="55.50" rx="5" fill="#E8F6F4" stroke="#53606C" stroke-width="2"/>
+<text x="585.63" y="627.40" fill="#17202A" font-family="Arial, sans-serif" font-size="11" font-weight="700" text-anchor="middle">LID QC</text>
+<circle cx="174.00" cy="448.50" r="74.00" fill="#FDECEC" fill-opacity="0.45" stroke="#B83232" stroke-width="3" stroke-dasharray="8 5"/>
+<circle cx="174.00" cy="448.50" r="18" fill="#FFFFFF" stroke="#7D3131" stroke-width="3"/>
+<text x="174.00" y="453.50" fill="#B83232" font-family="Arial, sans-serif" font-size="11" font-weight="700" text-anchor="middle">ARM</text>
+<text x="174.00" y="539.50" fill="#B83232" font-family="Arial, sans-serif" font-size="12" font-weight="700" text-anchor="middle">R = 40 cm nominal</text>
+<text x="377.50" y="330.10" fill="#17202A" font-family="Arial, sans-serif" font-size="11" font-weight="700" text-anchor="middle">TEST + CALIBRATION</text>
+<text x="547.70" y="335.65" fill="#17202A" font-family="Arial, sans-serif" font-size="11" font-weight="700" text-anchor="middle">ESD ASSEMBLY</text>
+<rect x="266.50" y="346.75" width="216.45" height="175.75" fill="#E9F6EE" fill-opacity="0.55" stroke="none"/>
+<line x1="374.73" y1="354.75" x2="374.73" y2="514.50" stroke="#3E8E5B" stroke-width="3" marker-start="url(#arrowTeal)" marker-end="url(#arrowTeal)"/>
+<text x="386.73" y="434.62" fill="#3E8E5B" font-family="Arial, sans-serif" font-size="14" font-weight="700">95 cm aisle</text>
+<rect x="488.50" y="374.50" width="120.25" height="192.40" fill="#E9F6EE" fill-opacity="0.55" stroke="none"/>
+<line x1="548.62" y1="382.50" x2="548.62" y2="558.90" stroke="#3E8E5B" stroke-width="3" marker-start="url(#arrowTeal)" marker-end="url(#arrowTeal)"/>
+<text x="560.62" y="470.70" fill="#3E8E5B" font-family="Arial, sans-serif" font-size="14" font-weight="700">104 cm aisle</text>
+<line x1="248.00" y1="448.50" x2="988.00" y2="448.50" stroke="#15807A" stroke-width="4" stroke-dasharray="12 7" marker-end="url(#arrowTeal)"/>
+<text x="618.00" y="435.50" fill="#15807A" font-family="Arial, sans-serif" font-size="14" font-weight="700" text-anchor="middle">TRANSFER + PRIMARY EGRESS ROUTE</text>
+<g stroke="#53606C" fill="#53606C"><line x1="100.00" y1="210.00" x2="1395.00" y2="210.00" stroke-width="1.5"/><line x1="100.00" y1="203.00" x2="100.00" y2="217.00" stroke-width="1.5"/><line x1="1395.00" y1="203.00" x2="1395.00" y2="217.00" stroke-width="1.5"/><rect x="642.50" y="198.00" width="210" height="20" fill="#F4F7FA" stroke="none"/><text x="747.50" y="215.00" font-family="Arial, sans-serif" font-size="13" text-anchor="middle">700 cm nominal clear</text></g>
+<g stroke="#53606C" fill="#53606C"><line x1="1012.05" y1="724.00" x2="1395.00" y2="724.00" stroke-width="1.5"/><line x1="1012.05" y1="717.00" x2="1012.05" y2="731.00" stroke-width="1.5"/><line x1="1395.00" y1="717.00" x2="1395.00" y2="731.00" stroke-width="1.5"/><rect x="1098.53" y="712.00" width="210" height="20" fill="#F4F7FA" stroke="none"/><text x="1203.53" y="729.00" font-family="Arial, sans-serif" font-size="13" text-anchor="middle">207 cm rear table-free</text></g>
+<g stroke="#53606C" fill="#53606C"><line x1="100.00" y1="756.00" x2="618.00" y2="756.00" stroke-width="1.5"/><line x1="100.00" y1="749.00" x2="100.00" y2="763.00" stroke-width="1.5"/><line x1="618.00" y1="749.00" x2="618.00" y2="763.00" stroke-width="1.5"/><rect x="254.00" y="744.00" width="210" height="20" fill="#F4F7FA" stroke="none"/><text x="359.00" y="761.00" font-family="Arial, sans-serif" font-size="13" text-anchor="middle">280 cm table workcell</text></g>
+<g stroke="#53606C" fill="#53606C"><line x1="52.00" y1="245.00" x2="52.00" y2="652.00" stroke-width="1.5"/><line x1="45.00" y1="245.00" x2="59.00" y2="245.00" stroke-width="1.5"/><line x1="45.00" y1="652.00" x2="59.00" y2="652.00" stroke-width="1.5"/><text x="44.00" y="448.50" font-family="Arial, sans-serif" font-size="13" text-anchor="middle" transform="rotate(-90 44.00 448.50)">220 cm nominal clear</text></g>
+<text x="92.00" y="790.00" fill="#17324D" font-family="Arial, sans-serif" font-size="21" font-weight="700">Bayreuth distributed-route hand-offs</text>
+<rect x="92.00" y="815.00" width="250.00" height="62.00" rx="12" fill="#FFFFFF" stroke="#17324D" stroke-width="2"/>
+<circle cx="120.00" cy="846.00" r="18" fill="#15807A"/>
+<text x="120.00" y="852.00" fill="#FFFFFF" font-family="Arial, sans-serif" font-size="17" font-weight="700" text-anchor="middle">1</text>
+<text x="147.00" y="842.00" fill="#17324D" font-family="Arial, sans-serif" font-size="15" font-weight="700">WA-4 CONTROL</text>
+<text x="147.00" y="863.00" fill="#53606C" font-family="Arial, sans-serif" font-size="13">register + schedule</text>
+<line x1="347.00" y1="846.00" x2="377.00" y2="846.00" stroke="#15807A" stroke-width="3" marker-end="url(#arrowTeal)"/>
+<rect x="382.00" y="815.00" width="250.00" height="62.00" rx="12" fill="#FFFFFF" stroke="#17324D" stroke-width="2"/>
+<circle cx="410.00" cy="846.00" r="18" fill="#15807A"/>
+<text x="410.00" y="852.00" fill="#FFFFFF" font-family="Arial, sans-serif" font-size="17" font-weight="700" text-anchor="middle">2</text>
+<text x="437.00" y="842.00" fill="#17324D" font-family="Arial, sans-serif" font-size="15" font-weight="700">WA-1 + WA-4</text>
+<text x="437.00" y="863.00" fill="#53606C" font-family="Arial, sans-serif" font-size="13">base print || remote lid</text>
+<line x1="637.00" y1="846.00" x2="667.00" y2="846.00" stroke="#15807A" stroke-width="3" marker-end="url(#arrowTeal)"/>
+<rect x="672.00" y="815.00" width="250.00" height="62.00" rx="12" fill="#FFFFFF" stroke="#17324D" stroke-width="2"/>
+<circle cx="700.00" cy="846.00" r="18" fill="#15807A"/>
+<text x="700.00" y="852.00" fill="#FFFFFF" font-family="Arial, sans-serif" font-size="17" font-weight="700" text-anchor="middle">3</text>
+<text x="727.00" y="842.00" fill="#17324D" font-family="Arial, sans-serif" font-size="15" font-weight="700">WA-2 ROBOT</text>
+<text x="727.00" y="863.00" fill="#53606C" font-family="Arial, sans-serif" font-size="13">prepare electronics kit</text>
+<line x1="927.00" y1="846.00" x2="957.00" y2="846.00" stroke="#15807A" stroke-width="3" marker-end="url(#arrowTeal)"/>
+<rect x="962.00" y="815.00" width="250.00" height="62.00" rx="12" fill="#FFFFFF" stroke="#17324D" stroke-width="2"/>
+<circle cx="990.00" cy="846.00" r="18" fill="#15807A"/>
+<text x="990.00" y="852.00" fill="#FFFFFF" font-family="Arial, sans-serif" font-size="17" font-weight="700" text-anchor="middle">4</text>
+<text x="1017.00" y="842.00" fill="#17324D" font-family="Arial, sans-serif" font-size="15" font-weight="700">WA-3 ASSEMBLY</text>
+<text x="1017.00" y="863.00" fill="#53606C" font-family="Arial, sans-serif" font-size="13">assemble + test + approve</text>
+<line x1="1217.00" y1="846.00" x2="1247.00" y2="846.00" stroke="#15807A" stroke-width="3" marker-end="url(#arrowTeal)"/>
+<rect x="1252.00" y="815.00" width="250.00" height="62.00" rx="12" fill="#FFFFFF" stroke="#17324D" stroke-width="2"/>
+<circle cx="1280.00" cy="846.00" r="18" fill="#15807A"/>
+<text x="1280.00" y="852.00" fill="#FFFFFF" font-family="Arial, sans-serif" font-size="17" font-weight="700" text-anchor="middle">5</text>
+<text x="1307.00" y="842.00" fill="#17324D" font-family="Arial, sans-serif" font-size="15" font-weight="700">WA-4 CLOSE</text>
+<text x="1307.00" y="863.00" fill="#53606C" font-family="Arial, sans-serif" font-size="13">disclosure + outcome</text>
+<rect x="92" y="900" width="1416" height="160" rx="14" fill="#FFFFFF" stroke="#B8C2CC" stroke-width="2"/>
+<text x="118" y="931" fill="#17324D" font-family="Arial, sans-serif" font-size="17" font-weight="700">Design basis</text>
+<text x="118" y="958" fill="#17202A" font-family="Arial, sans-serif" font-size="14">Drawing-derived interior 700 x 220 cm; entrance 150 x 200 cm; opposite window 160 x 100 cm; rear bay 207 cm.</text>
+<text x="118" y="982" fill="#17202A" font-family="Arial, sans-serif" font-size="14">Nominal aisle: 95 cm. ASR A2.3 concept target: at least 90 cm for up to five people; confirm applicability on site.</text>
+<text x="835" y="931" fill="#17324D" font-family="Arial, sans-serif" font-size="17" font-weight="700">Installation hold points</text>
+<text x="835" y="958" fill="#17202A" font-family="Arial, sans-serif" font-size="14">Survey table load/height, opening coordinates, outlets, cable paths,</text>
+<text x="835" y="982" fill="#17202A" font-family="Arial, sans-serif" font-size="14">P2S ventilation, and rear furniture removal.</text>
+<text x="835" y="1013" fill="#B83232" font-family="Arial, sans-serif" font-size="14" font-weight="700">PAROL6 guarding, mounting, E-stop, and safe reset require</text>
+<text x="835" y="1037" fill="#B83232" font-family="Arial, sans-serif" font-size="14" font-weight="700">an independent risk assessment. Printed fixtures are not safety devices.</text>
+<text x="92" y="1085" fill="#53606C" font-family="Arial, sans-serif" font-size="12">Concept only - not a construction drawing, machine integration approval, fire-protection plan, or certified escape-route plan.</text>
+</svg>

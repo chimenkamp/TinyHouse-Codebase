@@ -70,6 +70,23 @@ serial connection. Cloud detection additionally uses `ROBOFLOW_API_KEY` from
 The equivalent npm commands are `npm run docs:dev`, `npm run docs:build`, and
 `npm run docs:preview`.
 
+## Bayreuth laboratory concept
+
+The concept generator builds the four-work-area floorplan, the detailed
+hardware schedule, the final PDF, and the editable plus print-ready fixture
+models:
+
+```bash
+python3 main.py
+python3 scripts/verify_tinyhouse_concept.py
+```
+
+The configured generator uses the local FreeCAD command-line application.
+Update `AppConfig.freecad_command` in
+`src/tinyhouse_concept/configuration.py` when FreeCAD is installed elsewhere.
+The generated non-safety fixtures are stored under `assets/3D/Workareas` as
+FreeCAD, STEP, STL, and 3MF files.
+
 ## Repository layout
 
 - `docs/` — VitePress documentation.

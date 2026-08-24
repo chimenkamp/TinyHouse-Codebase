@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testset xmlns="http://cpee.org/ns/properties/2.0">
+  <state>ready</state>
+  <executionhandler>ruby</executionhandler>
+  <dataelements>
+    <run_id/>
+    <work_order_id/>
+    <wa1_input>{}</wa1_input>
+    <wa2_input>{}</wa2_input>
+    <wa3_input>{}</wa3_input>
+    <wa4_input>{}</wa4_input>
+    <munich_input>{}</munich_input>
+    <wa1_result/>
+    <wa2_result/>
+    <wa3_result/>
+    <wa4_result/>
+    <munich_result/>
+  </dataelements>
+  <endpoints>
+    <fragment_gateway>http://127.0.0.1:8400/v1/fragments/start-and-await</fragment_gateway>
+  </endpoints>
+  <attributes>
+    <guarded>none</guarded>
+    <modeltype>CPEE</modeltype>
+    <theme>extended</theme>
+    <info>TinyHouse holistic coordinator</info>
+    <creator>TinyHouse</creator>
+    <author>TinyHouse</author>
+    <model_uuid>e0bb3f68-2935-44c7-a1d2-070781483213</model_uuid>
+    <model_version>1</model_version>
+    <design_stage>development</design_stage>
+  </attributes>
+  <description>
+    <description xmlns="http://cpee.org/ns/description/1.0">
+      <parallel eid="e_all" wait="-1" cancel="last">
+        <parallel_branch eid="e_control">
+          <call id="a_wa4" endpoint="fragment_gateway">
+            <parameters>
+              <label>WA-4 control and lid receipt</label>
+              <method>:post</method>
+              <arguments>
+                <fragment_id>wa4</fragment_id>
+                <run_id>!data.run_id</run_id>
+                <work_order_id>!data.work_order_id</work_order_id>
+                <attempt>1</attempt>
+                <input_json>!data.wa4_input</input_json>
+              </arguments>
+            </parameters>
+            <code>
+              <finalize output="result">data.wa4_result = result</finalize>
+              <rescue output="result">raise "WA-4 fragment failed: #{result.inspect}"</rescue>
+            </code>
+          </call>
+        </parallel_branch>
+        <parallel_branch eid="e_production">
+          <parallel eid="e_parts" wait="-1" cancel="last">
+            <parallel_branch eid="e_base">
+              <call id="a_wa1" endpoint="fragment_gateway">
+                <parameters>
+                  <label>WA-1 print and inspect base</label>
+                  <method>:post</method>
+                  <arguments>
+                    <fragment_id>wa1</fragment_id>
+                    <run_id>!data.run_id</run_id>
+                    <work_order_id>!data.work_order_id</work_order_id>
+                    <attempt>1</attempt>
+                    <input_json>!data.wa1_input</input_json>
+                  </arguments>
+                </parameters>
+                <code>
+                  <finalize output="result">data.wa1_result = result</finalize>
+                  <rescue output="result">raise "WA-1 fragment failed: #{result.inspect}"</rescue>
+                </code>
+              </call>
+            </parallel_branch>
+            <parallel_branch eid="e_lid">
+              <call id="a_munich" endpoint="fragment_gateway">
+                <parameters>
+                  <label>Munich print and dispatch lid</label>
+                  <method>:post</method>
+                  <arguments>
+                    <fragment_id>munich</fragment_id>
+                    <run_id>!data.run_id</run_id>
+                    <work_order_id>!data.work_order_id</work_order_id>
+                    <attempt>1</attempt>
+                    <input_json>!data.munich_input</input_json>
+                  </arguments>
+                </parameters>
+                <code>
+                  <finalize output="result">data.munich_result = result</finalize>
+                  <rescue output="result">raise "Munich fragment failed: #{result.inspect}"</rescue>
+                </code>
+              </call>
+            </parallel_branch>
+          </parallel>
+          <call id="a_wa2" endpoint="fragment_gateway">
+            <parameters>
+              <label>WA-2 prepare assembly kit</label>
+              <method>:post</method>
+              <arguments>
+                <fragment_id>wa2</fragment_id>
+                <run_id>!data.run_id</run_id>
+                <work_order_id>!data.work_order_id</work_order_id>
+                <attempt>1</attempt>
+                <input_json>!data.wa2_input</input_json>
+              </arguments>
+            </parameters>
+            <code>
+              <finalize output="result">data.wa2_result = result</finalize>
+              <rescue output="result">raise "WA-2 fragment failed: #{result.inspect}"</rescue>
+            </code>
+          </call>
+          <call id="a_wa3" endpoint="fragment_gateway">
+            <parameters>
+              <label>WA-3 assemble, test, and approve</label>
+              <method>:post</method>
+              <arguments>
+                <fragment_id>wa3</fragment_id>
+                <run_id>!data.run_id</run_id>
+                <work_order_id>!data.work_order_id</work_order_id>
+                <attempt>1</attempt>
+                <input_json>!data.wa3_input</input_json>
+              </arguments>
+            </parameters>
+            <code>
+              <finalize output="result">data.wa3_result = result</finalize>
+              <rescue output="result">raise "WA-3 fragment failed: #{result.inspect}"</rescue>
+            </code>
+          </call>
+        </parallel_branch>
+      </parallel>
+    </description>
+  </description>
+  <transformation>
+    <description type="copy"/>
+    <dataelements type="none"/>
+    <endpoints type="none"/>
+  </transformation>
+</testset>

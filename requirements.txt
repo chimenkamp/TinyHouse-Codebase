@@ -52,3 +52,7 @@ pinokin @ https://github.com/Jepson2k/pinokin/releases/download/v0.1.5/pinokin-0
 
 # Test dependencies used by the digital-twin backend.
 pytest>=8,<9
+
+# TinyHouse laboratory-concept PDF generation and validation.
+reportlab>=4.5,<5
+pypdf>=6.16,<7

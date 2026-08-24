@@ -1,0 +1,626 @@
+{
+  "default_print_profile": {
+    "infill_percent": 25,
+    "layer_height_mm": 0.2,
+    "perimeters": 4,
+    "top_bottom_layers": 5
+  },
+  "generated_with": "FreeCAD 1.0.0",
+  "part_count": 16,
+  "parts": [
+    {
+      "dimensions_mm": [
+        220.0,
+        160.0,
+        16.0
+      ],
+      "files": {
+        "3mf": "wa1_inspection_tray/wa1_inspection_tray.3mf",
+        "FCStd": "wa1_inspection_tray/wa1_inspection_tray.FCStd",
+        "step": "wa1_inspection_tray/wa1_inspection_tray.step",
+        "stl": "wa1_inspection_tray/wa1_inspection_tray.stl"
+      },
+      "fit_assumptions": [
+        "Usable inspection region is 212 x 152 mm.",
+        "Verify the produced base envelope before printing."
+      ],
+      "key": "wa1_inspection_tray",
+      "load_bearing": false,
+      "material": "PETG",
+      "mesh_facets": 28,
+      "non_printed_fasteners": [],
+      "print_orientation": "Flat on the tray bottom; no supports.",
+      "purpose": "Keeps the printed base inside a repeatable camera and load-cell inspection region.",
+      "quantity": 1,
+      "safety_class": "non_safety_fixture",
+      "sha256": {
+        "3mf": "421e0a76d46060482751a63fae851b586452a086ada22d124e206de2e21110d0",
+        "FCStd": "3f9973345a0849a947792c2606dbec221345bd1fb937a82c39092b66a8782d00",
+        "step": "b40346eceb968d6032e6b112fb51a58146db12878a6cdbd348cdb810c7ba7da0",
+        "stl": "aaa4c15e5ded198c09f6c6c9d4e6144df3f08eea727b111164013908c9001a72"
+      },
+      "solid_volume_mm3": 144288.0,
+      "title": "WA-1 cooled-part inspection tray",
+      "work_area": "WA-1"
+    },
+    {
+      "dimensions_mm": [
+        180.0,
+        70.0,
+        68.0
+      ],
+      "files": {
+        "3mf": "wa1_tool_rack/wa1_tool_rack.3mf",
+        "FCStd": "wa1_tool_rack/wa1_tool_rack.FCStd",
+        "step": "wa1_tool_rack/wa1_tool_rack.step",
+        "stl": "wa1_tool_rack/wa1_tool_rack.stl"
+      },
+      "fit_assumptions": [
+        "Seven 10 mm open tool slots are provided.",
+        "Tool handles wider than 10 mm rest in the front channel.",
+        "The integrated cassette monitors one designated tool slot only.",
+        "The official module envelope is 30 x 20 mm; PCB thickness, Hall-element position, connector keep-out, and component height require a physical fit check.",
+        "Validate magnet distance and every allowed resting orientation; an empty slot is not evidence of correct tool use or operator identity.",
+        "The presence sensor is research telemetry, not a safety interlock, and must not control the printer or protective functions.",
+        "Monitoring all seven slots requires seven sensors and verified additional digital-input capacity; the workbook lists five complete sensor kits."
+      ],
+      "key": "wa1_tool_rack",
+      "load_bearing": false,
+      "material": "PETG",
+      "mesh_facets": 224,
+      "non_printed_fasteners": [
+        "2 x M4 washers",
+        "2 x M4 screws for optional bench attachment",
+        "1 x Keyestudio Hall Magnetic module, nominal PCB 30 x 20 mm",
+        "1 x 8 x 3 mm neodymium magnet or equivalent tool-mounted magnetic tag",
+        "1 x three-wire extra-low-voltage sensor harness"
+      ],
+      "print_orientation": "Base on the build plate; support the rear sensor-cassette floor and front lip only where the selected slicer requires it.",
+      "purpose": "Separates hand tools from the cooled-part inspection surface and holds one removable Hall-sensor module behind the designated monitored slot.",
+      "quantity": 1,
+      "safety_class": "non_safety_fixture",
+      "sha256": {
+        "3mf": "ae4cc72eade1817f72c3a7c84b70fefc3c6cd4ea74747d8bff8870d57f90d98c",
+        "FCStd": "717b4864972328e5af1f27966ee1418b610200012783b35848cfb635a90206b8",
+        "step": "b58124721c0c809069118d122fd28bf2e60a7ee82447a06a25b5cc97e8a4895d",
+        "stl": "75dd222c774c00de34cefd87f45d0b92587be74efd546e2fa5fcbcf5cdfc5b7a"
+      },
+      "solid_volume_mm3": 183595.0,
+      "title": "WA-1 sensor-ready scraper and caliper rack",
+      "work_area": "WA-1"
+    },
+    {
+      "dimensions_mm": [
+        90.0,
+        55.0,
+        71.0
+      ],
+      "files": {
+        "3mf": "wa1_sensor_bridge_bracket/wa1_sensor_bridge_bracket.3mf",
+        "FCStd": "wa1_sensor_bridge_bracket/wa1_sensor_bridge_bracket.FCStd",
+        "step": "wa1_sensor_bridge_bracket/wa1_sensor_bridge_bracket.step",
+        "stl": "wa1_sensor_bridge_bracket/wa1_sensor_bridge_bracket.stl"
+      },
+      "fit_assumptions": [
+        "Optical opening is 44 x 28 mm.",
+        "Hole spacing is a prototype and must be checked against the selected sensor carrier."
+      ],
+      "key": "wa1_sensor_bridge_bracket",
+      "load_bearing": false,
+      "material": "PETG",
+      "mesh_facets": 1064,
+      "non_printed_fasteners": [
+        "2 x M4 screws and washers",
+        "2 x M3 camera-module screws"
+      ],
+      "print_orientation": "On one broad side of the L profile; supports under the opposite flange.",
+      "purpose": "Provides a non-safety adapter surface for a camera and MLX90640 sensor pod.",
+      "quantity": 1,
+      "safety_class": "non_safety_fixture",
+      "sha256": {
+        "3mf": "dc3b561683d17a61ab852d3526b9b4c3a32d74fc8ef9f5468095f8ba8f53d140",
+        "FCStd": "31d0384b5074eae4aeb34aa4690004e2555fc77d9ddc37a1af26fd50516f8441",
+        "step": "a9f14cb372fe5d041fb7fd6fb1e65aa6070f4612f0d804b2ce0f2638b37d7c34",
+        "stl": "fe692839fe57c823f1b02541101794473a3242252c1d45acf80a73a7cc9dd1d4"
+      },
+      "solid_volume_mm3": 57116.586,
+      "title": "WA-1 optical and thermal sensor bridge bracket",
+      "work_area": "WA-1"
+    },
+    {
+      "dimensions_mm": [
+        110.0,
+        85.0,
+        55.0
+      ],
+      "files": {
+        "3mf": "wa2_component_bin/wa2_component_bin.3mf",
+        "FCStd": "wa2_component_bin/wa2_component_bin.FCStd",
+        "step": "wa2_component_bin/wa2_component_bin.step",
+        "stl": "wa2_component_bin/wa2_component_bin.stl"
+      },
+      "fit_assumptions": [
+        "Internal envelope is approximately 104 x 79 x 52 mm.",
+        "Do not use for loose conductive parts without an ESD-safe liner."
+      ],
+      "key": "wa2_component_bin",
+      "load_bearing": false,
+      "material": "PETG",
+      "mesh_facets": 28,
+      "non_printed_fasteners": [],
+      "print_orientation": "Flat on the bin bottom; no supports.",
+      "purpose": "Holds one identified component type over a dedicated weighing point.",
+      "quantity": 4,
+      "safety_class": "non_safety_fixture",
+      "sha256": {
+        "3mf": "e74b8ff00a98ed362e536cac6c080434c6c89b52a567682662a010dfbfd8e92a",
+        "FCStd": "477cc7d99f8410dc63126793d528cd7092c80b4dc018d01fba312b3d7ce1d488",
+        "step": "65c02772e28c7c115ed9abe7f255ea0af1472f13579f703241124b83663c5387",
+        "stl": "bc4064ff20604a8204fff0d567af15ca71d84e5d1827ab093c0d18b90617bb0a"
+      },
+      "solid_volume_mm3": 87018.0,
+      "title": "WA-2 instrumented component bin",
+      "work_area": "WA-2"
+    },
+    {
+      "dimensions_mm": [
+        122.0,
+        97.0,
+        8.0
+      ],
+      "files": {
+        "3mf": "wa2_bin_locator/wa2_bin_locator.3mf",
+        "FCStd": "wa2_bin_locator/wa2_bin_locator.FCStd",
+        "step": "wa2_bin_locator/wa2_bin_locator.step",
+        "stl": "wa2_bin_locator/wa2_bin_locator.stl"
+      },
+      "fit_assumptions": [
+        "Recess accepts a 110 x 85 mm bin base.",
+        "Verify screw positions against the load-cell platform before drilling."
+      ],
+      "key": "wa2_bin_locator",
+      "load_bearing": false,
+      "material": "PETG",
+      "mesh_facets": 1052,
+      "non_printed_fasteners": [
+        "4 x M4 low-profile screws",
+        "Load-cell platform supplied separately"
+      ],
+      "print_orientation": "Flat on the plate bottom; no supports.",
+      "purpose": "Returns each component bin to the same load-cell and camera position.",
+      "quantity": 4,
+      "safety_class": "non_safety_fixture",
+      "sha256": {
+        "3mf": "44a7c9bb8256d21fbe9291570441d3af6ee961c914b7671773b3e9fc2ffbb46f",
+        "FCStd": "9807fab11d4837b2f55f5c705ecaed4a6105caae2c330d676827d31b5844f12b",
+        "step": "dd2a50c96341dcfe5df04410576e13882028598c2e6c9ba2b16b0d03598b88d8",
+        "stl": "7d331d833e9052a49c432f834b708b52387efa1f2e2ad7e702fa5a8d10b97108"
+      },
+      "solid_volume_mm3": 47739.536,
+      "title": "WA-2 component-bin locator plate",
+      "work_area": "WA-2"
+    },
+    {
+      "dimensions_mm": [
+        220.0,
+        150.0,
+        18.0
+      ],
+      "files": {
+        "3mf": "wa2_kit_tray/wa2_kit_tray.3mf",
+        "FCStd": "wa2_kit_tray/wa2_kit_tray.FCStd",
+        "step": "wa2_kit_tray/wa2_kit_tray.step",
+        "stl": "wa2_kit_tray/wa2_kit_tray.stl"
+      },
+      "fit_assumptions": [
+        "Three equal nominal compartments are provided.",
+        "The printed polymer is not assumed to be electrically dissipative."
+      ],
+      "key": "wa2_kit_tray",
+      "load_bearing": false,
+      "material": "PETG with removable ESD-safe liner",
+      "mesh_facets": 60,
+      "non_printed_fasteners": [
+        "ESD-safe liner"
+      ],
+      "print_orientation": "Flat on the tray bottom; no supports.",
+      "purpose": "Separates prepared electronics into three observable kit compartments.",
+      "quantity": 1,
+      "safety_class": "non_safety_fixture",
+      "sha256": {
+        "3mf": "f1d8bbca5e477b29627db50c7d014cff0011105fd3a85b462028447d16de3bac",
+        "FCStd": "eb99e07cf97da867c325ece0babf5e6619fb9d85163354fbb8ec1143779fa73f",
+        "step": "5d904a0c11ec0bfe7f9390ea70ff4ae71c450e8d11a89f8fd2b8d96a28d522b4",
+        "stl": "61932ae166de39c96e465746be54efee35f7103a0fbe8d82af36bbe74b72e1c8"
+      },
+      "solid_volume_mm3": 159480.0,
+      "title": "WA-2 prepared-kit tray",
+      "work_area": "WA-2"
+    },
+    {
+      "dimensions_mm": [
+        220.0,
+        150.0,
+        16.0
+      ],
+      "files": {
+        "3mf": "wa3_component_staging_tray/wa3_component_staging_tray.3mf",
+        "FCStd": "wa3_component_staging_tray/wa3_component_staging_tray.FCStd",
+        "step": "wa3_component_staging_tray/wa3_component_staging_tray.step",
+        "stl": "wa3_component_staging_tray/wa3_component_staging_tray.stl"
+      },
+      "fit_assumptions": [
+        "Each pocket is approximately 65 x 138 mm.",
+        "Verify component envelopes and surface-resistivity requirements."
+      ],
+      "key": "wa3_component_staging_tray",
+      "load_bearing": false,
+      "material": "Validated ESD-safe PETG or PETG outside the ESD mat",
+      "mesh_facets": 60,
+      "non_printed_fasteners": [
+        "ESD-safe pocket liners when ordinary PETG is used"
+      ],
+      "print_orientation": "Flat on the tray bottom; no supports.",
+      "purpose": "Provides three separated identity-preserving staging pockets before assembly.",
+      "quantity": 1,
+      "safety_class": "non_safety_fixture",
+      "sha256": {
+        "3mf": "3d5baefaec61e9aae238d4b61129ababba51da1a0a34d898724897f4bf8d4b33",
+        "FCStd": "45f5a22f5f2d219e5aa69b434762d288eb9c6fb4b6ac659f898bba8be59285a6",
+        "step": "cc1b37a4aced2c41d0066a83b54f3adcf59262d995db5bf281edae0ca140cb77",
+        "stl": "3a6a647fd6d2e256bc29e69974a1c62526bd8ac58b541f93257f34ed067a7057"
+      },
+      "solid_volume_mm3": 176376.0,
+      "title": "WA-3 base, lid, and kit staging tray",
+      "work_area": "WA-3"
+    },
+    {
+      "dimensions_mm": [
+        110.0,
+        80.0,
+        28.0
+      ],
+      "files": {
+        "3mf": "wa3_nano_test_jig_enclosure/wa3_nano_test_jig_enclosure.3mf",
+        "FCStd": "wa3_nano_test_jig_enclosure/wa3_nano_test_jig_enclosure.FCStd",
+        "step": "wa3_nano_test_jig_enclosure/wa3_nano_test_jig_enclosure.step",
+        "stl": "wa3_nano_test_jig_enclosure/wa3_nano_test_jig_enclosure.stl"
+      },
+      "fit_assumptions": [
+        "Prototype post pattern is 58 x 36 mm.",
+        "Carrier-board dimensions and electrical clearances require a physical fit check."
+      ],
+      "key": "wa3_nano_test_jig_enclosure",
+      "load_bearing": false,
+      "material": "Validated ESD-safe PETG",
+      "mesh_facets": 2064,
+      "non_printed_fasteners": [
+        "4 x M3 screws",
+        "4 x M3 insulating washers"
+      ],
+      "print_orientation": "Flat on the enclosure bottom; no supports.",
+      "purpose": "Protects a low-voltage carrier board and provides controlled USB cable exit.",
+      "quantity": 1,
+      "safety_class": "non_safety_fixture",
+      "sha256": {
+        "3mf": "fb1f58923607f013adf32c56cb7a7f8af3ae19e0b8fa4e8d2b7a422342c59c71",
+        "FCStd": "50fe63d701ecfb11f98edb68f2056151cb210defed79b1990aee35d09117b9d6",
+        "step": "b98ddb085cfee5d2e4ed2db2b63b9930520f7205ad0ac619c3df91e6dd07afb9",
+        "stl": "1019e24358c03ab239ece3e8b5c5b2230963c68ff302dd72540f9dd4063f5036"
+      },
+      "solid_volume_mm3": 54735.065,
+      "title": "WA-3 Nano serial test-jig enclosure",
+      "work_area": "WA-3"
+    },
+    {
+      "dimensions_mm": [
+        180.0,
+        70.0,
+        18.0
+      ],
+      "files": {
+        "3mf": "wa3_reference_weight_caddy/wa3_reference_weight_caddy.3mf",
+        "FCStd": "wa3_reference_weight_caddy/wa3_reference_weight_caddy.FCStd",
+        "step": "wa3_reference_weight_caddy/wa3_reference_weight_caddy.step",
+        "stl": "wa3_reference_weight_caddy/wa3_reference_weight_caddy.stl"
+      },
+      "fit_assumptions": [
+        "Blind pockets have radii 18, 15, 12, and 9 mm.",
+        "Measure the certified references before production printing."
+      ],
+      "key": "wa3_reference_weight_caddy",
+      "load_bearing": false,
+      "material": "PETG",
+      "mesh_facets": 1020,
+      "non_printed_fasteners": [
+        "Certified reference weights supplied separately"
+      ],
+      "print_orientation": "Flat on the caddy bottom; no supports.",
+      "purpose": "Keeps four calibration references identified and separated from active test parts.",
+      "quantity": 1,
+      "safety_class": "non_safety_fixture",
+      "sha256": {
+        "3mf": "af82d369670ff5e269c1196d7a5bda8360a7617ddc1bf5864f4d8d90e5c5d71f",
+        "FCStd": "f270dbdc32c308da2c98b91191ca41b6a3276b83701d10d83198ca46d881ff2b",
+        "step": "eda18d39833462f8b089d2b58aff65e2788b425e6c46db66f536e69873d74b37",
+        "stl": "47ad2c78925d9ac480ee330d19a61cce59d4ad7273e17013d1653ce081d967ff"
+      },
+      "solid_volume_mm3": 195189.295,
+      "title": "WA-3 reference-weight caddy",
+      "work_area": "WA-3"
+    },
+    {
+      "dimensions_mm": [
+        240.0,
+        180.0,
+        18.0
+      ],
+      "files": {
+        "3mf": "wa4_receiving_tray/wa4_receiving_tray.3mf",
+        "FCStd": "wa4_receiving_tray/wa4_receiving_tray.FCStd",
+        "step": "wa4_receiving_tray/wa4_receiving_tray.step",
+        "stl": "wa4_receiving_tray/wa4_receiving_tray.stl"
+      },
+      "fit_assumptions": [
+        "Usable region is 232 x 172 mm.",
+        "Verify the scale platform and largest lid envelope."
+      ],
+      "key": "wa4_receiving_tray",
+      "load_bearing": false,
+      "material": "PETG",
+      "mesh_facets": 28,
+      "non_printed_fasteners": [
+        "Non-slip scale mat"
+      ],
+      "print_orientation": "Flat on the tray bottom; no supports.",
+      "purpose": "Defines the receiving and camera region while distributing load on the scale.",
+      "quantity": 1,
+      "safety_class": "non_safety_fixture",
+      "sha256": {
+        "3mf": "8438800b1cb98c33ea52a4fe494c30d80cdc9427cb32f313a42369d1e57cfc1a",
+        "FCStd": "38287f8859c1ca51f641066fc35399ec6e06cbe1d61669afce21d6bc0b6bd3f0",
+        "step": "60926b1b624cda8f195c4e78e2b7c0e8930f89e997f2a436ae4571bfa87a8cc5",
+        "stl": "3a76f0b25e3ecee3581a678312176b3a81ca9fa9e4ae9a6cb184fedd0327a6c3"
+      },
+      "solid_volume_mm3": 179040.0,
+      "title": "WA-4 scale-compatible lid receiving tray",
+      "work_area": "WA-4"
+    },
+    {
+      "dimensions_mm": [
+        130.0,
+        100.0,
+        130.0
+      ],
+      "files": {
+        "3mf": "wa4_barcode_scanner_stand/wa4_barcode_scanner_stand.3mf",
+        "FCStd": "wa4_barcode_scanner_stand/wa4_barcode_scanner_stand.FCStd",
+        "step": "wa4_barcode_scanner_stand/wa4_barcode_scanner_stand.step",
+        "stl": "wa4_barcode_scanner_stand/wa4_barcode_scanner_stand.stl"
+      },
+      "fit_assumptions": [
+        "Handle slot is 40 mm wide.",
+        "Confirm scanner handle width and trigger clearance."
+      ],
+      "key": "wa4_barcode_scanner_stand",
+      "load_bearing": false,
+      "material": "PETG",
+      "mesh_facets": 64,
+      "non_printed_fasteners": [
+        "4 x adhesive rubber feet"
+      ],
+      "print_orientation": "On the rear face; supports under the cradle and base as required.",
+      "purpose": "Keeps a handheld scanner in a repeatable position beside the receiving tray.",
+      "quantity": 1,
+      "safety_class": "non_safety_fixture",
+      "sha256": {
+        "3mf": "5cfc7b08bb4de572422ecad41d5231e8be854d46c15971878a1d7a5bea4c6885",
+        "FCStd": "89e19c997e89479dd5a12e44376424941d339654da64a145eeea9ab14d24eb99",
+        "step": "3e963f8a4be4cf6b7d7c98fdd4d8cfe705c77372a035ecb605d0d69f00b51e76",
+        "stl": "fe9cb2c28133dfd9192480c990a8903bf3c21ee9fc59fe5c3ded6cd8a70cd7ee"
+      },
+      "solid_volume_mm3": 174000.0,
+      "title": "WA-4 barcode-scanner stand",
+      "work_area": "WA-4"
+    },
+    {
+      "dimensions_mm": [
+        150.0,
+        80.0,
+        28.0
+      ],
+      "files": {
+        "3mf": "wa4_button_console/wa4_button_console.3mf",
+        "FCStd": "wa4_button_console/wa4_button_console.FCStd",
+        "step": "wa4_button_console/wa4_button_console.step",
+        "stl": "wa4_button_console/wa4_button_console.stl"
+      },
+      "fit_assumptions": [
+        "Cutouts are 22.5 mm diameter.",
+        "This enclosure is prohibited for mains voltage or safety circuits."
+      ],
+      "key": "wa4_button_console",
+      "load_bearing": false,
+      "material": "PETG",
+      "mesh_facets": 816,
+      "non_printed_fasteners": [
+        "3 x 22 mm extra-low-voltage panel buttons",
+        "Low-voltage cable gland"
+      ],
+      "print_orientation": "Top panel on the build plate; supports in the cable slot only if required.",
+      "purpose": "Houses three low-voltage buttons for accept, replace, and manual-review decisions.",
+      "quantity": 1,
+      "safety_class": "non_safety_fixture",
+      "sha256": {
+        "3mf": "ac3f6531204779169b8d7515e6004cd9e7ce9f1a0f85b552dce627d75f92b9c4",
+        "FCStd": "5bd03eb17c065f8fc279fb836c24cbb28d8e09fb5e952a3aaf67c777fadb4477",
+        "step": "64bf7a1c987b4be5a84296635343dac5dd3b046b9ea695b9491db421b72eccba",
+        "stl": "b475e9e63db1fdae965be3651b0924c08e80a62ca62add29b3a46db42ac435d4"
+      },
+      "solid_volume_mm3": 65361.53,
+      "title": "WA-4 low-voltage decision-button console",
+      "work_area": "WA-4"
+    },
+    {
+      "dimensions_mm": [
+        76.0,
+        80.0,
+        58.0
+      ],
+      "files": {
+        "3mf": "shared_camera_privacy_hood/shared_camera_privacy_hood.3mf",
+        "FCStd": "shared_camera_privacy_hood/shared_camera_privacy_hood.FCStd",
+        "step": "shared_camera_privacy_hood/shared_camera_privacy_hood.step",
+        "stl": "shared_camera_privacy_hood/shared_camera_privacy_hood.stl"
+      },
+      "fit_assumptions": [
+        "Clear optical channel is 68 x 50 mm.",
+        "The hood supplements but does not replace software privacy masking."
+      ],
+      "key": "shared_camera_privacy_hood",
+      "load_bearing": false,
+      "material": "Matte black PETG",
+      "mesh_facets": 544,
+      "non_printed_fasteners": [
+        "2 x M3 screws",
+        "2 x M3 washers"
+      ],
+      "print_orientation": "On one side wall; no internal supports.",
+      "purpose": "Limits glare and narrows incidental visibility outside each workpiece region.",
+      "quantity": 4,
+      "safety_class": "non_safety_fixture",
+      "sha256": {
+        "3mf": "0df3ee9034760ea2d8ff2ce5eaddce16944d12e21db933d917afc8db0a1ca1c9",
+        "FCStd": "b956a858e901132e44b9a48a905af4b31c33d2880f41d2692e22913891da35dd",
+        "step": "8e2b8d2191df82d74f9407b6b4810ca590d3212e9ea417c8104cac18b878bbb3",
+        "stl": "df8246feae262822fb71ffd3275018cbf39b017a8cfc6b7e17e6ebdccb81805b"
+      },
+      "solid_volume_mm3": 80567.366,
+      "title": "Shared workpiece-camera privacy hood",
+      "work_area": "Shared"
+    },
+    {
+      "dimensions_mm": [
+        130.0,
+        100.0,
+        18.0
+      ],
+      "files": {
+        "3mf": "shared_pi5_under_table_sled/shared_pi5_under_table_sled.3mf",
+        "FCStd": "shared_pi5_under_table_sled/shared_pi5_under_table_sled.FCStd",
+        "step": "shared_pi5_under_table_sled/shared_pi5_under_table_sled.step",
+        "stl": "shared_pi5_under_table_sled/shared_pi5_under_table_sled.stl"
+      },
+      "fit_assumptions": [
+        "Board-hole pattern is 58 x 49 mm.",
+        "Verify the selected Pi case, PoE hardware, and NVMe carrier envelope."
+      ],
+      "key": "shared_pi5_under_table_sled",
+      "load_bearing": false,
+      "material": "PETG",
+      "mesh_facets": 1060,
+      "non_printed_fasteners": [
+        "4 x M3 screws and insulating washers",
+        "2 x metal under-table straps"
+      ],
+      "print_orientation": "Flat on the sled bottom; no supports.",
+      "purpose": "Provides ventilated, removable edge-node retention below each work surface.",
+      "quantity": 4,
+      "safety_class": "non_safety_fixture",
+      "sha256": {
+        "3mf": "b4c6722162b89a48184311b3bbfc123d58ba3cb39512ddbd8ac11256846aaa88",
+        "FCStd": "c1d8ed4d82860ee169956143478ee0c876d230a71ccbd0bca2887b60dc4e1c4a",
+        "step": "94da760dee94b2849276eb082b7c737aa7f173fecbb8efd46ab0d0fa0fdc5b4a",
+        "stl": "b010eb21df1376462825627d44cac3ecea18ad4ba3747097eae61cebbdd2c3de"
+      },
+      "solid_volume_mm3": 74554.733,
+      "title": "Shared Raspberry Pi 5 under-table sled",
+      "work_area": "Shared"
+    },
+    {
+      "dimensions_mm": [
+        35.0,
+        42.0,
+        36.0
+      ],
+      "files": {
+        "3mf": "shared_table_edge_cable_clip/shared_table_edge_cable_clip.3mf",
+        "FCStd": "shared_table_edge_cable_clip/shared_table_edge_cable_clip.FCStd",
+        "step": "shared_table_edge_cable_clip/shared_table_edge_cable_clip.step",
+        "stl": "shared_table_edge_cable_clip/shared_table_edge_cable_clip.stl"
+      },
+      "fit_assumptions": [
+        "Open throat is 25 mm high and 33 mm deep.",
+        "Use only after measuring the actual table edge; never route mains or safety wiring."
+      ],
+      "key": "shared_table_edge_cable_clip",
+      "load_bearing": false,
+      "material": "PETG",
+      "mesh_facets": 28,
+      "non_printed_fasteners": [
+        "Reusable hook-and-loop cable tie"
+      ],
+      "print_orientation": "On one 35 x 36 mm side; no supports.",
+      "purpose": "Routes extra-low-voltage sensor cables without placing loose loops on work surfaces.",
+      "quantity": 12,
+      "safety_class": "non_safety_fixture",
+      "sha256": {
+        "3mf": "1a7b3a03c114ed9b6ffeaca2e122df44c6df388c28f15b8c218c4e60e1b11a57",
+        "FCStd": "aa4fa2548c464d315306a8971480039129bd19f83671f895d2f054a4dfe3d1c8",
+        "step": "e2b163577bb5e4b83f5507c4836d07e595bda4857d4dd5e7386b4f75c554cc46",
+        "stl": "f6dd613012b0db6b62de663f7da4544299217b73ca4e2d3fa26e52e3a474ae3f"
+      },
+      "solid_volume_mm3": 24045.0,
+      "title": "Shared table-edge cable clip",
+      "work_area": "Shared"
+    },
+    {
+      "dimensions_mm": [
+        100.0,
+        30.0,
+        42.0
+      ],
+      "files": {
+        "3mf": "shared_label_card_holder/shared_label_card_holder.3mf",
+        "FCStd": "shared_label_card_holder/shared_label_card_holder.FCStd",
+        "step": "shared_label_card_holder/shared_label_card_holder.step",
+        "stl": "shared_label_card_holder/shared_label_card_holder.stl"
+      },
+      "fit_assumptions": [
+        "Card channel is approximately 17 mm deep.",
+        "Use pseudonymous identifiers when privacy policy requires them."
+      ],
+      "key": "shared_label_card_holder",
+      "load_bearing": false,
+      "material": "PETG",
+      "mesh_facets": 48,
+      "non_printed_fasteners": [
+        "90 x 35 mm paper or polymer label card",
+        "Removable adhesive strip"
+      ],
+      "print_orientation": "On the back panel; supports under the base if required.",
+      "purpose": "Keeps removable work-order and component identity cards visible at transfer points.",
+      "quantity": 8,
+      "safety_class": "non_safety_fixture",
+      "sha256": {
+        "3mf": "577da35f79d815a3922be649ecdf8a622791144549c165bde2f977688c52f672",
+        "FCStd": "f967673606d86356baed0da96301a1993afda70ac7dd8ffcde1100c1739b5cdd",
+        "step": "9b812c7f1b6ebd203fffc7cc23232a48f8b87c45048e1e526c29cd28c5e351b7",
+        "stl": "d6299591cc3ce983beee8a4f51656700ff68dc0b320f34a36cf7ab92b2b93eac"
+      },
+      "solid_volume_mm3": 37968.0,
+      "title": "Shared work-order label-card holder",
+      "work_area": "Shared"
+    }
+  ],
+  "prohibited_uses": [
+    "robot guard or robot mount",
+    "emergency-stop or safety-circuit component",
+    "fire-control or printer-ventilation component",
+    "mains-voltage enclosure or cable routing",
+    "structural wall or display mount"
+  ],
+  "safety_scope": "Non-safety research fixtures only",
+  "schema_version": 1,
+  "units": "millimeter"
+}
