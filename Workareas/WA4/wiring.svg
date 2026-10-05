@@ -1,0 +1,216 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2400" height="1600" viewBox="0 0 2400 1600" role="img" aria-labelledby="title desc">
+  <title id="title">WA4 control and lid receiving: hardware, wiring, printed fixtures and MQTT events</title>
+  <desc id="desc">Top-down schematic of table T1, 70 by 46 centimetres. Management computer, network scale with receiving tray and lid, XIAO camera and privacy hood, optional scanner and three-button console connect to an under-table Raspberry Pi and private network. Shared roof photovoltaics, Growatt inverter and battery BMS require an approved read-only adapter. Solid wires show planned supported connection types; dashed amber links require interface selection or commissioning. Printed fixture quantities, current Python implementation, all fifteen exact MQTT activity suffixes, candidate and commissioned prefixes, diagnostic topic and local-outbox default are included. Equipment placement is exploded for readability and does not establish physical fit or electrical terminal pinouts.</desc>
+  <defs>
+    <style>
+      text{font-family:Arial,Helvetica,sans-serif;fill:#172b3a}.title{font-size:32px;font-weight:700;letter-spacing:1px}.h{font-size:24px;font-weight:700}.t{font-size:22px}.s{font-size:19px}.xs{font-size:18px}.muted{fill:#526673}.mono{font-family:Consolas,Menlo,monospace;font-size:18px}.panel{fill:#fff;stroke:#d5dedf;stroke-width:2}.device{fill:#fff;stroke:#172b3a;stroke-width:3}.print{fill:#d6eeeb;stroke:#147d83;stroke-width:3}.port{fill:#fff;stroke:#172b3a;stroke-width:2}.usb{fill:none;stroke:#367ec8;stroke-width:6;stroke-linecap:round;stroke-linejoin:round}.ethernet{fill:none;stroke:#147d83;stroke-width:6;stroke-linecap:round;stroke-linejoin:round}.power{fill:none;stroke:#d06457;stroke-width:5;stroke-linecap:round;stroke-linejoin:round}.sensor{fill:none;stroke:#8757ad;stroke-width:5;stroke-linecap:round;stroke-linejoin:round}.pending{fill:none;stroke:#bf8426;stroke-width:5;stroke-dasharray:12 8;stroke-linecap:round;stroke-linejoin:round}.tag{fill:#147d83}.tagtext{fill:#fff;font-size:18px;font-weight:700}.white{fill:#fff}.line{stroke:#d5dedf;stroke-width:2}.hold{fill:#fff6e7;stroke:#e5c68f;stroke-width:2}
+    </style>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 10 5 0 10Z" fill="#147d83"/></marker>
+    <marker id="powerarrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0 10 5 0 10Z" fill="#d06457"/></marker>
+  </defs>
+  <rect width="2400" height="1600" fill="#f4f5f2"/>
+  <text x="60" y="62" class="title">WA4 / CONTROL + LID</text>
+  <text x="60" y="103" class="t muted">T1 · 70×46 cm · schematic arrangement</text>
+  <rect x="1630" y="40" width="710" height="67" rx="14" fill="#172b3a"/>
+  <text x="1655" y="82" class="t white">IN  Munich lid + energy state  →  verified lid + record</text>
+
+  <rect x="60" y="150" width="1510" height="960" rx="20" class="panel"/>
+  <text x="85" y="190" class="h">HARDWARE + CONNECTIONS</text>
+  <text x="85" y="220" class="s muted">Exploded equipment layout · physical fit and clearance must be checked on T1</text>
+
+  <!-- The tabletop outline alone preserves the nominal 70:46 aspect ratio. -->
+  <g data-part="T1" data-dimensions="700x460mm" data-status="nominal-table-outline">
+    <rect x="80" y="260" width="1050" height="690" rx="20" fill="#eee8dd" stroke="#ad9d84" stroke-width="4"/>
+    <rect x="94" y="274" width="1022" height="662" rx="12" fill="none" stroke="#d6ccba" stroke-width="2"/>
+    <text x="100" y="928" class="s muted">T1 / receiving and management · entrance + aisle remain clear</text>
+  </g>
+  <rect x="1190" y="250" width="360" height="360" rx="14" fill="#edf4f5"/>
+  <text x="1210" y="280" class="h">SHARED / OFF TABLE</text>
+  <rect x="1190" y="630" width="360" height="460" rx="14" fill="#f4f0e7"/>
+  <text x="1210" y="663" class="h">ENERGY / READ ONLY</text>
+
+  <!-- Cable paths terminate at the labelled device ports; unresolved links are amber. -->
+  <path d="M510 397 H566 V317 H1144 V432 H1220" class="ethernet" data-connection="management-pc-to-private-network"/>
+  <path d="M940 718 H1170 V465 H1220" class="pending" data-connection="scale-to-private-network-interface-unverified"/>
+  <path d="M932 382 H1078 V990 H738 V1012" class="usb" data-connection="xiao-usb-c-to-pi-usb"/>
+  <path d="M185 753 H112 V520 H158" class="pending" data-connection="optional-usb-hid-scanner-to-management-pc"/>
+  <path d="M458 794 V866 H626" class="pending" data-connection="optional-buttons-to-unselected-low-voltage-input"/>
+  <path d="M908 875 H1020 V1038 H979" class="pending" data-connection="unselected-button-input-to-pi"/>
+  <path d="M978 1068 H1150 V490 H1220" class="ethernet" data-connection="pi-ethernet-to-private-switch"/>
+  <path d="M530 1050 H588" class="power" data-connection="dedicated-pi-psu-to-usb-c-power"/>
+  <path d="M137 548 H73 V999 H152 V1019 M588 790 H567 V960 H285 V1019" class="power" data-connection="pc-and-scale-rated-power-through-approved-oem-supplies"/>
+  <path d="M1220 1014 H1112 V1043 H978" class="pending" data-connection="approved-energy-adapter-to-pi-interface-unselected"/>
+
+  <!-- Management computer and explicit manual alternative. -->
+  <g data-part="wa4-management-pc" data-quantity="1">
+    <text x="148" y="306" class="h">Management PC</text>
+    <rect x="155" y="327" width="355" height="184" rx="13" fill="#172b3a"/>
+    <rect x="174" y="345" width="316" height="143" rx="5" fill="#ecf5f5"/>
+    <text x="192" y="374" class="s">Run · schedule · receive</text>
+    <rect x="192" y="390" width="277" height="32" rx="5" fill="#fff" stroke="#a6c6c7"/>
+    <text x="200" y="412" class="xs muted">Shipment / lid / revision ID</text>
+    <rect x="193" y="438" width="81" height="30" rx="5" fill="#147d83"/>
+    <rect x="284" y="438" width="85" height="30" rx="5" fill="#bd684d"/>
+    <rect x="379" y="438" width="91" height="30" rx="5" fill="#657383"/>
+    <text x="202" y="459" class="xs white">Accept</text><text x="292" y="459" class="xs white">Replace</text><text x="389" y="459" class="xs white">Review</text>
+    <path d="M155 511 H510 L536 560 H132Z" fill="#c4ccd0" stroke="#172b3a" stroke-width="3"/>
+    <path d="M175 524 H487 M167 536 H496 M161 547 H315 M377 547 H502" stroke="#87939a" stroke-width="5"/>
+    <rect x="508" y="387" width="12" height="21" rx="2" class="port"/>
+    <rect x="149" y="511" width="18" height="15" rx="2" class="port"/>
+    <rect x="128" y="540" width="15" height="15" rx="2" class="port"/>
+    <text x="150" y="588" class="s">BTQ8X1 · reconfirm network access</text>
+    <text x="150" y="615" class="s muted">Manual ID + decisions: integrate and validate</text>
+    <text x="560" y="381" class="xs muted">LAN · verify connection</text>
+  </g>
+
+  <!-- XIAO, printed hood and workpiece-only view. -->
+  <path d="M826 418 645 529 958 529Z" fill="#147d83" opacity="0.08"/>
+  <g data-part="wa4-workpiece-camera" data-quantity="1">
+    <text x="726" y="306" class="h">XIAO ESP32S3 Sense</text>
+    <g data-part="shared_camera_privacy_hood" data-quantity="1"><path d="M744 328 H906 L933 409 H717Z" class="print"/><rect x="731" y="337" width="46" height="28" rx="6" class="tag"/><text x="740" y="358" class="tagtext">P4</text></g>
+    <rect x="778" y="342" width="105" height="61" rx="7" fill="#2c454c" stroke="#172b3a" stroke-width="3"/>
+    <circle cx="829" cy="373" r="23" fill="#172b3a" stroke="#8dabb4" stroke-width="4"/><circle cx="829" cy="373" r="10" fill="#467d99"/>
+    <rect x="922" y="374" width="17" height="14" rx="3" class="port"/>
+    <text x="740" y="444" class="s">Hood + workpiece-only view</text>
+    <text x="740" y="472" class="xs" fill="#367ec8">USB-C → Pi · SCAM JPEG · 921600 baud</text>
+  </g>
+
+  <!-- Receiving scale, printed tray, real lid and two printed identity-card holders. -->
+  <g data-part="wa4-network-scale" data-quantity="1">
+    <rect x="587" y="527" width="353" height="285" rx="25" fill="#bfc9cc" stroke="#172b3a" stroke-width="3"/>
+    <rect x="605" y="747" width="121" height="45" rx="6" fill="#edf5d2" stroke="#627474" stroke-width="2"/>
+    <text x="619" y="777" class="s">tare / g</text>
+    <circle cx="850" cy="770" r="13" fill="#147d83"/><circle cx="895" cy="770" r="13" fill="#66747d"/>
+    <rect x="932" y="707" width="16" height="22" rx="2" class="port"/>
+    <rect x="581" y="781" width="15" height="18" rx="2" class="port"/>
+    <g data-part="wa4_receiving_tray" data-quantity="1">
+      <rect x="603" y="512" width="321" height="225" rx="15" class="print"/>
+      <rect x="620" y="530" width="286" height="188" rx="8" fill="#f7fbfa" stroke="#78b0a9" stroke-width="2"/>
+      <rect x="875" y="524" width="40" height="28" rx="6" class="tag"/><text x="882" y="545" class="tagtext">P1</text>
+    </g>
+    <g data-part="received-lid"><rect x="655" y="552" width="203" height="132" rx="17" fill="#ead08e" stroke="#a48238" stroke-width="3"/><rect x="669" y="566" width="175" height="104" rx="11" fill="none" stroke="#bd9b50" stroke-width="2"/><text x="711" y="612" class="h">LID</text><text x="680" y="645" class="s">size + revision</text></g>
+    <text x="608" y="704" class="xs muted">Usable tray 232×172 mm</text>
+    <text x="959" y="742" class="xs muted">Network</text><text x="959" y="767" class="xs muted">protocol TBD</text>
+  </g>
+  <text x="603" y="499" class="h">Receiving scale + tray</text>
+  <g data-part="shared_label_card_holder" data-quantity="2">
+    <path d="M419 640 H536 L548 651 H411Z" class="print"/><rect x="422" y="615" width="108" height="33" rx="3" fill="#fff" stroke="#147d83" stroke-width="2"/><text x="432" y="638" class="xs">ID / P7</text>
+    <path d="M750 839 H910 L921 850 H742Z" class="print"/><rect x="755" y="811" width="148" height="36" rx="3" fill="#fff" stroke="#147d83" stroke-width="2"/><text x="769" y="836" class="xs">Lid record / P7</text>
+  </g>
+
+  <!-- Optional scanner and physical buttons retain their printed fixtures. -->
+  <g data-part="wa4-id-scanner" data-quantity="1" data-status="acquire-and-select-or-manual-entry">
+    <g data-part="wa4_barcode_scanner_stand" data-quantity="1"><ellipse cx="253" cy="775" rx="81" ry="35" class="print"/><path d="M228 695 H269 L284 775 H213Z" class="print"/><rect x="181" y="782" width="43" height="28" rx="6" class="tag"/><text x="190" y="803" class="tagtext">P2</text></g>
+    <path d="M215 661 Q262 639 290 665 L307 710 270 732 250 687 224 690Z" fill="#3f5660" stroke="#172b3a" stroke-width="3"/>
+    <path d="M223 661 266 651 278 670 233 681Z" fill="#d6eeee"/>
+    <rect x="177" y="745" width="18" height="15" rx="2" class="port"/>
+    <text x="151" y="842" class="t">2D scanner + stand</text><text x="151" y="869" class="xs muted">USB HID if selected · acquire</text>
+  </g>
+  <g data-part="wa4_button_console" data-quantity="1" data-status="optional-low-voltage-only">
+    <path d="M363 723 H542 L563 794 H345Z" class="print"/>
+    <rect x="351" y="696" width="42" height="27" rx="6" class="tag"/><text x="359" y="716" class="tagtext">P3</text>
+    <circle cx="391" cy="752" r="19" fill="#147d83" stroke="#172b3a" stroke-width="3"/><circle cx="453" cy="752" r="19" fill="#bd684d" stroke="#172b3a" stroke-width="3"/><circle cx="515" cy="752" r="19" fill="#697984" stroke="#172b3a" stroke-width="3"/>
+    <text x="359" y="821" class="t">3× 22 mm buttons</text><text x="359" y="846" class="xs muted">Optional · low voltage only</text>
+    <rect x="451" y="785" width="15" height="15" rx="2" class="port"/>
+  </g>
+  <rect x="626" y="860" width="282" height="40" rx="8" class="hold"/>
+  <text x="641" y="886" class="xs">Input interface + firmware TBD</text>
+
+  <!-- Visible edge clips, exact aggregate fixture quantity. -->
+  <g data-part="shared_table_edge_cable_clip" data-quantity="3" fill="#d6eeeb" stroke="#147d83" stroke-width="3">
+    <path d="M101 882 h25 v38 h-10 v-26 h-15Z"/><path d="M1066 884 h25 v36 h-10 v-25 h-15Z"/><path d="M1123 518 h24 v38 h-11 v-26 h-13Z"/>
+  </g>
+  <text x="1000" y="899" class="xs" fill="#147d83">P6 ×3</text>
+
+  <!-- Under-table edge package and dedicated power supply. -->
+  <text x="86" y="983" class="h">UNDER TABLE</text>
+  <g data-part="wa4-mqtt-edge-node" data-quantity="1" data-status="assign-pi-and-broker">
+    <g data-part="shared_pi5_under_table_sled" data-quantity="1"><rect x="588" y="993" width="390" height="101" rx="13" class="print"/><rect x="596" y="1001" width="42" height="28" rx="6" class="tag"/><text x="604" y="1022" class="tagtext">P5</text></g>
+    <rect x="651" y="1007" width="309" height="71" rx="7" fill="#427760" stroke="#172b3a" stroke-width="3"/>
+    <rect x="842" y="1021" width="42" height="40" fill="#b2c0bd" stroke="#172b3a" stroke-width="2"/><rect x="913" y="1021" width="36" height="40" fill="#b2c0bd"/>
+    <text x="668" y="1040" class="t white">Raspberry Pi 5</text><text x="668" y="1066" class="xs white">local storage + evidence service</text>
+    <rect x="582" y="1040" width="16" height="20" rx="3" class="port"/><rect x="724" y="999" width="28" height="17" rx="2" class="port"/><rect x="957" y="1033" width="27" height="19" class="port"/><rect x="957" y="1059" width="27" height="20" class="port"/>
+    <text x="690" y="981" class="xs muted">USB data</text><text x="981" y="1098" class="xs muted">Ethernet</text>
+  </g>
+  <g data-part="pi-dedicated-power-supply" data-quantity="1"><rect x="350" y="1019" width="180" height="64" rx="10" class="device"/><text x="368" y="1046" class="s">Pi-rated PSU</text><text x="367" y="1070" class="xs muted">USB-C power</text></g>
+  <g data-part="pc-and-scale-oem-power-supplies"><rect x="88" y="1019" width="242" height="64" rx="10" class="device"/><text x="103" y="1046" class="s">PC / scale OEM PSUs</text><text x="103" y="1070" class="xs muted">Site power · ratings TBD</text></g>
+
+  <!-- Shared network and a selected, configured authenticated broker. -->
+  <g data-part="shared-installed-router" data-quantity="1"><rect x="1220" y="308" width="300" height="58" rx="10" class="device"/><path d="M1245 308 v-17 M1494 308 v-17" stroke="#172b3a" stroke-width="5"/><text x="1235" y="333" class="s">TP-Link Archer MR600</text><text x="1235" y="357" class="xs muted">private lab router · V3.0</text></g>
+  <path d="M1370 366 V409" class="ethernet"/>
+  <g data-part="shared-aruba-switch" data-quantity="1"><rect x="1220" y="409" width="300" height="87" rx="10" class="device"/><text x="1235" y="436" class="s">Aruba CX 6000 switch</text><text x="1235" y="461" class="xs muted">12 ports · assign private LAN</text><path d="M1240 480 h22 m12 0 h22 m12 0 h22 m12 0 h22 m12 0 h22 m12 0 h22" stroke="#147d83" stroke-width="9"/><rect x="1213" y="422" width="15" height="21" class="port"/><rect x="1213" y="455" width="15" height="21" class="port"/></g>
+  <path d="M1370 496 V522" class="ethernet"/>
+  <g data-part="chosen-mqtt-broker" data-status="configuration-required"><rect x="1220" y="522" width="300" height="67" rx="10" fill="#172b3a"/><text x="1235" y="548" class="s white">Choose ONE serving broker</text><text x="1235" y="574" class="xs white">MQTT + TLS / ACLs · endpoint TBD</text></g>
+
+  <!-- Functional energy system; no field wiring or terminal pinout is implied. -->
+  <g data-part="shared-pv-array" data-quantity="4"><rect x="1220" y="687" width="150" height="80" rx="4" fill="#325d79" stroke="#172b3a" stroke-width="2"/><path d="M1295 687 V767 M1220 727 H1370 M1238 687 V767 M1258 687 V767 M1277 687 V767 M1315 687 V767 M1335 687 V767 M1353 687 V767" stroke="#96b6c8" stroke-width="1"/><text x="1390" y="712" class="s">Roof PV</text><text x="1390" y="739" class="s">4× 410 W</text></g>
+  <path d="M1295 767 V806" class="power" marker-end="url(#powerarrow)"/>
+  <g data-part="shared-growatt-inverter" data-quantity="1"><rect x="1220" y="806" width="147" height="87" rx="10" class="device"/><rect x="1258" y="818" width="71" height="17" rx="2" fill="#bdd9d2"/><text x="1234" y="859" class="s">Growatt</text><text x="1253" y="883" class="xs muted">5 kW</text></g>
+  <path d="M1367 850 H1388" class="power" marker-start="url(#powerarrow)" marker-end="url(#powerarrow)"/>
+  <g data-part="shared-battery-bms" data-quantity="1"><rect x="1392" y="807" width="130" height="86" rx="8" class="device"/><text x="1403" y="833" class="xs">48 V · BMS</text><text x="1403" y="858" class="xs">4.8 kWh</text><text x="1403" y="881" class="xs muted">100 Ah LFP</text></g>
+  <path d="M1290 893 V965 M1455 893 V944 H1400 V965" class="pending" data-connection="inverter-and-bms-approved-read-only-telemetry"/>
+  <text x="1217" y="923" class="xs muted">Model / ports / register map TBD</text>
+  <g data-part="wa4-inverter-bms-adapter" data-quantity="1" data-status="acquire-and-commission"><rect x="1220" y="965" width="300" height="67" rx="10" class="hold"/><text x="1235" y="992" class="s">Read-only energy adapter</text><text x="1235" y="1019" class="xs muted">Fresh units + quality → Pi / LAN</text></g>
+  <text x="1210" y="1062" class="xs muted">Functional blocks · no terminal wiring</text>
+
+  <!-- Implementation and exact MQTT topic construction. -->
+  <rect x="1630" y="150" width="710" height="1330" rx="20" class="panel"/>
+  <text x="1655" y="192" class="h">IMPLEMENTATION</text>
+  <rect x="1655" y="213" width="660" height="74" rx="12" fill="#172b3a"/>
+  <text x="1675" y="244" class="mono white">python -m Workareas.WA4.main</text><text x="1675" y="271" class="s white">HTTP :8414 · authenticated evidence API</text>
+  <rect x="1655" y="307" width="660" height="81" rx="12" fill="#edf5f4"/>
+  <text x="1675" y="336" class="t">Normalized evidence → rules.py</text><text x="1675" y="367" class="s muted">Identity + timestamps + explicit decisions → 15 activities</text>
+  <path d="M1985 388 V406" class="ethernet" marker-end="url(#arrow)"/>
+  <rect x="1655" y="413" width="660" height="68" rx="12" fill="#edf5f4"/>
+  <text x="1675" y="443" class="t">SQLite outbox → Paho MQTT → selected broker</text><text x="1675" y="469" class="s muted">Replay protection · durable events · PUBACK tracking</text>
+  <rect x="1655" y="501" width="660" height="85" rx="12" fill="#edf5f4"/>
+  <text x="1675" y="530" class="t">energy.py · exact schedule + start checks</text><text x="1675" y="558" class="s muted">max(0, usable + forecast − committed) · large / standard / wait</text><text x="1675" y="581" class="xs muted">Approved reserve + fresh evidence required; never starts a printer.</text>
+  <rect x="1655" y="608" width="660" height="113" rx="12" class="hold"/>
+  <text x="1675" y="637" class="s">TO COMMISSION / COMPLETE</text><text x="1675" y="664" class="s muted">Raw adapters · measured profiles · reserve / reservations</text><text x="1675" y="689" class="s muted">Disclosure + cross-site service · CPEE observer / fallback BPMN</text><text x="1675" y="713" class="xs muted">Hardware acquisition alone does not establish a process completion.</text>
+
+  <text x="1655" y="762" class="h">MQTT / PUBLISHED BY WA4</text>
+  <text x="1655" y="796" class="s muted">Default candidate prefix + one activity suffix below</text>
+  <text x="1655" y="825" class="mono">tinyhouse/bayreuth/candidate/WA4/&lt;activity&gt;</text>
+  <text x="1655" y="864" class="s muted">After measured commissioning approval</text>
+  <text x="1655" y="893" class="mono">tinyhouse/bayreuth/activity/WA4/&lt;activity&gt;</text>
+  <line x1="1655" y1="916" x2="2315" y2="916" class="line"/>
+  <text x="1655" y="948" class="s">Exact activity suffixes · transition: complete</text>
+  <g class="mono" data-mqtt-activity-suffixes="all-15-card-activities">
+    <text x="1655" y="985">register-run</text><text x="2010" y="985">set-local-fallback</text>
+    <text x="1655" y="1021">select-topology</text><text x="2010" y="1021">receive-lid</text>
+    <text x="1655" y="1057">read-solar-and-battery</text><text x="2010" y="1057">verify-lid</text>
+    <text x="1655" y="1093">optimize-energy-aware-schedule</text><text x="2010" y="1093">accept-delivery</text>
+    <text x="1655" y="1129">select-standard-container</text><text x="2010" y="1129">request-replacement</text>
+    <text x="1655" y="1165">select-large-container</text><text x="2010" y="1165">apply-disclosure</text>
+    <text x="1655" y="1201">request-matching-lid</text><text x="2010" y="1201">share-outcome</text>
+    <text x="1655" y="1237">evaluate-decision</text>
+  </g>
+  <line x1="1655" y1="1259" x2="2315" y2="1259" class="line"/>
+  <text x="1655" y="1292" class="s">Conflicting / missing evidence diagnostic</text>
+  <text x="1655" y="1321" class="mono">tinyhouse/bayreuth/diagnostic/WA4</text>
+  <text x="1655" y="1365" class="t">QoS 1 · retain=false · authenticated TLS</text>
+  <text x="1655" y="1400" class="s muted">Default: broker unset → local SQLite outbox only.</text>
+  <text x="1655" y="1431" class="s muted">Raw camera / energy data stay local; MQTT ≠ disclosure.</text>
+  <text x="1655" y="1458" class="xs muted">Consumers must check authority, context, activity + transition.</text>
+
+  <!-- Printed parts key: every fixture family and its actual WA4 quantity. -->
+  <rect x="60" y="1140" width="1510" height="340" rx="20" class="panel"/>
+  <text x="85" y="1181" class="h">PRINTED PARTS / PETG · FIT CHECK BEFORE PRINTING THE SET</text>
+  <g class="s">
+    <rect x="85" y="1206" width="42" height="29" rx="6" class="tag"/><text x="93" y="1227" class="tagtext">P1</text><text x="143" y="1228">wa4_receiving_tray ×1</text>
+    <rect x="815" y="1206" width="42" height="29" rx="6" class="tag"/><text x="823" y="1227" class="tagtext">P5</text><text x="873" y="1228">shared_pi5_under_table_sled ×1</text>
+    <rect x="85" y="1251" width="42" height="29" rx="6" class="tag"/><text x="93" y="1272" class="tagtext">P2</text><text x="143" y="1273">wa4_barcode_scanner_stand ×1 · scanner option</text>
+    <rect x="815" y="1251" width="42" height="29" rx="6" class="tag"/><text x="823" y="1272" class="tagtext">P6</text><text x="873" y="1273">shared_table_edge_cable_clip ×3</text>
+    <rect x="85" y="1296" width="42" height="29" rx="6" class="tag"/><text x="93" y="1317" class="tagtext">P3</text><text x="143" y="1318">wa4_button_console ×1 · physical-button option</text>
+    <rect x="815" y="1296" width="42" height="29" rx="6" class="tag"/><text x="823" y="1317" class="tagtext">P7</text><text x="873" y="1318">shared_label_card_holder ×2</text>
+    <rect x="85" y="1341" width="42" height="29" rx="6" class="tag"/><text x="93" y="1362" class="tagtext">P4</text><text x="143" y="1363">shared_camera_privacy_hood ×1 · matte black</text>
+  </g>
+  <text x="815" y="1356" class="s muted">Optional shared display: Samsung Flip Pro 55″</text><text x="815" y="1381" class="xs muted">Wall mounted if space permits · display link to PC to be verified</text>
+  <line x1="85" y1="1400" x2="1540" y2="1400" class="line"/>
+  <path d="M88 1436 H141" class="power"/><text x="153" y="1443" class="s">Power</text>
+  <path d="M269 1436 H322" class="usb"/><text x="334" y="1443" class="s">USB</text>
+  <path d="M427 1436 H480" class="ethernet"/><text x="492" y="1443" class="s">Ethernet</text>
+  <path d="M655 1436 H708" class="sensor"/><text x="720" y="1443" class="s">Sensor signal</text>
+  <path d="M913 1436 H966" class="pending"/><text x="978" y="1443" class="s">Unresolved / optional interface</text>
+  <text x="60" y="1540" class="s muted">Connection concept · equipment models, power ratings, physical fit and live adapters require commissioning.</text>
+</svg>

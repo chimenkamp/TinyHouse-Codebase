@@ -1,0 +1,140 @@
+{
+  "slicer": "AnycubicSlicerNext 2.0.0.3",
+  "printer": "Anycubic Kobra 3",
+  "material": "PLA",
+  "nozzle_mm": 0.4,
+  "source_sha256": {
+    "wa1_button_holder.3mf": "83df34a97bc6745cef563b993e5e4509f2525347e0495d03942412dc74f729d8",
+    "wa1_button_holder.FCStd": "bf05d9e4776ca686c178ad50fdde2d34d727379655d0e587f825d06f6b5baf62",
+    "wa1_button_holder.step": "cfc845566a90fbf62734418b6eee5b7ed22025543fa933ab0cecdcef34679376",
+    "wa1_button_holder.stl": "3ae7aac724f89b6ca25a090a5f428f392f6f4f1922822b9e0d8d2aa62111fb9f",
+    "wa1_button_holder_back_covers_3.stl": "b5c6dc99cffdc34929c581337e91b48626e445f6f4dbf2562f859de911679037",
+    "wa1_button_holder_display_cover.stl": "51953b13f9ccd12c56b54ffc3c82d79c3a74dcfe58ae06a5f0e36c8adb4fec46",
+    "wa1_button_holder_back_covers_3.3mf": "1af07585e3d1d105e30fa6a999a4c0a8ffd307f743f93bedb295b52a1dced702",
+    "wa1_button_holder_display_cover.3mf": "3a2fc70dda38b807806faa109f7c7794f73ffb4d3a2bc41f8747ea803d30e7a3"
+  },
+  "jobs": {
+    "body": {
+      "parts": 1,
+      "facets": 10556,
+      "watertight": true,
+      "input_dimensions_mm": [
+        184.0,
+        171.5,
+        45.04683303833008
+      ],
+      "facet_identity_tolerance_mm": 0.0001,
+      "maximum_serialization_error_mm": 3.814697265625e-06,
+      "rigid_placement_matrices": [
+        "1 0 0 0 1 0 0 0 1 92 85.75 22.5234165",
+        "1 0 0 0 1 0 0 0 1 33 39.250001 0"
+      ],
+      "estimated_seconds": 26702,
+      "estimated_pla_g": 152.0,
+      "slicer_warnings": [
+        "bed_temperature_too_high_than_filament",
+        "not_support_traditional_timelapse"
+      ],
+      "source_sha256": "3ae7aac724f89b6ca25a090a5f428f392f6f4f1922822b9e0d8d2aa62111fb9f",
+      "project_sha256": "30ab0640eb36818d86b0740af860c4eb635223ef3c5a71d61f25c6ba73163ca0"
+    },
+    "covers": {
+      "parts": 4,
+      "facets": 2080,
+      "watertight": true,
+      "input_dimensions_mm": [
+        184.0,
+        155.5,
+        17.100053787231445
+      ],
+      "facet_identity_tolerance_mm": 0.0001,
+      "maximum_serialization_error_mm": 1.1920928955078125e-07,
+      "rigid_placement_matrices": [
+        "1 0 0 0 1 0 0 0 1 92 77.75 8.55002689",
+        "0.707106781 0.707106781 0 -0.707106781 0.707106781 0 0 0 1 104.726335 15.166013 0"
+      ],
+      "estimated_seconds": 6804,
+      "estimated_pla_g": 37.62,
+      "slicer_warnings": [
+        "bed_temperature_too_high_than_filament",
+        "not_support_traditional_timelapse"
+      ],
+      "source_sha256": "582d05fa5f706cfd4414a0696cf36fa361a104528ef78e0bbc9d5fa04db08b61",
+      "project_sha256": "aa72a8c0b70386dee69dd9be086dc03756030e9f31ff2a3a868f17c3bd5f365d"
+    }
+  },
+  "physical_print_verified": false,
+  "firmware_macro_motion_verified": false,
+  "toolpaths": {
+    "body": {
+      "explicit_coordinate_checks": 1023911,
+      "deposited_bounds_mm": [
+        [
+          28.558,
+          34.808,
+          0.2
+        ],
+        [
+          221.442,
+          215.192,
+          45.0
+        ]
+      ],
+      "layer_events_with_extrusion": 303,
+      "deposited_segments_by_feature": {
+        "Support": 48876,
+        "Brim": 821,
+        "Inner wall": 175634,
+        "Outer wall": 53278,
+        "Bottom surface": 1734,
+        "Gap infill": 90,
+        "Internal solid infill": 52291,
+        "Sparse infill": 79401,
+        "Internal Bridge": 1339,
+        "Top surface": 4002,
+        "Support interface": 13597,
+        "Overhang wall": 960,
+        "Bridge": 891
+      },
+      "button_bay_support_interface_segments": [
+        3663,
+        3732,
+        3678
+      ],
+      "gcode_sha256": "9b4dcbd505971e4ff70c268587f9d6dfaf02dde99ce715c86aff3745cf8bfbf3"
+    },
+    "covers": {
+      "explicit_coordinate_checks": 252710,
+      "deposited_bounds_mm": [
+        [
+          10.839,
+          10.727,
+          0.2
+        ],
+        [
+          239.273,
+          239.161,
+          16.6
+        ]
+      ],
+      "layer_events_with_extrusion": 83,
+      "deposited_segments_by_feature": {
+        "Brim": 1540,
+        "Inner wall": 18444,
+        "Outer wall": 5212,
+        "Bottom surface": 1233,
+        "Gap infill": 31,
+        "Internal solid infill": 17059,
+        "Top surface": 2259,
+        "Sparse infill": 70885,
+        "Internal Bridge": 2065
+      },
+      "button_bay_support_interface_segments": [
+        0,
+        0,
+        0
+      ],
+      "gcode_sha256": "abf0ce60ec69ac10311b44d93969cac0d667ba000a919d00ed2c4b506fd56632"
+    }
+  }
+}

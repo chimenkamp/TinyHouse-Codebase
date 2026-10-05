@@ -1,0 +1,41 @@
+{
+  "source_sha256": "95167b2b61fa19d6f184185400aad041c7d2f8212ce5ca3035a37ff2a245aab9",
+  "model_mm": [
+    180,
+    65.7,
+    24.3
+  ],
+  "unit_scale": true,
+  "flat_back_on_bed": true,
+  "slicer_metadata": {
+    "index": "1",
+    "printer_model_id": "Anycubic Kobra 3",
+    "nozzle_diameters": "0.4",
+    "timelapse_type": "0",
+    "prediction": "9115",
+    "weight": "69.61",
+    "outside": "false",
+    "support_used": "true",
+    "label_object_enabled": "false",
+    "filament_maps": "1"
+  },
+  "travel_min_mm": [
+    87.674,
+    30.539,
+    0.2
+  ],
+  "travel_max_mm": [
+    250.0,
+    220.0,
+    26.2
+  ],
+  "extrusion_segments": 151272,
+  "support_segments": 12027,
+  "clamp_supports_below_both_jaws": true,
+  "temperature_c": {
+    "nozzle_first": 220,
+    "nozzle_rest": 210,
+    "bed": 60
+  },
+  "gcode_sha256": "9eac66ef1c3db52b554aae966e1d4db73b7b2d27333b4c43de8f6c7339c82d06"
+}

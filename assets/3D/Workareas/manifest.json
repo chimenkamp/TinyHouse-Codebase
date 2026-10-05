@@ -6,7 +6,7 @@
     "top_bottom_layers": 5
   },
   "generated_with": "FreeCAD 1.0.0",
-  "part_count": 16,
+  "part_count": 19,
   "parts": [
     {
       "dimensions_mm": [
@@ -611,6 +611,149 @@
       "solid_volume_mm3": 37968.0,
       "title": "Shared work-order label-card holder",
       "work_area": "Shared"
+    },
+    {
+      "dimensions_mm": [
+        180.0,
+        65.7,
+        24.3
+      ],
+      "files": {
+        "3mf": "wa1_tool_rack_sensor_adapter/wa1_tool_rack_sensor_adapter.3mf",
+        "FCStd": "wa1_tool_rack_sensor_adapter/wa1_tool_rack_sensor_adapter.FCStd",
+        "step": "wa1_tool_rack_sensor_adapter/wa1_tool_rack_sensor_adapter.step",
+        "stl": "wa1_tool_rack_sensor_adapter/wa1_tool_rack_sensor_adapter_top_mount_v2.stl"
+      },
+      "fit_assumptions": [
+        "Nominal PCB 20 x 30 mm; measure actual components, Hall element, header and plug before printing.",
+        "Rack axes: x across, y up, z outward from wall; tools are vertical and the arms project outward.",
+        "Two C-clamps grip the top cassette's 3 mm rear bar; remove any original sensor from that cassette.",
+        "Board bays and cable trough remain behind z=26 mm tool paths; no additional wall spacer is required by the CAD geometry.",
+        "Put retained magnets at a repeatable wall-facing position near the slot roots; outer-tip positions can exceed sensor range.",
+        "Commission magnet polarity, sensing-face orientation, gap, wobble and adjacent-slot cross-triggering.",
+        "Five sensor kits are inventory-listed; seven positions require seven verified modules and sufficient input channels.",
+        "Tap the two 2.6 mm bores M3 and fit nylon clamp screws; printed fit and clamp retention remain unverified."
+      ],
+      "key": "wa1_tool_rack_sensor_adapter",
+      "load_bearing": false,
+      "material": "PETG",
+      "mesh_facets": 1336,
+      "non_printed_fasteners": [
+        "2 x nylon M3 x 8 clamp screws",
+        "M3 tap",
+        "7 x Keyestudio Hall Magnetic modules for full coverage",
+        "7 x retained tool magnet tags",
+        "14 x 150 mm nonconductive sensor retaining ties, maximum 2.5 mm wide and 1.2 mm thick",
+        "Three-wire sensor harnesses; Arduino nodes mounted separately"
+      ],
+      "print_orientation": "STL and 3MF: broad wall-facing backplate on bed, origin normalized; supports under the two cassette clamps as required. FCStd and STEP: rack assembly coordinates.",
+      "purpose": "Clamps onto the existing top cassette and carries seven Hall sensors, with a cable trough exiting toward side-mounted Arduino nodes.",
+      "quantity": 1,
+      "safety_class": "non_safety_fixture",
+      "sha256": {
+        "3mf": "d1a50d6545c90e6db171eea7562e50280ad2c83221d882fa12342edd64c99e49",
+        "FCStd": "46d4e070a92ca9169758a366d0475a143eae9b29e5fb182fd79771b0c8185894",
+        "step": "cc924972e281d740abe3d8cb5858fbaa2455000088e1b4f80a779070c9a82448",
+        "stl": "95167b2b61fa19d6f184185400aad041c7d2f8212ce5ca3035a37ff2a245aab9"
+      },
+      "solid_volume_mm3": 65116.7071,
+      "title": "WA-1 removable seven-position Hall-sensor adapter",
+      "work_area": "WA-1"
+    },
+    {
+      "dimensions_mm": [
+        20.0,
+        38.8,
+        11.2
+      ],
+      "files": {
+        "3mf": "wa1_hall_sensor_case/wa1_hall_sensor_case.3mf",
+        "FCStd": "wa1_hall_sensor_case/wa1_hall_sensor_case.FCStd",
+        "step": "wa1_hall_sensor_case/wa1_hall_sensor_case.step",
+        "stl": "wa1_hall_sensor_case/wa1_hall_sensor_case.stl"
+      },
+      "fit_assumptions": [
+        "Existing adapter remains at its original 100% millimetre scale.",
+        "Original 20 x 38.8 x 11.2 mm exterior is retained.",
+        "PCB is 25 x 12 mm, connector upward, supported against the reinforced back.",
+        "Single front aperture is 6 x 4 mm, centred 10 mm above the inside floor; package size and bend height are prototype assumptions.",
+        "Two recessed horizontal nonconductive ties clamp each PCB without relying on its thickness or mounting-hole pattern.",
+        "Two additional ties retain each case through the adapter's existing slots; route outside the PCB and over the case top.",
+        "Insert a loaded sleeve from the front with its three-pin header upward.",
+        "A nominal three-pin Dupont plug routes upward into the adapter's existing cable trough.",
+        "Actual module, plug, printed clearances, retention and magnetic sensing remain to be checked physically."
+      ],
+      "key": "wa1_hall_sensor_case",
+      "load_bearing": false,
+      "material": "PLA",
+      "mesh_facets": 336,
+      "non_printed_fasteners": [
+        "7 x IDUINO SE054 Hall sensor modules, PCB 25 x 12 mm",
+        "7 x three-pin Dupont plugs with cables",
+        "14 x nonconductive PCB ties, maximum 2.5 mm wide and 1.2 mm thick",
+        "14 x 150 mm nonconductive case ties, maximum 2.5 mm wide and 1.0 mm thick"
+      ],
+      "print_orientation": "STL and geometry 3MF: open side down, normalized origin, 100% millimetre scale; support projecting PCB guides and ledge as required by the slicer. Seven-case plate: four plus three at 32 by 60 mm pitch. FCStd and STEP: local installed orientation; assembly.FCStd shows installed positions.",
+      "purpose": "Retains seven rear-mounted IDUINO SE054 boards in the existing adapter; one front aperture exposes each 90-degree bent Hall element toward the tools.",
+      "quantity": 7,
+      "safety_class": "non_safety_fixture",
+      "sha256": {
+        "3mf": "bf302b5719f201f6a75ef1fd10fe6dc4dfecb2ea36c60367ae1f1da110dffc79",
+        "FCStd": "d8f21523cf87c6a16c3a1a57b2d2e8acb691275919b25398fb92ecd1d84b9bf8",
+        "step": "dc70f3726f66a463818cf4533281dee0eaccbbe8dbcd29f9e32301ba0241bfaa",
+        "stl": "c631babe90ab15d5aa77b5079c38b2cf5c126ec9e78d6022d57beee0595e4319"
+      },
+      "solid_volume_mm3": 2198.04,
+      "title": "WA-1 SE054 Hall sensor case with front aperture and tie retention",
+      "work_area": "WA-1"
+    },
+    {
+      "dimensions_mm": [
+        184.0,
+        171.5,
+        45.04683
+      ],
+      "files": {
+        "3mf": "wa1_button_holder/wa1_button_holder.3mf",
+        "FCStd": "wa1_button_holder/wa1_button_holder.FCStd",
+        "step": "wa1_button_holder/wa1_button_holder.step",
+        "stl": "wa1_button_holder/wa1_button_holder.stl"
+      },
+      "fit_assumptions": [
+        "Three original button PCB mounts remain unchanged, in one row at 45 degrees and 44.5 mm pitch.",
+        "Button case gaps are 10.5 mm; tested external plug keep-outs remain 10 x 6 x 6 mm.",
+        "The open cable channel retains a tested 170 x 12.8 x 7.8 mm clear region, nominally 13 mm deep and 8 mm high; its central open-top outlet is 12 mm wide.",
+        "The display is 18 mm closer to the buttons, whose face datum is 6 mm lower. Case supports and connector openings are unchanged.",
+        "The full 119.5 x 184 x 20 mm display_b case remains at 100% scale; original display_d cover placement and sampled vertical removal are preserved.",
+        "The front floor is open, side braces are shortened and hollow, and the 2 mm floor matches the original display case. No rear base margin obstructs the low connector opening.",
+        "Original button_d snap-rim overlap is retained at 69.68689 mm3; this does not establish printed elastic fit.",
+        "The two PLA/0.4 mm Kobra 3 print jobs estimate 7h25m02s for the body and 1h53m24s for all four covers.",
+        "Exact TFT compatibility, fastener dimensions, printed retention/strength, plug and SD-card access and real cable bends require a physical check.",
+        "The standard 0.4 mm cover slice omits the final sub-nozzle tips of two curved hood features; their functional effect is unverified."
+      ],
+      "key": "wa1_button_holder",
+      "load_bearing": false,
+      "material": "PLA",
+      "mesh_facets": 10556,
+      "non_printed_fasteners": [
+        "3 x button PCB modules matching assets/3D/Sensoren/button.stl",
+        "Display assembly matching the user-selected display_b/display_d reference enclosure; actual TFT compatibility must be checked",
+        "Original display-enclosure corner fasteners; thread and length are unmeasured",
+        "Button and display wiring; exact plugs and bend radii require a physical fit check"
+      ],
+      "print_orientation": "Holder floor flat on the bed at 100% millimetre scale; supports beneath inclined bays and hollow braces. Three original button covers flat; original display cover front down. Native CAD includes four installed covers.",
+      "purpose": "Mounts three button PCBs at 45 degrees beside the user-selected display case on a compact open stand.",
+      "quantity": 1,
+      "safety_class": "non_safety_fixture",
+      "sha256": {
+        "3mf": "83df34a97bc6745cef563b993e5e4509f2525347e0495d03942412dc74f729d8",
+        "FCStd": "bf05d9e4776ca686c178ad50fdde2d34d727379655d0e587f825d06f6b5baf62",
+        "step": "cfc845566a90fbf62734418b6eee5b7ed22025543fa933ab0cecdcef34679376",
+        "stl": "3ae7aac724f89b6ca25a090a5f428f392f6f4f1922822b9e0d8d2aa62111fb9f"
+      },
+      "solid_volume_mm3": 125827.90396,
+      "title": "WA-1 three-button PCB holder at 45 degrees with original display case",
+      "work_area": "WA-1"
     }
   ],
   "prohibited_uses": [

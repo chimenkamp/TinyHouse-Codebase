@@ -81,6 +81,8 @@ Three Raspberry Pis act as edge nodes. Each runs an independent pipeline. The Wi
 
 ## Setup
 
+For the standalone three-sensor tool shelf, see the [Uno Hall monitor](../../modules/arduino/tool_shelf/README.md). Its console output is separate from the pressure-sensor protocol used by the pipeline below.
+
 ### Requirements
 
 ```bash

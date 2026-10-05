@@ -1,6 +1,6 @@
 # TinyHouse non-safety printable fixtures
 
-This directory contains 16 distinct parametric fixtures for the four Bayreuth work areas. Each part is supplied as editable FreeCAD (`.FCStd`), neutral STEP, STL, and 3MF.
+This directory contains 19 distinct fixtures for the four Bayreuth work areas. Each part is supplied as editable FreeCAD (`.FCStd`), neutral STEP, STL, and 3MF.
 
 ## Safety boundary
 
@@ -26,6 +26,9 @@ Fit-sensitive dimensions are declared assumptions, not measurements of the insta
 | --- | --- | ---: | --- | --- |
 | `WA-1` | `wa1_inspection_tray` | 1 | 220 x 160 x 16 mm | PETG |
 | `WA-1` | `wa1_tool_rack` | 1 | 180 x 70 x 68 mm | PETG |
+| `WA-1` | [`wa1_tool_rack_sensor_adapter`](wa1_tool_rack_sensor_adapter/README.md) | 1 | 180 x 65.7 x 24.3 mm | PETG |
+| `WA-1` | [`wa1_hall_sensor_case`](wa1_hall_sensor_case/README.md) | 7 | 20 x 38.8 x 11.2 mm each | PLA |
+| `WA-1` | [`wa1_button_holder`](wa1_button_holder/README.md) | 1 | 184 x 171.5 x 45.05 mm | PLA |
 | `WA-1` | `wa1_sensor_bridge_bracket` | 1 | 90 x 55 x 71 mm | PETG |
 | `WA-2` | `wa2_component_bin` | 4 | 110 x 85 x 55 mm | PETG |
 | `WA-2` | `wa2_bin_locator` | 4 | 122 x 97 x 8 mm | PETG |
@@ -43,7 +46,7 @@ Fit-sensitive dimensions are declared assumptions, not measurements of the insta
 
 ## Files and traceability
 
-`manifest.json` records quantities, generated bounds, materials, orientation, non-printed hardware, fit assumptions, mesh facet counts, solid volumes, relative file paths, and SHA-256 digests. Re-run the generator under FreeCAD and then run the independent validator before fabrication.
+`manifest.json` records quantities, generated bounds, materials, orientation, non-printed hardware, fit assumptions, mesh facet counts, solid volumes, relative file paths, and SHA-256 digests. The [WA1 button holder](wa1_button_holder/README.md) has a reproducible FreeCAD Python generator and independent geometry tests. The other 18 fixtures retain their saved CAD/mesh files; their earlier CAD generators are absent from the current working tree.
 
 ## Part details
 
@@ -81,6 +84,25 @@ Fit assumptions:
 - Validate magnet distance and every allowed resting orientation; an empty slot is not evidence of correct tool use or operator identity.
 - The presence sensor is research telemetry, not a safety interlock, and must not control the printer or protective functions.
 - Monitoring all seven slots requires seven sensors and verified additional digital-input capacity; the workbook lists five complete sensor kits.
+
+### WA-1 removable tool-rack sensor adapter
+
+- Adds seven Hall-sensor bays above the wall-mounted rack, whose arms project horizontally and support vertical tools.
+- Two clamps grip the existing top cassette's rear bar; the original rack files remain unchanged.
+- Provides a 10 x 13 mm cable trough, seven cable feedthroughs, and open exits toward Arduino nodes on either side.
+- Keeps the vertical tool paths clear and fits in front of the rack's existing wall plane, without an additional wall spacer.
+- Uses tagged tools and the inventory-listed Keyestudio Hall Magnetic module; seven-slot coverage requires seven confirmed modules, whereas the inventory lists five sensor kits.
+- Place magnets at a repeatable wall-facing position near the slot roots; tags at the outer arm tips can be beyond the sensor's range.
+- Includes an assembly CAD file and print-oriented STL/3MF. See [files, mounting hardware, print settings and physical fit checks](wa1_tool_rack_sensor_adapter/README.md).
+
+### WA-1 three-button PCB holder with display-case mount
+
+- Three PCBs mount directly in bays copied from the supplied button case.
+- The desktop face is tilted 45 degrees above the tabletop, with 44.5 mm button pitch.
+- Three original snap back covers retain the boards; the shared open trough routes their wiring through an outlet ahead of the display case.
+- The compact 184 x 171.5 mm stand integrates the complete user-selected `display_b.stl` case at its original scale; the matching `display_d` cover is included. Actual TFT compatibility is unverified.
+- Short hollow braces and an open front floor reduce the sliced body estimate from 10h36m to 7h25m, using PLA and a 0.4 mm nozzle on the Kobra 3.
+- [Print files, assembly, reference-fit limitations and verification](wa1_button_holder/README.md).
 
 ### WA-1 optical and thermal sensor bridge bracket
 
@@ -291,4 +313,3 @@ Fit assumptions:
 
 - Card channel is approximately 17 mm deep.
 - Use pseudonymous identifiers when privacy policy requires them.
-

@@ -1,0 +1,44 @@
+{
+  "bay_count": 3,
+  "face_angle_degrees": 45.0,
+  "installed_dimensions_mm": [
+    184.00000000000003,
+    171.50000000000003,
+    45.04683438038545
+  ],
+  "print_dimensions_mm": [
+    184.00000000000003,
+    171.50000000000003,
+    45.04683438038545
+  ],
+  "solid_volume_mm3": 125827.90395587611,
+  "previous_volume_mm3": 220474.926447971,
+  "source_snap_rim_overlap_mm3": 69.68688792784242,
+  "display_source_dimensions_mm": [
+    119.5,
+    184.0,
+    20.0
+  ],
+  "display_mount_scale": 1.0,
+  "display_source_cover_overlap_mm3": 0.0,
+  "display_reference_selected_by_user": "display_b.stl",
+  "valid_closed_single_body": true,
+  "source_sha256": {
+    "button.stl": "3cf3161f71bab1db59b225b49d370c207fc1193ad6afa4f261f6290e025e521d",
+    "button_d.stl": "f0d040a18b6a4fd425dd2fcebd4bb5670eeeac25c8d1690bb66bc3335fe1c8e9",
+    "display_b.stl": "5ae5168dcdccc27312cc80224a51b67fb295bb9585bb383fa86bad416bc84e23",
+    "display_d.stl": "fb6b7fbe4a6d54980cc6aee5f51cbd06ca819725712a92a0fb845e0005bb2c97"
+  },
+  "output_sha256": {
+    "wa1_button_holder.3mf": "83df34a97bc6745cef563b993e5e4509f2525347e0495d03942412dc74f729d8",
+    "wa1_button_holder.FCStd": "bf05d9e4776ca686c178ad50fdde2d34d727379655d0e587f825d06f6b5baf62",
+    "wa1_button_holder.step": "cfc845566a90fbf62734418b6eee5b7ed22025543fa933ab0cecdcef34679376",
+    "wa1_button_holder.stl": "3ae7aac724f89b6ca25a090a5f428f392f6f4f1922822b9e0d8d2aa62111fb9f",
+    "wa1_button_holder_back_covers_3.stl": "b5c6dc99cffdc34929c581337e91b48626e445f6f4dbf2562f859de911679037",
+    "wa1_button_holder_display_cover.stl": "51953b13f9ccd12c56b54ffc3c82d79c3a74dcfe58ae06a5f0e36c8adb4fec46",
+    "wa1_button_holder_back_covers_3.3mf": "1af07585e3d1d105e30fa6a999a4c0a8ffd307f743f93bedb295b52a1dced702",
+    "wa1_button_holder_display_cover.3mf": "3a2fc70dda38b807806faa109f7c7794f73ffb4d3a2bc41f8747ea803d30e7a3"
+  },
+  "physical_fit_verified": false,
+  "display_tft_compatibility_verified": false
+}

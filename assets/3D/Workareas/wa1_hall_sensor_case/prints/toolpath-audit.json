@@ -1,0 +1,279 @@
+{
+  "jobs": [
+    {
+      "cases": 1,
+      "source_sha256": "c631babe90ab15d5aa77b5079c38b2cf5c126ec9e78d6022d57beee0595e4319",
+      "gcode_sha256": "7ee311cecdce9845d650a6b0374162862cb71cca32aceaa26c85ef5fac229260",
+      "project_sha256": "e00c757588edcb11cbc64f47ba77148ff0a28fe2928668075442d8fde76dfecf",
+      "mesh_triangles": 336,
+      "component_dimensions_mm": [
+        [
+          11.2,
+          38.8,
+          20.0
+        ]
+      ],
+      "source_mesh_matches_at_mm_precision": 0.0001,
+      "unit_scale_verified": true,
+      "embedded_gcode_and_md5_match": true,
+      "explicit_motion_bounds_mm": {
+        "X": [
+          114.65,
+          250.0
+        ],
+        "Y": [
+          101.158,
+          220.0
+        ],
+        "Z": [
+          0.2,
+          22.0
+        ]
+      },
+      "model_layers": 100,
+      "total_model_and_independent_support_layers": 150,
+      "estimated_time_normal": "16m 26s",
+      "estimated_filament_g": 3.49,
+      "estimated_seconds": 986,
+      "warnings": [
+        "bed_temperature_too_high_than_filament",
+        "not_support_traditional_timelapse"
+      ],
+      "settings_checked": {
+        "printer_model": "Anycubic Kobra 3",
+        "nozzle_diameter": [
+          "0.4"
+        ],
+        "filament_type": [
+          "PLA"
+        ],
+        "layer_height": "0.2",
+        "initial_layer_print_height": "0.2",
+        "enable_support": "1",
+        "wall_generator": "arachne",
+        "wall_loops": "4",
+        "top_shell_layers": "5",
+        "bottom_shell_layers": "5",
+        "sparse_infill_density": "25%",
+        "sparse_infill_pattern": "gyroid",
+        "support_type": "normal(auto)",
+        "support_style": "snug",
+        "support_on_build_plate_only": "0",
+        "outer_wall_speed": "60",
+        "inner_wall_speed": "80",
+        "initial_layer_speed": "25",
+        "brim_width": "5",
+        "support_top_z_distance": "0.2",
+        "support_bottom_z_distance": "0.2",
+        "printable_height": "260",
+        "printable_area": [
+          "0x0",
+          "250x0",
+          "250x250",
+          "0x250"
+        ],
+        "nozzle_temperature": [
+          "210"
+        ],
+        "nozzle_temperature_initial_layer": [
+          "220"
+        ],
+        "textured_plate_temp": [
+          "60"
+        ],
+        "timelapse_type": "0",
+        "time_lapse_gcode": "",
+        "enable_arc_fitting": "0",
+        "xy_contour_compensation": "0",
+        "xy_hole_compensation": "0",
+        "filament_shrink": [
+          "100%"
+        ]
+      },
+      "panel_layer_checks": 200,
+      "minimum_tracks_per_0_8_mm_panel": 2,
+      "aperture_and_tie_opening_checks": 34,
+      "lower_ledge_and_guide_interface_segments_per_case": [
+        [
+          22,
+          82
+        ]
+      ],
+      "gcode_file": "wa1_hall_case_1_kobra3_PLA_04.gcode",
+      "project_file": "wa1_hall_case_1_kobra3_PLA_04.3mf",
+      "upper_guide_support_verified_for_each_case": true
+    },
+    {
+      "cases": 7,
+      "source_sha256": "e3c7e791aa89bbfda39068f5d8b6a660ac3d455f285e23e5b2cec84441247ff2",
+      "gcode_sha256": "c6be55551b3e0025204572e251d98bc469c31501af2e3200db82651882b49f95",
+      "project_sha256": "f71c811c03e60f7a1b6b168da7d46414e01deeb90b8b8243060192134671e5a0",
+      "mesh_triangles": 2352,
+      "component_dimensions_mm": [
+        [
+          11.2,
+          38.8,
+          20.0
+        ],
+        [
+          11.2,
+          38.8,
+          20.0
+        ],
+        [
+          11.2,
+          38.8,
+          20.0
+        ],
+        [
+          11.2,
+          38.8,
+          20.0
+        ],
+        [
+          11.2,
+          38.8,
+          20.0
+        ],
+        [
+          11.2,
+          38.8,
+          20.0
+        ],
+        [
+          11.2,
+          38.8,
+          20.0
+        ]
+      ],
+      "source_mesh_matches_at_mm_precision": 0.0001,
+      "unit_scale_verified": true,
+      "embedded_gcode_and_md5_match": true,
+      "explicit_motion_bounds_mm": {
+        "X": [
+          59.155,
+          250.0
+        ],
+        "Y": [
+          47.729,
+          220.0
+        ],
+        "Z": [
+          0.2,
+          22.0
+        ]
+      },
+      "model_layers": 100,
+      "total_model_and_independent_support_layers": 151,
+      "estimated_time_normal": "1h 37m 38s",
+      "estimated_filament_g": 24.36,
+      "estimated_seconds": 5858,
+      "warnings": [
+        "bed_temperature_too_high_than_filament",
+        "not_support_traditional_timelapse"
+      ],
+      "settings_checked": {
+        "printer_model": "Anycubic Kobra 3",
+        "nozzle_diameter": [
+          "0.4"
+        ],
+        "filament_type": [
+          "PLA"
+        ],
+        "layer_height": "0.2",
+        "initial_layer_print_height": "0.2",
+        "enable_support": "1",
+        "wall_generator": "arachne",
+        "wall_loops": "4",
+        "top_shell_layers": "5",
+        "bottom_shell_layers": "5",
+        "sparse_infill_density": "25%",
+        "sparse_infill_pattern": "gyroid",
+        "support_type": "normal(auto)",
+        "support_style": "snug",
+        "support_on_build_plate_only": "0",
+        "outer_wall_speed": "60",
+        "inner_wall_speed": "80",
+        "initial_layer_speed": "25",
+        "brim_width": "5",
+        "support_top_z_distance": "0.2",
+        "support_bottom_z_distance": "0.2",
+        "printable_height": "260",
+        "printable_area": [
+          "0x0",
+          "250x0",
+          "250x250",
+          "0x250"
+        ],
+        "nozzle_temperature": [
+          "210"
+        ],
+        "nozzle_temperature_initial_layer": [
+          "220"
+        ],
+        "textured_plate_temp": [
+          "60"
+        ],
+        "timelapse_type": "0",
+        "time_lapse_gcode": "",
+        "enable_arc_fitting": "0",
+        "xy_contour_compensation": "0",
+        "xy_hole_compensation": "0",
+        "filament_shrink": [
+          "100%"
+        ]
+      },
+      "panel_layer_checks": 1400,
+      "minimum_tracks_per_0_8_mm_panel": 2,
+      "aperture_and_tie_opening_checks": 238,
+      "lower_ledge_and_guide_interface_segments_per_case": [
+        [
+          12,
+          66
+        ],
+        [
+          12,
+          66
+        ],
+        [
+          12,
+          66
+        ],
+        [
+          10,
+          66
+        ],
+        [
+          12,
+          66
+        ],
+        [
+          12,
+          66
+        ],
+        [
+          12,
+          66
+        ]
+      ],
+      "gcode_file": "wa1_hall_case_7_kobra3_PLA_04.gcode",
+      "project_file": "wa1_hall_case_7_kobra3_PLA_04.3mf",
+      "upper_guide_support_verified_for_each_case": true
+    }
+  ],
+  "cad_sources_unchanged": true,
+  "limitations": [
+    "Physical printing, fit, adhesion, support removal, retention and magnetic sensing have not been tested.",
+    "Motion checks cover explicit generated moves; movements inside the vendor G9111 firmware macro are not exposed in this file."
+  ],
+  "official_machine_start_end_templates_identical": true,
+  "machine_profile_differences_from_bundle": [
+    "printable_area",
+    "bed_exclude_area"
+  ],
+  "audit_negative_checks_passed": [
+    "Reject rescaling",
+    "Reject relative XY mode",
+    "Reject an explicit move beyond the bed"
+  ]
+}

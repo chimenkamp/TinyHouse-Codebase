@@ -1,0 +1,102 @@
+{
+  "components": 7,
+  "component_dimensions_mm": [
+    [
+      11.2,
+      38.8,
+      20.0
+    ],
+    [
+      11.2,
+      38.8,
+      20.0
+    ],
+    [
+      11.2,
+      38.8,
+      20.0
+    ],
+    [
+      11.2,
+      38.8,
+      20.0
+    ],
+    [
+      11.2,
+      38.8,
+      20.0
+    ],
+    [
+      11.2,
+      38.8,
+      20.0
+    ],
+    [
+      11.2,
+      38.8,
+      20.0
+    ]
+  ],
+  "triangles": 476,
+  "3mf_embedded_gcode_identical": true,
+  "explicit_motion_bounds_mm": {
+    "X": [
+      47.729,
+      250.0
+    ],
+    "Y": [
+      59.025,
+      220.0
+    ],
+    "Z": [
+      0.2,
+      22.0
+    ]
+  },
+  "layers": 100,
+  "max_layer_height_mm": 20.0,
+  "wall_panel_layer_checks": 1400,
+  "minimum_extrusion_tracks_per_08mm_wall": 2,
+  "rear_window_roof_checks": 14,
+  "bridging_tracks_each_roof": [
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2
+  ],
+  "bridge_move_length_range_mm": [
+    3.599173516239503,
+    3.60058772980193
+  ],
+  "bridge_speed_mm_s": [
+    25.0
+  ],
+  "print_time": "47m 15s",
+  "filament_g": 12.26,
+  "filament_m": 4.11131,
+  "warnings": [
+    "bed_temperature_too_high_than_filament",
+    "not_support_traditional_timelapse"
+  ],
+  "limitations": [
+    "Explicit motion limits do not inspect movements implemented internally by the vendor G9111 firmware macro.",
+    "Toolpaths establish geometry coverage but do not establish physical fit, adhesion or bridging quality."
+  ],
+  "sha256": {
+    "wa1_hall_sensor_case.stl": "7671b6b89b7c680636d86132847ee3caa5b82accac855af5e6a3448a2bf75302",
+    "wa1_hall_sensor_case_plate_7.stl": "7f4a7aca64db4b58462642cbdbf4ff61011abcac6ea8eec826ebafd3489436db",
+    "wa1_hall_sleeves_7_kobra3_PLA_04.gcode": "4b1d186442e5f012e02f0b7dfa1cc1edc57e62bc329636001b8e6891fee4c6b0",
+    "wa1_hall_sleeves_7_kobra3_PLA_04.3mf": "81ad477aa02060df281451edbb03869dedbe3f5fa9a5b1e1bc25f41f6f5d651d"
+  },
+  "release_status": "draft_pending_pcb_top_and_connector_measurements"
+}

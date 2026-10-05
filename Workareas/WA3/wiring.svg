@@ -1,0 +1,298 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2400" height="1600" viewBox="0 0 2400 1600" role="img" aria-labelledby="title desc">
+  <title id="title">WA3 assembly and test workstation — hardware, cables, printed fixtures and process events</title>
+  <desc id="desc">Proportional L-shaped T3 table with 120 by 55 centimetre test wing and 65 by 70 centimetre assembly wing. Equipment includes the pressure mat's existing two-channel circuit, a separate observation Nano, a separate Nano DUT test jig, workpiece camera, reference scale and four reference weights, explicit approval UI, staging tray, Raspberry Pi, power supply and site network. Blue USB, violet sensor, red power and teal Ethernet cables meet named ports. Amber dashed connections require an approved DUT interface, scale protocol or UI integration. All ten printed fixture instances are shown and listed. The software diagram identifies implemented serial capture and event validation, pending adapters, and exact candidate, authoritative and diagnostic MQTT topic patterns.</desc>
+  <defs>
+    <pattern id="matgrid" width="24" height="24" patternUnits="userSpaceOnUse"><path d="M24 0H0V24" fill="none" stroke="#c3d4cd" stroke-width="1"/></pattern>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#147d83"/></marker>
+    <style>
+      text{font-family:Arial,Helvetica,sans-serif;fill:#172b3a} .title{font-size:32px;font-weight:700;letter-spacing:1px}.section{font-size:21px;font-weight:700;letter-spacing:1.4px}.label{font-size:22px;font-weight:700}.note{font-size:19px}.small{font-size:18px}.code{font-family:Consolas,'Courier New',monospace;font-size:18px}.muted{fill:#60727a}.white{fill:#fff}.teal{fill:#147d83}.amber{fill:#96610c}.outline{stroke:#536974;stroke-width:2}.panel{fill:#fff;stroke:#d8e0df;stroke-width:2}.fixture{fill:#d4e7df;stroke:#147d83;stroke-width:2}.device{fill:#eef2f3;stroke:#536974;stroke-width:2}.usb{fill:none;stroke:#347bb8;stroke-width:6;stroke-linecap:round;stroke-linejoin:round}.sensor{fill:none;stroke:#8056a0;stroke-width:5;stroke-linecap:round;stroke-linejoin:round}.power{fill:none;stroke:#c75353;stroke-width:6;stroke-linecap:round;stroke-linejoin:round}.ethernet{fill:none;stroke:#147d83;stroke-width:6;stroke-linecap:round;stroke-linejoin:round}.held{fill:none;stroke:#c18a2d;stroke-width:5;stroke-dasharray:10 8;stroke-linecap:round;stroke-linejoin:round}.wire{fill:none;stroke:#60727a;stroke-width:3}.port{fill:#fff;stroke:#172b3a;stroke-width:2}.pill{font-size:17px;font-weight:700;fill:#147d83}.badge{fill:#147d83}.badgeText{font-size:17px;font-weight:700;fill:#fff}
+    </style>
+  </defs>
+  <rect width="2400" height="1600" fill="#f4f5f2"/>
+  <text x="60" y="64" class="title">WA3 / ASSEMBLY + TEST</text>
+  <text x="60" y="104" class="note muted">T3 · 120×55 + 65×70 cm · schematic arrangement</text>
+  <text x="2340" y="68" class="section teal" text-anchor="end">BASE + LID + KIT → APPROVED NODE</text>
+  <path d="M60 126H2340" stroke="#d3ddda" stroke-width="2"/>
+
+  <text x="82" y="184" class="section">01 / HARDWARE + CONNECTIONS</text>
+  <g class="small">
+    <path d="M84 221H123" class="usb"/><text x="134" y="227">USB</text>
+    <path d="M218 221H257" class="sensor"/><text x="268" y="227">Sensor</text>
+    <path d="M379 221H418" class="power"/><text x="429" y="227">Power</text>
+    <path d="M535 221H574" class="ethernet"/><text x="585" y="227">Ethernet</text>
+    <path d="M708 221H747" class="held"/><text x="758" y="227">Interface / integration held</text>
+    <rect x="1100" y="207" width="26" height="26" rx="5" class="fixture"/><text x="1141" y="227">Printed fixture</text>
+  </g>
+
+  <!-- The outline uses 7.5 SVG units/cm: 900×412.5 and 487.5×525. -->
+  <path d="M100 377.5H1000V265H1487.5V790H100Z" fill="#ece6d7" stroke="#b7b5a9" stroke-width="4"/>
+  <path d="M1000 377.5V790" stroke="#c9c5b6" stroke-width="2" stroke-dasharray="9 8"/>
+  <text x="110" y="347" class="small muted">TEST WING · 120 × 55 cm</text>
+  <text x="1135" y="257" class="small muted">ASSEMBLY · 65 × 70 cm</text>
+
+  <rect x="82" y="915" width="1508" height="200" rx="17" fill="#e9eeed" stroke="#c9d4d2" stroke-width="2"/>
+  <text x="104" y="944" class="section muted">UNDER TABLE / SITE NETWORK</text>
+
+  <!-- External cable routes below the table connect to separate Pi ports. -->
+  <path d="M1041 327H975V824H750V928" class="usb"/>
+  <path d="M807 590V622H961V846H715V928" class="usb"/>
+  <path d="M838 740V865H680V928" class="usb"/>
+  <path d="M274 630V644H431V884H635V928" class="held"/>
+  <path d="M550 604V616H695V809H1025V988H975" class="held"/>
+  <text x="1160" y="834" class="small amber">Approval UI → authenticated API</text>
+  <text x="1160" y="859" class="small amber">Terminal / adapter to commission</text>
+  <text x="1155" y="900" class="small muted">USB A: observer · USB B: DUT jig</text>
+  <text x="150" y="842" class="small amber">Scale link held</text>
+  <text x="150" y="869" class="small amber">Model + protocol unknown</text>
+
+  <!-- Dedicated reference scale. -->
+  <g id="reference-scale">
+    <rect x="145" y="462" width="270" height="168" rx="17" class="device"/>
+    <rect x="163" y="478" width="234" height="88" rx="11" fill="#d4dadd" stroke="#82949c" stroke-width="2"/>
+    <ellipse cx="280" cy="522" rx="84" ry="32" fill="#eaf0f1" stroke="#9caeb4" stroke-width="2"/>
+    <rect x="203" y="578" width="101" height="31" rx="4" fill="#253e48"/>
+    <text x="253" y="601" class="small white" text-anchor="middle">WEIGHT</text>
+    <circle cx="347" cy="594" r="11" fill="#147d83"/>
+    <circle cx="274" cy="630" r="7" class="port"/>
+    <text x="145" y="447" class="label">Reference scale</text>
+    <text x="146" y="669" class="small muted">Dedicated WA3 · PSU TBD</text>
+  </g>
+
+  <!-- Caddy: four blind pockets and separately supplied certified weights. -->
+  <g id="reference-weight-caddy" data-part="wa3_reference_weight_caddy" data-quantity="1">
+    <rect x="145" y="683" width="270" height="79" rx="12" class="fixture"/>
+    <circle cx="187" cy="721" r="26" fill="#a7c3b9"/><circle cx="251" cy="721" r="23" fill="#a7c3b9"/><circle cx="313" cy="721" r="20" fill="#a7c3b9"/><circle cx="371" cy="721" r="17" fill="#a7c3b9"/>
+    <path d="M170 731V712H180V702H194V712H204V731Z M236 732V714H245V705H257V714H266V732Z M300 732V717H308V709H319V717H326V732Z M360 732V719H366V712H376V719H382V732Z" fill="#bec6cb" stroke="#657782" stroke-width="2"/>
+    <rect x="140" y="737" width="52" height="27" rx="7" class="badge"/><text x="166" y="757" text-anchor="middle" class="badgeText">P03</text>
+    <text x="200" y="783" class="small">4 certified references</text>
+  </g>
+
+  <!-- Explicit human approval interface, specified as a browser UI concept. -->
+  <g id="approval-ui">
+    <rect x="452" y="414" width="203" height="148" rx="12" fill="#334d59" stroke="#172b3a" stroke-width="2"/>
+    <rect x="465" y="427" width="177" height="118" rx="4" fill="#fff"/>
+    <text x="554" y="453" text-anchor="middle" class="small">PRODUCT / TEST</text>
+    <path d="M483 473H624M483 487H612" stroke="#c2cfce" stroke-width="4"/>
+    <rect x="486" y="506" width="133" height="28" rx="5" fill="#147d83"/>
+    <text x="552" y="527" text-anchor="middle" class="small white">APPROVE</text>
+    <path d="M475 562H632L655 604H452Z" fill="#bcc9cc" stroke="#536974" stroke-width="2"/>
+    <path d="M473 578H632M480 589H625" stroke="#84999f" stroke-width="3"/>
+    <circle cx="550" cy="604" r="7" class="port"/>
+    <text x="452" y="398" class="label">Explicit approval UI</text>
+    <text x="452" y="632" class="small amber">UI + adapter pending</text>
+  </g>
+
+  <g id="identity-card-holders" data-part="shared_label_card_holder" data-quantity="2">
+    <g transform="translate(451 676)">
+      <path d="M0 10H105V63H0Z" class="fixture"/><rect x="7" y="0" width="90" height="53" fill="#fff" stroke="#708f87" stroke-width="2"/>
+      <text x="52" y="24" text-anchor="middle" class="small">ORDER</text><path d="M18 36H83M18 44H65" stroke="#9baeb2" stroke-width="3"/>
+      <path d="M-5 55H110V68H-5Z" class="fixture"/>
+    </g>
+    <g transform="translate(579 676)">
+      <path d="M0 10H105V63H0Z" class="fixture"/><rect x="7" y="0" width="90" height="53" fill="#fff" stroke="#708f87" stroke-width="2"/>
+      <text x="52" y="24" text-anchor="middle" class="small">NODE</text><path d="M18 36H83M18 44H65" stroke="#9baeb2" stroke-width="3"/>
+      <path d="M-5 55H110V68H-5Z" class="fixture"/>
+    </g>
+    <rect x="450" y="748" width="72" height="27" rx="7" class="badge"/><text x="486" y="768" text-anchor="middle" class="badgeText">P07 ×2</text>
+  </g>
+
+  <!-- Test jig, separated physically and by USB identity from observation Nano. -->
+  <g id="nano-test-jig" data-part="wa3_nano_test_jig_enclosure" data-quantity="1">
+    <rect x="710" y="452" width="236" height="138" rx="12" class="fixture"/>
+    <rect x="727" y="470" width="202" height="101" rx="6" fill="#ecf4ef" stroke="#729a8c" stroke-width="2"/>
+    <rect x="768" y="488" width="118" height="57" rx="3" fill="#2f8177"/>
+    <rect x="756" y="503" width="22" height="27" fill="#a8b3b7" stroke="#536974" stroke-width="2"/>
+    <rect x="811" y="503" width="26" height="26" fill="#283d42"/>
+    <path d="M780 482H878M780 551H878" stroke="#c1b669" stroke-width="7" stroke-dasharray="4 7"/>
+    <circle cx="736" cy="479" r="4" fill="#647a75"/><circle cx="920" cy="479" r="4" fill="#647a75"/><circle cx="736" cy="565" r="4" fill="#647a75"/><circle cx="920" cy="565" r="4" fill="#647a75"/>
+    <rect x="703" y="441" width="52" height="27" rx="7" class="badge"/><text x="729" y="461" text-anchor="middle" class="badgeText">P02</text>
+    <text x="710" y="422" class="label">DUT test-jig Nano</text>
+    <circle cx="807" cy="590" r="7" class="port"/><text x="816" y="615" class="small">USB B</text>
+    <circle cx="946" cy="520" r="7" class="port"/>
+  </g>
+
+  <!-- Sensor mat, actual DUT, two schematic pressure zones. -->
+  <g id="esd-mat">
+    <rect x="1030" y="520" width="420" height="242" rx="13" fill="#d7e4dc" stroke="#5d8271" stroke-width="3"/>
+    <rect x="1041" y="531" width="398" height="220" rx="8" fill="url(#matgrid)"/>
+    <text x="1050" y="553" class="label">ESD assembly mat</text>
+    <rect x="1052" y="578" width="177" height="145" rx="14" fill="#ecf3ed" stroke="#8056a0" stroke-width="3" stroke-dasharray="8 6"/>
+    <rect x="1247" y="578" width="180" height="145" rx="14" fill="#ecf3ed" stroke="#8056a0" stroke-width="3" stroke-dasharray="8 6"/>
+    <text x="1070" y="710" class="small">FSR 1 / A0</text><text x="1265" y="710" class="small">FSR 2 / A1</text>
+    <text x="1048" y="747" class="small muted">Existing sketch: 2 zones · calibrate</text>
+    <g id="sensor-node-dut">
+      <rect x="1088" y="594" width="108" height="72" rx="8" fill="#ded8bf" stroke="#6f7765" stroke-width="2"/>
+      <rect x="1104" y="607" width="75" height="46" rx="3" fill="#398b79"/><rect x="1123" y="616" width="23" height="24" fill="#273e3f"/>
+      <circle cx="1088" cy="630" r="7" class="port"/>
+      <text x="1268" y="619" class="label">Sensor node</text><text x="1268" y="645" class="small muted">DUT / product ID</text>
+    </g>
+    <circle cx="1030" cy="688" r="7" class="port"/>
+  </g>
+  <path d="M946 520H1006V630H1088" class="held"/>
+  <text x="704" y="651" class="small amber">DUT pinout + procedure held</text>
+  <path d="M1030 688H995V711H946" class="sensor"/>
+
+  <g id="observation-nano">
+    <rect x="715" y="675" width="231" height="65" rx="7" fill="#2f8177" stroke="#236b62" stroke-width="2"/>
+    <rect x="735" y="687" width="47" height="40" fill="#aab5b8" stroke="#465e68" stroke-width="2"/>
+    <rect x="817" y="691" width="37" height="33" fill="#253f43"/>
+    <path d="M790 674H933M790 741H933" stroke="#c5b75f" stroke-width="8" stroke-dasharray="5 9"/>
+    <circle cx="838" cy="740" r="7" class="port"/><circle cx="946" cy="711" r="7" class="port"/>
+    <text x="715" y="768" class="label">Observation Nano · USB A</text>
+  </g>
+
+  <!-- Workpiece camera and printed hood; identity requires commissioning. -->
+  <g id="workpiece-camera" data-part="shared_camera_privacy_hood" data-quantity="1">
+    <path d="M1040 295H1127L1147 365H1020Z" class="fixture"/>
+    <rect x="1041" y="311" width="89" height="43" rx="7" fill="#334c57"/>
+    <circle cx="1084" cy="335" r="20" fill="#182c38" stroke="#83999f" stroke-width="3"/>
+    <circle cx="1084" cy="335" r="10" fill="#84bfc0"/>
+    <circle cx="1041" cy="327" r="7" class="port"/>
+    <rect x="1020" y="283" width="52" height="27" rx="7" class="badge"/><text x="1046" y="303" text-anchor="middle" class="badgeText">P04</text>
+    <path d="M1072 365L1046 508M1097 365L1408 508" fill="none" stroke="#7aa5a1" stroke-width="2" stroke-dasharray="5 6"/>
+    <text x="1026" y="390" class="small">Camera + hood</text>
+    <text x="1026" y="415" class="small muted">USB · verify</text>
+    <text x="1026" y="440" class="small muted">IMX335 / XIAO</text>
+    <text x="1026" y="485" class="small teal">Local ROI + privacy mask</text>
+  </g>
+
+  <g id="staging-tray" data-part="wa3_component_staging_tray" data-quantity="1">
+    <rect x="1164" y="296" width="292" height="167" rx="10" class="fixture"/>
+    <rect x="1178" y="312" width="76" height="129" rx="5" fill="#edf4ed" stroke="#7b9d91" stroke-width="2"/>
+    <rect x="1270" y="312" width="76" height="129" rx="5" fill="#edf4ed" stroke="#7b9d91" stroke-width="2"/>
+    <rect x="1362" y="312" width="78" height="129" rx="5" fill="#edf4ed" stroke="#7b9d91" stroke-width="2"/>
+    <path d="M1190 337H1240V390H1190Z" fill="#ded8bf" stroke="#8c927d" stroke-width="2"/><rect x="1198" y="345" width="34" height="36" fill="#eef0e6" stroke="#8c927d"/>
+    <rect x="1283" y="337" width="50" height="54" rx="4" fill="#ded8bf" stroke="#8c927d" stroke-width="2"/>
+    <rect x="1375" y="337" width="50" height="54" rx="4" fill="#5d9c8c"/><path d="M1384 345H1416M1384 355H1416M1384 365H1416" stroke="#cee0d8" stroke-width="4"/>
+    <text x="1216" y="425" text-anchor="middle" class="small">BASE</text><text x="1308" y="425" text-anchor="middle" class="small">LID</text><text x="1401" y="425" text-anchor="middle" class="small">KIT</text>
+    <rect x="1400" y="452" width="52" height="27" rx="7" class="badge"/><text x="1426" y="472" text-anchor="middle" class="badgeText">P01</text>
+  </g>
+
+  <g id="table-edge-clips" data-part="shared_table_edge_cable_clip" data-quantity="3">
+    <path d="M265 777H285V803H265Z M828 777H848V803H828Z M965 777H985V803H965Z" class="fixture"/>
+    <path d="M268 784H282M831 784H845M968 784H982" stroke="#147d83" stroke-width="5"/>
+    <rect x="1050" y="775" width="72" height="27" rx="7" class="badge"/><text x="1086" y="795" text-anchor="middle" class="badgeText">P06 ×3</text>
+  </g>
+
+  <!-- Under-table services, visibly separate from the tabletop. -->
+  <g id="pi-sled" data-part="shared_pi5_under_table_sled" data-quantity="1">
+    <rect x="570" y="946" width="405" height="142" rx="13" class="fixture"/>
+    <rect x="590" y="958" width="365" height="115" rx="9" fill="#2e796c" stroke="#185b52" stroke-width="2"/>
+    <circle cx="875" cy="1014" r="39" fill="#526b66" stroke="#b4cbb9" stroke-width="3"/><path d="M850 1014H900M875 989V1039M856 995L894 1033M894 995L856 1033" stroke="#acc3b5" stroke-width="4"/>
+    <rect x="614" y="932" width="38" height="30" fill="#adb9bd" stroke="#536974" stroke-width="2"/>
+    <rect x="668" y="932" width="24" height="30" fill="#adb9bd" stroke="#536974" stroke-width="2"/><rect x="703" y="932" width="24" height="30" fill="#adb9bd" stroke="#536974" stroke-width="2"/><rect x="738" y="932" width="24" height="30" fill="#adb9bd" stroke="#536974" stroke-width="2"/>
+    <circle cx="635" cy="928" r="7" class="port"/><circle cx="680" cy="928" r="7" class="port"/><circle cx="715" cy="928" r="7" class="port"/><circle cx="750" cy="928" r="7" class="port"/>
+    <text x="612" y="995" class="label white">Raspberry Pi 5</text><text x="612" y="1025" class="small white">WA3 edge · clock + storage</text>
+    <rect x="614" y="1041" width="184" height="20" rx="3" fill="#a6b998"/><text x="706" y="1057" text-anchor="middle" font-size="15">assigned SD / NVMe</text>
+    <rect x="929" y="1005" width="47" height="34" fill="#bdc5c5" stroke="#536974" stroke-width="2"/>
+    <circle cx="975" cy="1022" r="7" class="port"/><circle cx="975" cy="988" r="7" class="port"/><circle cx="570" cy="1014" r="7" class="port"/>
+    <rect x="910" y="1072" width="52" height="27" rx="7" class="badge"/><text x="936" y="1092" text-anchor="middle" class="badgeText">P05</text>
+  </g>
+  <g id="pi-power">
+    <rect x="120" y="978" width="220" height="96" rx="12" fill="#425761"/>
+    <text x="141" y="1015" class="label white">Rated Pi PSU</text><text x="141" y="1045" class="small white">USB-C · assign unit</text>
+    <circle cx="340" cy="1014" r="7" class="port"/><circle cx="120" cy="1045" r="7" class="port"/>
+    <path d="M340 1014H570" class="power"/><text x="375" y="993" class="small">DC power</text>
+    <path d="M120 1045H99V1088H362" class="power"/><text x="104" y="1105" class="small muted">Approved mains outlet → PSU</text>
+  </g>
+  <path d="M975 1022H1099" class="ethernet"/><text x="995" y="1005" class="small teal">LAN</text>
+  <g id="site-network">
+    <rect x="1099" y="956" width="464" height="130" rx="12" class="panel"/>
+    <text x="1118" y="984" class="label">Site network boundary</text>
+    <rect x="1118" y="1002" width="194" height="31" rx="4" fill="#dae8e6"/><text x="1215" y="1025" text-anchor="middle" class="small">Aruba switch</text>
+    <rect x="1330" y="1002" width="213" height="31" rx="4" fill="#dae8e6"/><text x="1436" y="1025" text-anchor="middle" class="small">MR600 router</text>
+    <path d="M1312 1018H1330" class="ethernet"/>
+    <text x="1118" y="1063" class="small teal">Private MQTT broker · assigned host</text>
+    <circle cx="1099" cy="1022" r="7" class="port"/>
+  </g>
+
+  <!-- Software and delivery panel. -->
+  <rect x="1630" y="150" width="710" height="620" rx="20" class="panel"/>
+  <text x="1660" y="192" class="section">02 / IMPLEMENTATION ON THE PI</text>
+  <rect x="1660" y="217" width="650" height="95" rx="12" fill="#e7f1ed"/>
+  <text x="1680" y="247" class="label">1  Raw acquisition · implemented</text>
+  <text x="1680" y="276" class="code">shared/serial_capture.py · USB A · 9600 baud</text>
+  <text x="1680" y="299" class="small">P1 / P2 → raw JSONL · volts / kΩ · edge receipt time</text>
+  <path d="M1983 314V332" stroke="#147d83" stroke-width="3" marker-end="url(#arrow)"/>
+  <rect x="1660" y="336" width="650" height="114" rx="12" fill="#fcf3df"/>
+  <text x="1680" y="366" class="label amber">2  Normalize + bind evidence · pending</text>
+  <text x="1680" y="394" class="small">Calibrated mat / camera / scale + identity / operator</text>
+  <text x="1680" y="421" class="small">DUT USB B: approved pinout + full procedure BLOCKED</text>
+  <text x="1680" y="443" class="small amber">Raw pressure does not prove assembly or a passing test.</text>
+  <path d="M1983 452V470" stroke="#147d83" stroke-width="3" marker-end="url(#arrow)"/>
+  <rect x="1660" y="474" width="650" height="111" rx="12" fill="#e7f1ed"/>
+  <text x="1680" y="504" class="label">3  Event API + rules · implemented</text>
+  <text x="1680" y="532" class="code">WA3/main.py · :8413 · POST /v1/events</text>
+  <text x="1680" y="559" class="small">Bearer token · provenance / freshness / replay checks</text>
+  <text x="1680" y="581" class="small">Rework invalidates old passes; approval stays explicit.</text>
+  <path d="M1983 587V605" stroke="#147d83" stroke-width="3" marker-end="url(#arrow)"/>
+  <rect x="1660" y="609" width="650" height="92" rx="12" fill="#e7f1ed"/>
+  <text x="1680" y="639" class="label">4  SQLite outbox → optional Paho MQTT</text>
+  <text x="1680" y="667" class="small">WA3/local/events.sqlite3 · durable until broker PUBACK</text>
+  <text x="1680" y="693" class="small">Configure broker + TLS / credentials to publish.</text>
+  <text x="1660" y="744" class="small muted">Default: candidate authority · local outbox only</text>
+
+  <rect x="1630" y="795" width="710" height="683" rx="20" class="panel"/>
+  <text x="1660" y="837" class="section">03 / MQTT EVENTS EMITTED BY WA3</text>
+  <text x="1660" y="874" class="small muted">CANDIDATE TOPIC · DEFAULT AUTHORITY</text>
+  <text x="1660" y="905" class="code">tinyhouse/bayreuth/candidate/WA3/&lt;activity&gt;</text>
+  <text x="1660" y="947" class="small muted">AUTHORITATIVE TOPIC · ONLY AFTER COMMISSIONING</text>
+  <text x="1660" y="978" class="code">tinyhouse/bayreuth/activity/WA3/&lt;activity&gt;</text>
+  <path d="M1660 1000H2310" stroke="#dce4e2" stroke-width="2"/>
+  <text x="1660" y="1028" class="small muted">EXACT &lt;activity&gt; SLUG</text>
+  <text x="2309" y="1028" text-anchor="end" class="small muted">PAYLOAD transition</text>
+  <rect x="1648" y="1044" width="674" height="41" fill="#f1f6f3"/>
+  <text x="1660" y="1072" class="code">assemble-node</text><text x="2310" y="1072" text-anchor="end" class="small">start · complete</text>
+  <text x="1660" y="1117" class="code">test-and-calibrate</text><text x="2310" y="1117" text-anchor="end" class="small">complete · failed</text>
+  <rect x="1648" y="1134" width="674" height="41" fill="#f1f6f3"/>
+  <text x="1660" y="1162" class="code">resolve-failure</text><text x="2310" y="1162" text-anchor="end" class="small">complete</text>
+  <text x="1660" y="1207" class="code">rework-sensor</text><text x="2310" y="1207" text-anchor="end" class="small">complete</text>
+  <rect x="1648" y="1224" width="674" height="41" fill="#f1f6f3"/>
+  <text x="1660" y="1252" class="code">approve-deployment</text><text x="2310" y="1252" text-anchor="end" class="small">complete</text>
+  <path d="M1660 1286H2310" stroke="#dce4e2" stroke-width="2"/>
+  <text x="1660" y="1317" class="small muted">DIAGNOSTICS · transition: unknown</text>
+  <text x="1660" y="1348" class="code">tinyhouse/bayreuth/diagnostic/WA3</text>
+  <text x="1660" y="1397" class="small">QoS 1 · retain=false · deduplicate by event_id</text>
+  <text x="1660" y="1425" class="small">UUID + activity / transition + object links + evidence IDs</text>
+  <text x="1660" y="1453" class="small muted">Raw frames, samples and procedure files stay local.</text>
+
+  <!-- Printed inventory and the actual circuit implied by the existing firmware. -->
+  <rect x="60" y="1140" width="1510" height="340" rx="20" class="panel"/>
+  <text x="85" y="1180" class="section">04 / PRINTED FIXTURES</text>
+  <g class="small">
+    <text x="85" y="1219" class="teal">P01 ×1</text><text x="177" y="1219">wa3_component_staging_tray</text>
+    <text x="85" y="1253" class="teal">P02 ×1</text><text x="177" y="1253">wa3_nano_test_jig_enclosure</text>
+    <text x="85" y="1287" class="teal">P03 ×1</text><text x="177" y="1287">wa3_reference_weight_caddy</text>
+    <text x="85" y="1321" class="teal">P04 ×1</text><text x="177" y="1321">shared_camera_privacy_hood</text>
+    <text x="85" y="1355" class="teal">P05 ×1</text><text x="177" y="1355">shared_pi5_under_table_sled</text>
+    <text x="85" y="1389" class="teal">P06 ×3</text><text x="177" y="1389">shared_table_edge_cable_clip</text>
+    <text x="85" y="1423" class="teal">P07 ×2</text><text x="177" y="1423">shared_label_card_holder</text>
+    <text x="527" y="1219" class="muted">ESD pocket liners</text>
+    <text x="527" y="1253" class="muted">4 M3 + ins. washers</text>
+    <text x="527" y="1287" class="muted">4 certified weights</text>
+    <text x="527" y="1321" class="muted">2 M3 + washers</text>
+    <text x="527" y="1355" class="muted">4 M3 + 2 metal straps</text>
+    <text x="527" y="1389" class="muted">Reusable cable ties</text>
+    <text x="527" y="1423" class="muted">Cards + adhesive</text>
+    <text x="85" y="1458" class="muted">Fit-check every print · verified ESD liner / material required</text>
+  </g>
+  <path d="M740 1165V1459" stroke="#dce4e2" stroke-width="2"/>
+  <text x="772" y="1180" class="section">05 / OBSERVATION DIVIDERS · TWO CHANNELS</text>
+  <text x="772" y="1214" class="small muted">Existing sketch assumptions: 5.0 V ADC · 510 kΩ · not measured</text>
+  <g id="two-channel-fsr-circuit">
+    <path d="M866 1260H920M1000 1260H1080M1080 1260H1141M1253 1260H1450" class="sensor"/>
+    <path d="M866 1355H920M1000 1355H1080M1080 1355H1141M1253 1355H1450" class="sensor"/>
+    <rect x="920" y="1243" width="80" height="34" fill="#edf1f3" stroke="#8056a0" stroke-width="2"/><text x="960" y="1267" text-anchor="middle" class="small">FSR 1</text>
+    <rect x="920" y="1338" width="80" height="34" fill="#edf1f3" stroke="#8056a0" stroke-width="2"/><text x="960" y="1362" text-anchor="middle" class="small">FSR 2</text>
+    <rect x="1141" y="1243" width="112" height="34" fill="#fff4e3" stroke="#8056a0" stroke-width="2"/><text x="1197" y="1267" text-anchor="middle" class="small">510 kΩ</text>
+    <rect x="1141" y="1338" width="112" height="34" fill="#fff4e3" stroke="#8056a0" stroke-width="2"/><text x="1197" y="1362" text-anchor="middle" class="small">510 kΩ</text>
+    <text x="778" y="1267" class="small">Nano +5V</text><text x="778" y="1362" class="small">Nano +5V</text>
+    <circle cx="1080" cy="1260" r="5" fill="#8056a0"/><path d="M1080 1260V1300" class="sensor"/>
+    <circle cx="1080" cy="1355" r="5" fill="#8056a0"/><path d="M1080 1355V1395" class="sensor"/>
+    <text x="1080" y="1322" text-anchor="middle" class="small">A0 / P1</text><text x="1080" y="1417" text-anchor="middle" class="small">A1 / P2</text>
+    <path d="M1450 1260V1290M1435 1290H1465M1440 1297H1460M1445 1304H1455 M1450 1355V1385M1435 1385H1465M1440 1392H1460M1445 1399H1455" fill="none" stroke="#8056a0" stroke-width="3"/>
+    <text x="1450" y="1238" text-anchor="middle" class="small">GND</text><text x="1450" y="1333" text-anchor="middle" class="small">GND</text>
+  </g>
+  <text x="772" y="1458" class="small muted">USB powers observer · verify ratings / ADC settling · no Pi GPIO link</text>
+  <text x="60" y="1543" class="small muted">Planning drawing · physical fit, calibration, ESD and live integration remain to commission · source: WA3 BUILD.md + work-area card 3</text>
+</svg>
