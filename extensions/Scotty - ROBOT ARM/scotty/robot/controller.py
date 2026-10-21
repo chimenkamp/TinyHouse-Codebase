@@ -58,6 +58,7 @@ class Parol6Controller:
         self.last_command_target_angles: list[float] | None = None
         self._owns_server: bool = False
         self.motion_enabled: bool = False
+        self.last_action: str | None = None
 
     # --- Lifecycle ---
     def connect(self) -> None:

@@ -68,6 +68,7 @@ def get_telemetry():
         "joint_angles_deg": [round(float(a), 2) for a in angles] if angles is not None else None,
         "cartesian_pose": cartesian,
         "standby_pose_deg": JOINT_HOME_DEG,
+        "last_action": robot_controller.last_action,
         "last_error": robot_controller.last_error,
     }
 
@@ -189,6 +190,15 @@ def get_dashboard():
           </div>
         </div>
 
+        <!-- Last Action Status -->
+        <div class="card">
+          <div class="card-title">Last Robot Action</div>
+          <div id="lastActionBox" style="font-family:'JetBrains Mono',monospace; font-size:1rem; color:#fff;">
+            No action yet
+          </div>
+        </div>
+
+
         <!-- Joint Angles & Limits -->
         <div class="card">
           <div class="card-title">Joint Positions & Safety Boundaries (J1 - J6)</div>
@@ -263,6 +273,14 @@ def get_dashboard():
                 `;
               }).join('');
             }
+                      // 4. Last Action Status
+            const action = telem.last_action || 'No action yet';
+            const error = telem.last_error;
+            const color = error ? '#ef4444' : '#10b981';
+            const icon = error ? '[ERROR]' : (telem.last_action ? '[OK]' : '[PENDING]');
+            document.getElementById('lastActionBox').innerHTML =
+              `<span style="color:${color}">${icon} ${action}</span>` +
+              (error ? `<br><small style="color:#ef4444">${error}</small>` : '');
 
             document.getElementById('lastUpdated').textContent = 'Updated: ' + new Date().toLocaleTimeString();
           } catch (err) {
