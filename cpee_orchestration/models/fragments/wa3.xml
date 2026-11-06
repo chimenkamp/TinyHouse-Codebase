@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testset xmlns="http://cpee.org/ns/properties/2.0">
+  <state>ready</state>
+  <executionhandler>ruby</executionhandler>
+
+  <dataelements>
+    <run_id/>
+    <work_order_id/>
+    <fragment_id>wa3</fragment_id>
+    <attempt>1</attempt>
+    <input_json>{}</input_json>
+    <retry_count>0</retry_count>
+    <max_retries>2</max_retries>
+    <target_pick_pose>[150.0, -80.0, 25.0, 0.0, 0.0, 180.0]</target_pick_pose>
+    <target_place_pose>[200.0, 100.0, 30.0, 0.0, 0.0, 180.0]</target_place_pose>
+    <pick_result>{}</pick_result>
+    <place_result>{}</place_result>
+    <test_result>{}</test_result>
+    <error_log>none</error_log>
+  </dataelements>
+
+  <endpoints>
+    <scotty_connect>http://localhost:8100/robot/connect</scotty_connect>
+    <scotty_pick>http://localhost:8100/robot/pick</scotty_pick>
+    <scotty_place>http://localhost:8100/robot/place</scotty_place>
+    <scotty_park>http://localhost:8100/robot/park</scotty_park>
+    <scotty_halt>http://localhost:8100/robot/halt</scotty_halt>
+    <wa3_test>http://localhost:8413/v1/test</wa3_test>
+  </endpoints>
+
+  <attributes>
+    <guarded>none</guarded>
+    <modeltype>CPEE</modeltype>
+    <theme>extended</theme>
+    <info>WA-3 Robot Assembly and Quality Test</info>
+    <creator>TinyHouse</creator>
+    <author>TinyHouse</author>
+    <model_uuid>wa3-parol6-assembly-fragment-v1</model_uuid>
+    <model_version>1</model_version>
+    <design_stage>development</design_stage>
+  </attributes>
+
+  <description>
+    <description xmlns="http://cpee.org/ns/description/1.0">
+
+      <!-- 1. Connect and initialize robot arm -->
+      <call id="a_connect" endpoint="scotty_connect">
+        <parameters>
+          <label>Connect to PAROL6 Robot Arm</label>
+          <method>:post</method>
+          <arguments/>
+        </parameters>
+        <code>
+          <finalize output="result">data.error_log = "Connected successfully"</finalize>
+          <rescue output="result">
+            data.error_log = "Robot connection failed: #{result.inspect}"
+            raise "ROBOT_OFFLINE: #{result.inspect}"
+          </rescue>
+        </code>
+      </call>
+
+      <!-- 2. Pick Loop: retry picking if grasp slips or fails -->
+      <loop mode="pre_test" condition="data.retry_count.to_i &lt; data.max_retries.to_i &amp;&amp; data.pick_result['status'] != 'picked'">
+        <call id="a_pick" endpoint="scotty_pick">
+          <parameters>
+            <label>Pick Sensor from Tray</label>
+            <method>:post</method>
+            <arguments>
+              <target_pose>!data.target_pick_pose</target_pose>
+              <hover_offset_z_mm>50.0</hover_offset_z_mm>
+              <duration_s>2.0</duration_s>
+            </arguments>
+          </parameters>
+          <code>
+            <finalize output="result">
+              data.pick_result = result
+              data.error_log = "Pick successful"
+            </finalize>
+            <rescue output="result">
+              data.retry_count = data.retry_count.to_i + 1
+              data.error_log = "Pick attempt #{data.retry_count} failed: #{result.inspect}"
+            </rescue>
+          </code>
+        </call>
+      </loop>
+
+      <!-- 3. Decision Gateway: did the pick succeed within max retries? -->
+      <choose mode="exclusive">
+        <alternative condition="data.pick_result['status'] == 'picked'">
+
+          <!-- 4. Place component at Assembly Station -->
+          <call id="a_place" endpoint="scotty_place">
+            <parameters>
+              <label>Place Component in Assembly Slot</label>
+              <method>:post</method>
+              <arguments>
+                <target_pose>!data.target_place_pose</target_pose>
+                <hover_offset_z_mm>50.0</hover_offset_z_mm>
+                <duration_s>2.0</duration_s>
+              </arguments>
+            </parameters>
+            <code>
+              <finalize output="result">
+                data.place_result = result
+                data.error_log = "Placement successful"
+              </finalize>
+              <rescue output="result">
+                data.error_log = "Placement failed: #{result.inspect}"
+                raise "PLACE_FAILED: #{result.inspect}"
+              </rescue>
+            </code>
+          </call>
+
+          <!-- 5. Test and Calibrate assembled node -->
+          <call id="a_test" endpoint="wa3_test">
+            <parameters>
+              <label>Test and Calibrate Sensor Node</label>
+              <method>:post</method>
+              <arguments>
+                <run_id>!data.run_id</run_id>
+                <work_order_id>!data.work_order_id</work_order_id>
+              </arguments>
+            </parameters>
+            <code>
+              <finalize output="result">data.test_result = result</finalize>
+              <rescue output="result">data.test_result = {"status" => "test_failed", "detail" => result}</rescue>
+            </code>
+          </call>
+
+          <!-- 6. Park arm in safe standby upon completion -->
+          <call id="a_park" endpoint="scotty_park">
+            <parameters>
+              <label>Park Robot Arm</label>
+              <method>:post</method>
+              <arguments/>
+            </parameters>
+            <code>
+              <finalize output="result">data.error_log = "Parked in safe standby"</finalize>
+              <rescue output="result">data.error_log = "Park warning: #{result.inspect}"</rescue>
+            </code>
+          </call>
+
+        </alternative>
+
+        <otherwise>
+          <!-- Recovery: Exceeded retry limit -> Safe Stop and Alert Operator -->
+          <call id="a_halt_missing" endpoint="scotty_halt">
+            <parameters>
+              <label>Alert: Component Missing (Halt Robot)</label>
+              <method>:post</method>
+              <arguments/>
+            </parameters>
+            <code>
+              <finalize output="result">data.error_log = "Halted: component missing after #{data.retry_count} retries"</finalize>
+            </code>
+          </call>
+          <stop/>
+        </otherwise>
+      </choose>
+
+    </description>
+  </description>
+
+  <transformation>
+    <description type="copy"/>
+    <dataelements type="none"/>
+    <endpoints type="none"/>
+  </transformation>
+</testset>

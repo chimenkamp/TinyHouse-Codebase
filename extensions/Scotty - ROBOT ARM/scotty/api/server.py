@@ -35,6 +35,16 @@ class PoseMoveRequest(BaseModel):
     pose_m:list[float] #x_mm, y_mm, z_mm, rx_deg, ry_deg, rz_deg 
     duration_s:float = 2.0
 
+class PickRequest(BaseModel):
+    target_pose: list[float] # [x_mm, y_mm, z_mm, rx_deg, ry_deg, rz_deg]
+    hover_offset_z_mm: float = 50.0
+    duration_s: float = 2.0
+
+class PlaceRequest(BaseModel):
+    target_pose: list[float] # [x_mm, y_mm, z_mm, rx_deg, ry_deg, rz_deg]
+    hover_offset_z_mm: float = 50.0
+    duration_s: float = 2.0
+
 def raise_robot_error(
     status_code: int,
     error_code: RobotErrorCode,
@@ -279,6 +289,140 @@ def move_to_pose(req: PoseMoveRequest):
         )
 
     return {"status": "moving", "target_pose": req.pose_m, "message": msg}
+
+@app.post(
+    "/robot/pick",
+    responses={
+        409: {"model": RobotErrorResponse, "description": "Grasp failed or motion disabled"},
+        422: {"model": RobotErrorResponse, "description": "Target or hover pose unreachable (IK failed)"},
+        503: {"model": RobotErrorResponse, "description": "Robot not connected"},
+    },
+)
+def pick(req: PickRequest):
+    """Executes atomic pick sequence: approach (hover) -> descend -> grasp -> retract."""
+    ensure_robot_connected()
+    robot_controller.last_action = "pick"
+
+    # 1. Validate Cartesian coordinate vector
+    if len(req.target_pose) != 6:
+        raise_robot_error(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            error_code=RobotErrorCode.IK_SOLVER_FAILED,
+            message="Target pose must contain exactly 6 coordinates [x, y, z, rx, ry, rz].",
+            recoverable=False,
+        )
+
+    # 2. Compute approach hover waypoint (raise Z by clearance offset)
+    hover_pose = list(req.target_pose)
+    hover_pose[2] += req.hover_offset_z_mm
+
+    # 3. Stage 1: Move to approach hover pose
+    ok, msg = robot_controller.move_to_pose(hover_pose, duration=req.duration_s)
+    if not ok:
+        is_ik = "ik" in msg.lower() or "unreachable" in msg.lower()
+        raise_robot_error(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY if is_ik else status.HTTP_409_CONFLICT,
+            error_code=RobotErrorCode.IK_SOLVER_FAILED if is_ik else RobotErrorCode.MOTION_DISABLED,
+            message=f"Approach hover failed: {msg}",
+            recoverable=False if is_ik else True,
+        )
+
+    # 4. Stage 2: Descend to grasp elevation
+    ok, msg = robot_controller.move_to_pose(req.target_pose, duration=req.duration_s)
+    if not ok:
+        # Safety: attempt to pull back up to hover clearance before halting
+        robot_controller.move_to_pose(hover_pose, duration=req.duration_s)
+        is_ik = "ik" in msg.lower() or "unreachable" in msg.lower()
+        raise_robot_error(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY if is_ik else status.HTTP_409_CONFLICT,
+            error_code=RobotErrorCode.IK_SOLVER_FAILED if is_ik else RobotErrorCode.MOTION_DISABLED,
+            message=f"Descent to pick pose failed: {msg}",
+            recoverable=False if is_ik else True,
+        )
+
+    # 5. Stage 3: Retract back to hover elevation (carrying the component)
+    ok, msg = robot_controller.move_to_pose(hover_pose, duration=req.duration_s)
+    if not ok:
+        raise_robot_error(
+            status_code=status.HTTP_409_CONFLICT,
+            error_code=RobotErrorCode.OBJECT_DROPPED,
+            message=f"Retract failed, possible dropped object: {msg}",
+            recoverable=True,
+        )
+
+    return {
+        "status": "picked",
+        "target_pose": req.target_pose,
+        "hover_pose": hover_pose,
+        "message": "Pick sequence completed successfully",
+    }
+    
+@app.post(
+    "/robot/place",
+    responses={
+        409: {"model": RobotErrorResponse, "description": "Placement motion disabled or collision"},
+        422: {"model": RobotErrorResponse, "description": "Target or hover pose unreachable (IK failed)"},
+        503: {"model": RobotErrorResponse, "description": "Robot not connected"},
+    },
+)
+def place(req: PlaceRequest):
+    """Executes atomic place sequence: approach (hover) -> descend -> release -> retract."""
+    ensure_robot_connected()
+    robot_controller.last_action = "place"
+
+    # 1. Validate Cartesian coordinate vector
+    if len(req.target_pose) != 6:
+        raise_robot_error(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            error_code=RobotErrorCode.IK_SOLVER_FAILED,
+            message="Target pose must contain exactly 6 coordinates [x, y, z, rx, ry, rz].",
+            recoverable=False,
+        )
+
+    # 2. Compute approach hover waypoint
+    hover_pose = list(req.target_pose)
+    hover_pose[2] += req.hover_offset_z_mm
+
+    # 3. Stage 1: Move above assembly fixture to hover pose
+    ok, msg = robot_controller.move_to_pose(hover_pose, duration=req.duration_s)
+    if not ok:
+        is_ik = "ik" in msg.lower() or "unreachable" in msg.lower()
+        raise_robot_error(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY if is_ik else status.HTTP_409_CONFLICT,
+            error_code=RobotErrorCode.IK_SOLVER_FAILED if is_ik else RobotErrorCode.MOTION_DISABLED,
+            message=f"Approach hover failed: {msg}",
+            recoverable=False if is_ik else True,
+        )
+
+    # 4. Stage 2: Descend into assembly slot / target pose
+    ok, msg = robot_controller.move_to_pose(req.target_pose, duration=req.duration_s)
+    if not ok:
+        # Safety: attempt clearance lift back to hover before raising error
+        robot_controller.move_to_pose(hover_pose, duration=req.duration_s)
+        is_ik = "ik" in msg.lower() or "unreachable" in msg.lower()
+        raise_robot_error(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY if is_ik else status.HTTP_409_CONFLICT,
+            error_code=RobotErrorCode.IK_SOLVER_FAILED if is_ik else RobotErrorCode.MOTION_DISABLED,
+            message=f"Descent to place pose failed: {msg}",
+            recoverable=False if is_ik else True,
+        )
+
+    # 5. Stage 3: Retract empty gripper vertically back to clearance height
+    ok, msg = robot_controller.move_to_pose(hover_pose, duration=req.duration_s)
+    if not ok:
+        raise_robot_error(
+            status_code=status.HTTP_409_CONFLICT,
+            error_code=RobotErrorCode.MOTION_DISABLED,
+            message=f"Retract from placed component failed: {msg}",
+            recoverable=True,
+        )
+
+    return {
+        "status": "placed",
+        "target_pose": req.target_pose,
+        "hover_pose": hover_pose,
+        "message": "Place sequence completed successfully",
+    }
 
 @app.post(
     "/robot/park",
